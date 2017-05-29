@@ -1,0 +1,26 @@
+
+Aug 08 10:50:02 INFO --- logging initialized ---
+Aug 08 10:50:02 DDEBUG timer: config: 48 ms
+Aug 08 10:50:02 DEBUG cachedir: /var/cache/dnf
+Aug 08 10:50:02 DEBUG Loaded plugins: noroot, protected_packages, generate_completion_cache, copr, Query, needs-restarting, config
+Aug 08 10:50:02 DEBUG DNF version: 1.1.9
+Aug 08 10:50:02 DDEBUG Command: dnf clean all
+Aug 08 10:50:02 DDEBUG Installroot: /
+Aug 08 10:50:02 DDEBUG Releasever: 23
+Aug 08 10:50:02 DDEBUG Base command: clean
+Aug 08 10:50:02 DDEBUG Extra commands: ['all']
+Aug 08 10:50:02 DEBUG Cleaning data: dbcache metadata packages
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/54686520717569636b2062726f776e20666f78206a756d706564206f7665
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/7220746865207468696e67206f7220736f6d657468696e67207769746820
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/616c6c20746865206c6574746572732c20736f6d65206f66207768696368
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/2061707065617220696e206e6f756e73206c696b653a207a656272612c20
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/717561696c2c2078796c6570686f6e65732c20616e642076656c6f636972
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/6170746f722eaa7e21402324255e262a28295f2b603132333435363738
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/39302d3da51574552545955494f507b7d7c71776572747975696f705b5d
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/5ca4153444647484a4b4c3a226173646667686a6b6c3b27a5a58435642
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/4e4d3c3e3f7a786376626e6d2c2e2fa
+Aug 08 10:50:02 INFO 25 files removed
+Aug 08 10:50:02 DDEBUG Cleaning up.
+Aug 08 10:50:02 INFO --- logging initialized ---
+Aug 08 10:50:02 DDEBUG timer: config: 4 ms
+Aug 08 10:50:02 DEBUG cachedir: /var/cache/dnf

@@ -1,0 +1,40 @@
+#This is the template rule file which defines the proper format for rule files
+#The "#" comments out a line if placed at the beginning, does not work if placed later in the line.
+#<FilePrefix> text </FilePrefix> Adds "text" to the start of the output file, including line and space formatting
+<FilePrefix> 
+The text which is written here
+Will be placed at the start of the output file 
+unedited. Until it is ended with: </FilePrefix>
+#NumDataLineTypes <integer> defines the number of types of data lines to be included in the output file
+#DataLine <integer> starts the definition of the DataLine determined by the integer
+#<LinePrefix> text </LinePrefix> Adds "text" to the start of the given DataLine type
+#NumDataCharsPerLine <integer> defines the number of characters from the original to be included in the line
+#DataCharType <number, hex, or text> defines how the characters from the original will be transformed, if at all
+#<LineDelimiter> text </LineDelimiter> Adds "text" in between the data transforms
+NumDataLineTypes 3
+DataLine 1
+<LinePrefix>Position(x,y,z): </LinePrefix>
+NumDataCharsPerLine 3
+DataCharType number (or hex or text)
+<LineDelimiter>, </LineDelimiter>
+DataLine 2
+<LinePrefix>Velocity(vx,vy,vz): </LinePrefix>
+NumDataCharsPerLine 3
+DataCharType number (or hex or text)
+<LineDelimiter>, </LineDelimiter>
+DataLine 3
+<LinePrefix>Acceleration(ax,ay,az): </LinePrefix>
+NumDataCharsPerLine 3
+DataCharType number (or hex or text)
+<LineDelimiter>, </LineDelimiter>
+#<DataLineOrder> Arrangement of integers </DataLineOrder> Defines how the DataLines will be arranged in the file.  
+#DataLines will be repeated until all of the data has been written
+<DataLineOrder>
+1
+2
+3
+1, 2, 3
+</DataLineOrder>
+#<FilePostfix> text </FilePostfix> Adds "text" to the end of the output file
+<FilePostfix>
+This test will be placed at the end of the file. </FilePostfix>

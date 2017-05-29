@@ -1,0 +1,13 @@
+<FilePrefix> 
+The following data was recorded at 60 second intervals.
+The Data is arranged as follows:
+xPosition, yPosition, zPosition, xVelocity, yVelocity, zVelocity, xAcceleration, yAcceleration, zAcceleration </FilePrefix>
+NumDataLineTypes 1
+DataLine 1
+<LinePrefix></LinePrefix>
+NumDataCharsPerLine 9
+DataCharType number
+<LineDelimiter>, </LineDelimiter>
+<DataLineOrder>
+1</DataLineOrder>
+<FilePostfix></FilePostfix>
