@@ -15,10 +15,10 @@ Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/rep
 Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/616c6c20746865206c6574746572732c20736f6d65206f66207768696368
 Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/2061707065617220696e206e6f756e73206c696b653a207a656272612c20
 Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/717561696c2c2078796c6570686f6e65732c20616e642076656c6f636972
-Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/6170746f722eaa7e21402324255e262a28295f2b603132333435363738
-Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/39302d3da51574552545955494f507b7d7c71776572747975696f705b5d
-Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/5ca4153444647484a4b4c3a226173646667686a6b6c3b27a5a58435642
-Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/4e4d3c3e3f7a786376626e6d2c2e2fa
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/6170746f722e0a0a7e21402324255e262a28295f2b603132333435363738
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/39302d3d0a51574552545955494f507b7d7c71776572747975696f705b5d
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/5c0a4153444647484a4b4c3a226173646667686a6b6c3b270a5a58435642
+Aug 08 10:50:02 DDEBUG Removing file /var/cache/dnf/updates-e042e478e0621ea6/repodata/4e4d3c3e3f7a786376626e6d2c2e2f0a
 Aug 08 10:50:02 INFO 25 files removed
 Aug 08 10:50:02 DDEBUG Cleaning up.
 Aug 08 10:50:02 INFO --- logging initialized ---

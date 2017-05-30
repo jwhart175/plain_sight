@@ -37,6 +37,7 @@ public class Plain_Sight extends JFrame{
 	private static final int prsfIntSix = 6;
 	private static final int prsfIntEight = 8;
 	private static final int prsfIntTen = 10;
+	private static final int prsfIntEleven = 11;
 	private static final int prsfIntTwelve = 12;
 	private static final int prsfIntThirteen = 13;
 	private static final int prsfIntFourteen = 14;
@@ -361,8 +362,14 @@ public class Plain_Sight extends JFrame{
     						} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("hex")==prsfIntZero){
     							char[] datum = new char[prsfIntOne];
     							datum[prsfIntZero] = inputText.charAt(inputCursor);
+    							System.out.println("datum = " + datum[prsfIntZero]);
     							int num = Character.codePointAt(datum, prsfIntZero);
+    							System.out.println("code point = "+num);
     							String hex = Integer.toHexString(num);
+    							if (hex.length()==prsfIntOne){
+    								hex = "0" + hex;
+    							}
+    							System.out.println("hex = " + hex);
     							output.append(hex);
     							if (x < (pvNumCharsPerLine[typeNum-prsfIntOne] - prsfIntOne)){
     								output.append(pvLineDelimiters[typeNum-prsfIntOne]);
@@ -390,7 +397,6 @@ public class Plain_Sight extends JFrame{
     	}
     	output.append(pvPostfix);
     	
-    	//System.out.println(output.toString());
     	//print the output to the new file:
     	try{
     		pvScrivener = new OutputScribe(outputFile, output.toString());
@@ -412,13 +418,125 @@ public class Plain_Sight extends JFrame{
     	try{
     		if(!pvParseRules(ruleText)){
     			System.out.println("(pvUnhide) failed because rule file parsing failed!");
+    			feedback.append("(pvUnhide) failed because rule file parsing failed!" + System.getProperty("line.separator"));
     		}
     	} catch (Exception ex) {
     		System.out.println(ex);
+    		feedback.append(ex);
             System.out.println("(pvUnhide) failed because rule file parsing failed!");
+            feedback.append("(pvUnhide) failed because rule file parsing failed!" + System.getProperty("line.separator"));
     	}
-    	
+    
     	//create the output file 
+    	int inputLength = inputText.length();
+    	int inputCursor = prsfIntZero;
+    	if (inputText.substring(prsfIntZero,pvPrefix.length()).compareTo(pvPrefix)!=prsfIntZero){
+    		inputCursor = pvPrefix.length() - prsfIntOne;
+    	} else {
+    		System.out.println("(pvUnhide) Warning! File Prefix Not Found!");
+    		feedback.append("(pvUnhide) Warning! File Prefix Not Found!" + System.getProperty("line.separator"));
+    	}
+    	int lineOrderLength = pvLineOrder.length();
+		int lineOrderCursor = prsfIntZero;
+		int lastLineOrderCursor = prsfIntZero;
+		int typeNum = prsfIntZero;
+		String dataLine = "";
+    	while(inputCursor < inputLength){
+    		lineOrderCursor = prsfIntZero;
+    		lastLineOrderCursor = prsfIntZero;
+    		while(lineOrderCursor < lineOrderLength){
+    			if(pvTestNumeric(lineOrderCursor,pvLineOrder)){
+    				typeNum = Integer.valueOf(pvLineOrder.substring(lineOrderCursor,lineOrderCursor+prsfIntOne));	
+    				System.out.println("debug point 1 typeNum=" + typeNum);
+    				if (((typeNum)<=pvNumLineTypes)&((typeNum)>prsfIntZero)){
+    					System.out.println("debug point 1.5 inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length() = " + (inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length()));
+    					if(inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length() < inputLength){
+    						System.out.println("debug point 1.75 " + inputText.substring(inputCursor,inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length()));    						if(inputText.substring(inputCursor,inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length()).compareTo(pvLinePrefixes[typeNum-prsfIntOne])==prsfIntZero){
+    						if (inputText.substring(inputCursor,inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length()).compareTo(pvLinePrefixes[typeNum-prsfIntOne])==prsfIntZero){
+    							System.out.println("debug point 2");
+    							inputCursor = inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length();
+    							for(int x = prsfIntZero; x < pvNumCharsPerLine[typeNum-prsfIntOne]; x++){
+    								System.out.println("debug point 2.5 x = " + x);
+    								if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("number")==prsfIntZero){
+    									if(inputCursor + prsfIntThree < inputLength){
+    										System.out.println("debug point 3");
+    										String num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
+    										while(!pvTestNumeric(prsfIntZero,num)|!pvTestNumeric(prsfIntOne,num)|!pvTestNumeric(prsfIntTwo,num)){
+    											inputCursor++;
+    											num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
+    										}
+    										System.out.println("num = " + num);
+    										char[] data = Character.toChars(Integer.valueOf(num));
+    										String datum = Character.toString(data[prsfIntZero]);
+        									System.out.println("datum = " + datum);
+        									output.append(datum);
+        									inputCursor += prsfIntThree;
+        									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
+        										if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
+        											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
+        										}
+        									}
+    									}
+    								} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("text")==prsfIntZero){
+    									if(inputCursor + prsfIntOne < inputLength){
+    										System.out.println("debug point 4");
+        									String datum = inputText.substring(inputCursor,inputCursor+prsfIntOne);
+        									output.append(datum);
+        									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
+        										if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
+        											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
+        										}
+        									}
+    									}
+    								} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("hex")==prsfIntZero){
+    									if(inputCursor + prsfIntTwo < inputLength){
+    										System.out.println("debug point 5");
+    										String num = inputText.substring(inputCursor,inputCursor+prsfIntTwo);
+        									System.out.println("debug point 5.1 num = " + num);
+    										try {
+    											int temp = pvGetIntFromHexString(num);
+    											char[] data = Character.toChars(temp);
+    											String datum = Character.toString(data[prsfIntZero]);
+    											System.out.println("debug point 5.2 datum = " + datum);
+    											output.append(datum);
+    											System.out.println(output.toString());
+    											if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
+    												if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
+    													inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
+    												}
+    											}
+    										} catch (Exception e) {
+    											feedback.append(e + System.getProperty("line.separator"));
+    											feedback.append("Detected Short Data Line... OK");
+    											break;
+    										} finally {
+    											inputCursor += prsfIntTwo;
+    											
+    										}
+        									System.out.println("debug point 5.3 inputCursor = " + inputCursor);
+    									}
+    								}  else {
+    									System.out.println("(pvHide) Warning: Data type unrecognized for Data Line " + typeNum);
+    									feedback.append("(pvHide) Warning: Data type unrecognized for Data Line " + typeNum + System.getProperty("line.separator"));
+    								}
+    							}
+    						}
+    						
+    						}
+    						
+    					}
+    					lastLineOrderCursor = lineOrderCursor;
+    				} else {
+    					System.out.println("(pvHide) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!");
+						feedback.append("(pvHide) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!" + System.getProperty("line.separator"));
+    				}
+    				lineOrderCursor++;
+    			} else {
+    				lineOrderCursor++;
+    			}
+    		}
+    		inputCursor++;
+    	}
     	
     	//print the output to the new file:
     	try{
@@ -847,4 +965,35 @@ public class Plain_Sight extends JFrame{
     	}
     	return false;
     }
+    
+    private int pvGetIntFromHexString(String hex){
+    	//(pvGetIntFromHexString) returns the integer value of a hex string
+    	int length = hex.length();
+    	int number = prsfIntZero;
+    	int product = prsfIntOne;
+    	for (int x = prsfIntZero; x < length; x++) {
+    		if(hex.substring(length-x-prsfIntOne,length-x).compareTo("a")==prsfIntZero){
+    			number += prsfIntTen*product;
+    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("b")==prsfIntZero){
+    			number += prsfIntEleven*product;
+    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("c")==prsfIntZero){
+    			number += prsfIntTwelve*product;
+    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("d")==prsfIntZero){
+    			number += prsfIntThirteen*product;
+    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("e")==prsfIntZero){
+    			number += prsfIntFourteen*product;
+    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("f")==prsfIntZero){
+    			number += prsfIntFifteen*product;
+    		} else {
+    			number += Integer.valueOf(hex.substring(length-x-prsfIntOne,length-x))*product;
+    		}
+    		product = product*prsfIntSixteen;
+    	}
+    	return number;
+    }
 }
+
+//unhide /home/user/git/plain_sight/output/out_log /home/user/git/plain_sight/input/log_restored /home/user/git/plain_sight/rules/dnfLog
+//hide /home/user/git/plain_sight/input/test_text /home/user/git/plain_sight/output/out_log /home/user/git/plain_sight/rules/dnfLog
+//unhide /home/user/git/plain_sight/output/out_accel /home/user/git/plain_sight/input/accel_restored /home/user/git/plain_sight/rules/AccelDataLog
+//hide /home/user/git/plain_sight/input/test_text /home/user/git/plain_sight/output/out_accel /home/user/git/plain_sight/rules/AccelDataLog

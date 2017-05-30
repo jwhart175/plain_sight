@@ -1,6 +1,6 @@
 # plain_sight
 
-project process: rule file parsing is working, but occasionally buggy and the "hide" function is working, but the code for "unhide" is non-operational.
+project process: rule file parsing is working, but occasionally buggy and the "hide" and "unhide" functions have worked on a simple input text with a simple set of rules.  Next steps will be the creation of a series of more complex rule sets to run through the program to locate and eliminate bugs.
 
 plain_sight is an answer to the question, "How can I make this text file look like something else, but then get it back to the it is supposed to be later?"  When one is working as a spy and must exchange and store sensitive data with/from an asset, which I know precisely nothing about, then one must be very careful to secure sensitive data.  This is a security tool intended to allow for public exchange of encrypted messages without attracting attention or suspicion.  It should be noted that this is not an encryption tool, and is not intended to be used alone for a secure message exchange.  One should encrypt the message first using a tool like gpg to produce ASCII output, and then may use this program one or more times to turn the obviously encrypted message into an innocuous seeming log file or some raw scientific measurements.
 
