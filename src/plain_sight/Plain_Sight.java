@@ -1,3 +1,25 @@
+/* MIT License
+
+Copyright (c) 2017 Jonathan Wayne Hart
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */
 package plain_sight;
 
 import java.awt.BorderLayout;
@@ -27,6 +49,10 @@ public class Plain_Sight extends JFrame{
      * prsf = protected static final
      * pusf = public static final
      */
+	//unhide /home/user/git/plain_sight/output/out_log /home/user/git/plain_sight/recovered/log_recovered /home/user/git/plain_sight/rules/dnfLog
+	//hide /home/user/git/plain_sight/input/test_text /home/user/git/plain_sight/output/out_log /home/user/git/plain_sight/rules/dnfLog
+	//unhide /home/user/git/plain_sight/output/out_accel /home/user/git/plain_sight/recovered/accel_recovered /home/user/git/plain_sight/rules/AccelDataLog
+	//hide /home/user/git/plain_sight/input/test_text /home/user/git/plain_sight/output/out_accel /home/user/git/plain_sight/rules/AccelDataLog
 	private static final int prsfIntMinusOne = -1;
 	private static final int prsfIntZero = 0;
 	private static final int prsfIntOne = 1;
@@ -49,6 +75,7 @@ public class Plain_Sight extends JFrame{
 	private static final int prsfIntThirtyEight = 38;
 	private static final int prsfIntForty = 40;
 	private static final int prsfIntOneHundred = 100;
+	private static final int prsfIntOneFifty = 150;
 	private static final int prsfIntTwoFiftyFive = 255;
 	private static final int prsfIntOneThousand = 1000;
 	private static final int prsfIntEightHundred = 800;
@@ -77,14 +104,14 @@ public class Plain_Sight extends JFrame{
         pvTextPane.setCaretPosition(prsfIntZero);
         pvTextPane.setMargin(new Insets(prsfIntEight,prsfIntEight,prsfIntEight,prsfIntEight));
         pvTextPane.setForeground(Color.WHITE);
-        pvTextPane.setBackground(Color.DARK_GRAY);
+        pvTextPane.setBackground(new Color(prsfIntOneFifty,prsfIntZero,prsfIntZero));
         JScrollPane scrollPane = new JScrollPane(pvTextPane);
         scrollPane.setPreferredSize(new Dimension(prsfIntEightHundred, prsfIntFourHundred));
         pvTextPane.setEditable(false);
         pvTextField = new JTextField();
         pvTextField.setMargin(new Insets(prsfIntEight,prsfIntEight,prsfIntEight,prsfIntEight));
         pvTextField.setForeground(Color.WHITE);
-        pvTextField.setBackground(Color.DARK_GRAY);
+        pvTextField.setBackground(new Color(prsfIntOneFifty,prsfIntZero,prsfIntZero));
         pvTextField.setCaretColor(Color.WHITE);
         pvTextField.setEditable(true);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -204,6 +231,77 @@ public class Plain_Sight extends JFrame{
 	    	}
 	    	if(splits[prsfIntZero].compareTo("exit")==prsfIntZero){
 	    		this.dispose();
+	    	}
+	    	if(splits[prsfIntZero].compareTo("test")==prsfIntZero){
+	    		//test A
+	    		String inputFile = "/home/user/git/plain_sight/input/test_text";
+    			String outputFile = "/home/user/git/plain_sight/output/testA_out";
+    			String ruleFile = "/home/user/git/plain_sight/rules/testA";
+    			String inputText = "";
+    			String ruleText = "";
+	    		try {
+	    			FileRead scholar = new FileRead(inputFile);
+		        	inputText = scholar.puReadText();
+		        	ruleText = scholar.puReadText(ruleFile);
+		    	} catch (Exception e) {
+		    		currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+		    	}
+	    		try {
+	    			currentText.append(pvHide(inputText, ruleText, outputFile));
+	    		} catch (Exception e) {
+	    			currentText.append("Failed to hide file!");
+	    		}
+	    		inputFile = "/home/user/git/plain_sight/output/testA_out";
+    			outputFile = "/home/user/git/plain_sight/recovered/testA_recovered";
+    			inputText = "";
+	    		ruleText = "";
+		    	try {
+		    		FileRead scholar = new FileRead(inputFile);
+			       	inputText = scholar.puReadText();
+			       	ruleText = scholar.puReadText(ruleFile);
+			    } catch (Exception e) {
+			    	currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			    }
+		    	try {
+		    		currentText.append(pvUnhide(inputText, ruleText, outputFile));
+		    	} catch (Exception e) {
+		    		currentText.append("Failed to hide file!");
+		    	}
+		    	
+		    	//test B
+		    	inputFile = "/home/user/git/plain_sight/input/test_text";
+    			outputFile = "/home/user/git/plain_sight/output/testB_out";
+    			ruleFile = "/home/user/git/plain_sight/rules/testB";
+    			inputText = "";
+    			ruleText = "";
+	    		try {
+	    			FileRead scholar = new FileRead(inputFile);
+		        	inputText = scholar.puReadText();
+		        	ruleText = scholar.puReadText(ruleFile);
+		    	} catch (Exception e) {
+		    		currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+		    	}
+	    		try {
+	    			currentText.append(pvHide(inputText, ruleText, outputFile));
+	    		} catch (Exception e) {
+	    			currentText.append("Failed to hide file!");
+	    		}
+	    		inputFile = "/home/user/git/plain_sight/output/testB_out";
+    			outputFile = "/home/user/git/plain_sight/recovered/testB_recovered";
+    			inputText = "";
+	    		ruleText = "";
+		    	try {
+		    		FileRead scholar = new FileRead(inputFile);
+			       	inputText = scholar.puReadText();
+			       	ruleText = scholar.puReadText(ruleFile);
+			    } catch (Exception e) {
+			    	currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			    }
+		    	try {
+		    		currentText.append(pvUnhide(inputText, ruleText, outputFile));
+		    	} catch (Exception e) {
+		    		currentText.append("Failed to hide file!");
+		    	}
 	    	}
 	    	if(splits[prsfIntZero].compareTo("hide")==prsfIntZero){
 	    		String inputFile = splits[prsfIntOne];
@@ -603,33 +701,32 @@ public class Plain_Sight extends JFrame{
     	boolean foundEndPostFix = false;
     	String[] splits = new String[prsfIntOne];
     	for(int x = prsfIntZero; x < lines.length; x++){
-    		//hide /home/user/git/plain_sight/input/test_text /home/user/git/plain_sight/output/out_text /home/user/git/plain_sight/rules/AccelDataLog
     		ruleLine = lines[x];
     		splits = ruleLine.split(" ");
     		if (foundStartPrefix) {
     			if (foundEndPrefix) {
-    				//System.out.println("pvPrefix =" + pvPrefix + System.getProperty("line.separator"));
+    				System.out.println("pvPrefix =" + pvPrefix + System.getProperty("line.separator"));
     				if (foundNumDataLineTypes) {
-    					//System.out.println("pvNumLineTypes =" + pvNumLineTypes + System.getProperty("line.separator"));
+    					System.out.println("pvNumLineTypes =" + pvNumLineTypes + System.getProperty("line.separator"));
     					if (foundNextDataLine) {
     						if (foundNextStartLinePrefix) {
     						//System.out.println(pvLinePrefixes[pvLineNum] + System.getProperty("line.separator"));
     							if (foundNextEndLinePrefix) {
-    								//System.out.println("pvLinePrefixes["+pvLineNum+"] =" + pvLinePrefixes[pvLineNum] + System.getProperty("line.separator"));
+    								System.out.println("pvLinePrefixes["+pvLineNum+"] =" + pvLinePrefixes[pvLineNum] + System.getProperty("line.separator"));
     								if (foundNextNumDataCharsPerLine) {
-    									//System.out.println("pvNumCharsPerLine["+pvLineNum+"] =" + pvNumCharsPerLine[pvLineNum] + System.getProperty("line.separator"));
+    									System.out.println("pvNumCharsPerLine["+pvLineNum+"] =" + pvNumCharsPerLine[pvLineNum] + System.getProperty("line.separator"));
     									if (foundNextDataCharType) {
-    										//System.out.println("pvDataCharTypes["+pvLineNum+"] =" + pvDataCharTypes[pvLineNum] + System.getProperty("line.separator"));
+    										System.out.println("pvDataCharTypes["+pvLineNum+"] =" + pvDataCharTypes[pvLineNum] + System.getProperty("line.separator"));
     										if (foundNextStartLineDelimiter) {
     											//System.out.println("pvLineDelimiters["+pvLineNum+"] =" + pvLineDelimiters[pvLineNum] + System.getProperty("line.separator"));
     											if (foundNextEndLineDelimiter) {
-    												//System.out.println("pvLineDelimiters["+pvLineNum+"] =" + pvLineDelimiters[pvLineNum] + System.getProperty("line.separator"));
+    												System.out.println("pvLineDelimiters["+pvLineNum+"] =" + pvLineDelimiters[pvLineNum] + System.getProperty("line.separator"));
     												if (foundStartDataLineOrder) {
     													if (foundEndDataLineOrder) {
-    														//System.out.println("pvLineOrder =" + pvLineOrder + System.getProperty("line.separator"));
+    														System.out.println("pvLineOrder =" + pvLineOrder + System.getProperty("line.separator"));
     														if (foundStartPostFix) {
     															if (foundEndPostFix) {
-    																//System.out.println("pvPostfix =" + pvPostfix + System.getProperty("line.separator"));
+    																System.out.println("pvPostfix =" + pvPostfix + System.getProperty("line.separator"));
     																break; //all done, skip remaining lines
     															} else {
     																//haven't found the end of the postfix (</FilePostfix>)
@@ -637,7 +734,7 @@ public class Plain_Sight extends JFrame{
     																	if(ruleLine.substring(y-prsfIntFourteen,y).compareTo("</FilePostfix>")==prsfIntZero){
     																		pvPostfix = pvPostfix.concat(ruleLine.substring(prsfIntZero,y-prsfIntFourteen));
     																		foundEndPostFix = true;
-    																		//System.out.println("pvPostfix =" + pvPostfix + System.getProperty("line.separator"));
+    																		System.out.println("pvPostfix =" + pvPostfix + System.getProperty("line.separator"));
     																		return true;
     																	}
     																}
@@ -993,7 +1090,4 @@ public class Plain_Sight extends JFrame{
     }
 }
 
-//unhide /home/user/git/plain_sight/output/out_log /home/user/git/plain_sight/input/log_restored /home/user/git/plain_sight/rules/dnfLog
-//hide /home/user/git/plain_sight/input/test_text /home/user/git/plain_sight/output/out_log /home/user/git/plain_sight/rules/dnfLog
-//unhide /home/user/git/plain_sight/output/out_accel /home/user/git/plain_sight/input/accel_restored /home/user/git/plain_sight/rules/AccelDataLog
-//hide /home/user/git/plain_sight/input/test_text /home/user/git/plain_sight/output/out_accel /home/user/git/plain_sight/rules/AccelDataLog
+

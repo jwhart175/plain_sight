@@ -1,0 +1,43 @@
+#This is the template rule file which defines the proper format for rule files
+#The "#" comments out a line if placed at the beginning, does not work if placed later in the line.
+#<FilePrefix> text </FilePrefix> Adds "text" to the start of the output file, including line and space formatting
+<FilePrefix>TestA</FilePrefix>
+#NumDataLineTypes <integer> defines the number of types of data lines to be included in the output file
+#DataLine <integer> starts the definition of the DataLine determined by the integer
+#<LinePrefix> text </LinePrefix> Adds "text" to the start of the given DataLine type
+#NumDataCharsPerLine <integer> defines the number of characters from the original to be included in the line
+#DataCharType <number, hex, or text> defines how the characters from the original will be transformed, if at all
+#<LineDelimiter> text </LineDelimiter> Adds "text" in between the data transforms
+NumDataLineTypes 3
+DataLine 1
+<LinePrefix>TestA_Dataline1:</LinePrefix>
+NumDataCharsPerLine 3
+DataCharType number
+<LineDelimiter>TestA_Dataline1_Delimiter</LineDelimiter>
+DataLine 2
+<LinePrefix>TestA_Dataline2:
+</LinePrefix>
+NumDataCharsPerLine 1
+DataCharType text
+<LineDelimiter>TestA_Dataline2_Delimiter
+</LineDelimiter>
+DataLine 3
+<LinePrefix>
+TestA_Dataline3
+</LinePrefix>
+NumDataCharsPerLine 5
+DataCharType hex
+<LineDelimiter>
+TestA_Dataline3_Delimiter
+</LineDelimiter>
+#<DataLineOrder> Arrangement of integers </DataLineOrder> Defines how the DataLines will be arranged in the file.  
+#DataLines will be repeated until all of the data has been written
+<DataLineOrder>1
+2
+3
+3
+2
+1
+123</DataLineOrder>
+#<FilePostfix> text </FilePostfix> Adds "text" to the end of the output file
+<FilePostfix>testA_Postfix</FilePostfix>
