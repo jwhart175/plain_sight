@@ -429,54 +429,81 @@ public class Plain_Sight extends JFrame{
     					output.append(pvLinePrefixes[typeNum-prsfIntOne]);
     					for(int x = prsfIntZero; x < pvNumCharsPerLine[typeNum-prsfIntOne]; x++){
     						if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("number")==prsfIntZero){
-    							char[] datum = new char[prsfIntOne];
-    							datum[prsfIntZero] = inputText.charAt(inputCursor);
-    							int num = Character.codePointAt(datum, prsfIntZero);
-    							if (num<prsfIntTen){
-    								output.append("00" + num);
-    							} else if (num<prsfIntOneHundred) {
-    								output.append("0" + num);
+    							if(inputCursor >= inputLength) {
+    								if(inputCursor == inputLength) {
+    									output.append("NaN");
+    								} else {
+    									int num = Integer.valueOf(Double.toString(Math.random()*prsfIntOneHundred));
+        								if (num<prsfIntTen){
+        									output.append("00" + num);
+        								} else if (num<prsfIntOneHundred) {
+        									output.append("0" + num);
+        								} else {
+        									output.append(num);
+        								}
+    								}
+    								lineOrderCursor = lineOrderLength;
     							} else {
-    								output.append(num);
+    								char[] datum = new char[prsfIntOne];
+    								datum[prsfIntZero] = inputText.charAt(inputCursor);
+    								int num = Character.codePointAt(datum, prsfIntZero);
+    								if (num<prsfIntTen){
+    									output.append("00" + num);
+    								} else if (num<prsfIntOneHundred) {
+    									output.append("0" + num);
+    								} else {
+    									output.append(num);
+    								}
+    								inputCursor++;
     							}
     							if (x < (pvNumCharsPerLine[typeNum-prsfIntOne] - prsfIntOne)){
-    								output.append(pvLineDelimiters[typeNum-prsfIntOne]);
-    							}
-    							inputCursor++;
-    							if(inputCursor >= inputLength){
-    								lineOrderCursor = lineOrderLength;
-    								break;
-    							}
+									output.append(pvLineDelimiters[typeNum-prsfIntOne]);
+								}
     						} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("text")==prsfIntZero){
-    							output.append(inputText.charAt(inputCursor));
+    							if(inputCursor >= inputLength) {
+    								if(inputCursor == inputLength) {
+    									output.append("q5-");	
+    								} else {
+    									output.append(inputText.charAt(inputCursor-x));
+    								}
+    								lineOrderCursor = lineOrderLength;
+    							} else {
+    								output.append(inputText.charAt(inputCursor));
+    								inputCursor++;
+    							}
     							if (x < (pvNumCharsPerLine[typeNum-prsfIntOne] - prsfIntOne)){
     								output.append(pvLineDelimiters[typeNum-prsfIntOne]);
-    							}
-    							inputCursor++;
-    							if(inputCursor >= inputLength){
-    								lineOrderCursor = lineOrderLength;
-    								break;
     							}
     						} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("hex")==prsfIntZero){
-    							char[] datum = new char[prsfIntOne];
-    							datum[prsfIntZero] = inputText.charAt(inputCursor);
-    							System.out.println("datum = " + datum[prsfIntZero]);
-    							int num = Character.codePointAt(datum, prsfIntZero);
-    							System.out.println("code point = "+num);
-    							String hex = Integer.toHexString(num);
-    							if (hex.length()==prsfIntOne){
-    								hex = "0" + hex;
+    							if(inputCursor >= inputLength) {
+    								if(inputCursor == inputLength) {
+    									output.append("q5");
+    								} else {
+    									char[] datum = new char[prsfIntOne];
+    	    							datum[prsfIntZero] = inputText.charAt(inputCursor-prsfIntTwo*x);
+    	    							int num = Character.codePointAt(datum, prsfIntZero);
+    	    							String hex = Integer.toHexString(num);
+    	    							if (hex.length()==prsfIntOne){
+    	    								hex = "0" + hex;
+    	    							}
+    	    							output.append(hex);
+    								}
+    								lineOrderCursor = lineOrderLength;
+    							} else {
+    								char[] datum = new char[prsfIntOne];
+        							datum[prsfIntZero] = inputText.charAt(inputCursor);
+        							int num = Character.codePointAt(datum, prsfIntZero);
+        							String hex = Integer.toHexString(num);
+        							if (hex.length()==prsfIntOne){
+        								hex = "0" + hex;
+        							}
+        							output.append(hex);
+        							inputCursor++;
     							}
-    							System.out.println("hex = " + hex);
-    							output.append(hex);
     							if (x < (pvNumCharsPerLine[typeNum-prsfIntOne] - prsfIntOne)){
     								output.append(pvLineDelimiters[typeNum-prsfIntOne]);
-    							}
-    							inputCursor++;
-    							if(inputCursor >= inputLength){
-    								lineOrderCursor = lineOrderLength;
-    								break;
-    							}
+    							}	
+    							
     						}  else {
     							System.out.println("(pvHide) Warning: Data type unrecognized for Data Line " + typeNum);
     							feedback.append("(pvHide) Warning: Data type unrecognized for Data Line " + typeNum + System.getProperty("line.separator"));
@@ -545,28 +572,21 @@ public class Plain_Sight extends JFrame{
     		while(lineOrderCursor < lineOrderLength){
     			if(pvTestNumeric(lineOrderCursor,pvLineOrder)){
     				typeNum = Integer.valueOf(pvLineOrder.substring(lineOrderCursor,lineOrderCursor+prsfIntOne));	
-    				System.out.println("debug point 1 typeNum=" + typeNum);
     				if (((typeNum)<=pvNumLineTypes)&((typeNum)>prsfIntZero)){
-    					System.out.println("debug point 1.5 inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length() = " + (inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length()));
     					if(inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length() < inputLength){
-    						System.out.println("debug point 1.75 " + inputText.substring(inputCursor,inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length()));    						if(inputText.substring(inputCursor,inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length()).compareTo(pvLinePrefixes[typeNum-prsfIntOne])==prsfIntZero){
     						if (inputText.substring(inputCursor,inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length()).compareTo(pvLinePrefixes[typeNum-prsfIntOne])==prsfIntZero){
-    							System.out.println("debug point 2");
     							inputCursor = inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length();
     							for(int x = prsfIntZero; x < pvNumCharsPerLine[typeNum-prsfIntOne]; x++){
-    								System.out.println("debug point 2.5 x = " + x);
     								if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("number")==prsfIntZero){
     									if(inputCursor + prsfIntThree < inputLength){
-    										System.out.println("debug point 3");
     										String num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
-    										while(!pvTestNumeric(prsfIntZero,num)|!pvTestNumeric(prsfIntOne,num)|!pvTestNumeric(prsfIntTwo,num)){
-    											inputCursor++;
-    											num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
+    										if(num.compareTo("NaN")==0){
+    											inputCursor = inputLength;
+    											lineOrderCursor = lineOrderLength;
+    											break;
     										}
-    										System.out.println("num = " + num);
     										char[] data = Character.toChars(Integer.valueOf(num));
     										String datum = Character.toString(data[prsfIntZero]);
-        									System.out.println("datum = " + datum);
         									output.append(datum);
         									inputCursor += prsfIntThree;
         									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
@@ -577,8 +597,12 @@ public class Plain_Sight extends JFrame{
     									}
     								} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("text")==prsfIntZero){
     									if(inputCursor + prsfIntOne < inputLength){
-    										System.out.println("debug point 4");
         									String datum = inputText.substring(inputCursor,inputCursor+prsfIntOne);
+        									if(inputText.substring(inputCursor,inputCursor+prsfIntThree).compareTo("q5-")==0){
+    											inputCursor = inputLength;
+    											lineOrderCursor = lineOrderLength;
+    											break;
+    										}
         									output.append(datum);
         									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
         										if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
@@ -588,30 +612,22 @@ public class Plain_Sight extends JFrame{
     									}
     								} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("hex")==prsfIntZero){
     									if(inputCursor + prsfIntTwo < inputLength){
-    										System.out.println("debug point 5");
     										String num = inputText.substring(inputCursor,inputCursor+prsfIntTwo);
-        									System.out.println("debug point 5.1 num = " + num);
-    										try {
-    											int temp = pvGetIntFromHexString(num);
-    											char[] data = Character.toChars(temp);
-    											String datum = Character.toString(data[prsfIntZero]);
-    											System.out.println("debug point 5.2 datum = " + datum);
-    											output.append(datum);
-    											System.out.println(output.toString());
-    											if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
-    												if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
-    													inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
-    												}
-    											}
-    										} catch (Exception e) {
-    											feedback.append(e + System.getProperty("line.separator"));
-    											feedback.append("Detected Short Data Line... OK");
+        									if(num.compareTo("q5")==0){
+    											inputCursor = inputLength;
+    											lineOrderCursor = lineOrderLength;
     											break;
-    										} finally {
-    											inputCursor += prsfIntTwo;
-    											
     										}
-        									System.out.println("debug point 5.3 inputCursor = " + inputCursor);
+        									int temp = pvGetIntFromHexString(num);
+    										char[] data = Character.toChars(temp);
+    										String datum = Character.toString(data[prsfIntZero]);
+    										output.append(datum);
+    										if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
+    											if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
+    												inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
+    											}
+    										}
+    										inputCursor += prsfIntTwo;
     									}
     								}  else {
     									System.out.println("(pvHide) Warning: Data type unrecognized for Data Line " + typeNum);
@@ -620,7 +636,6 @@ public class Plain_Sight extends JFrame{
     							}
     						}
     						
-    						}
     						
     					}
     					lastLineOrderCursor = lineOrderCursor;
