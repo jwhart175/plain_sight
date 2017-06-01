@@ -244,13 +244,15 @@ public class Plain_Sight extends JFrame{
 		        	inputText = scholar.puReadText();
 		        	ruleText = scholar.puReadText(ruleFile);
 		    	} catch (Exception e) {
+		    		currentText.append(e + System.getProperty("line.separator"));
 		    		currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 		    	}
-	    		try {
+	    		//try {
 	    			currentText.append(pvHide(inputText, ruleText, outputFile));
-	    		} catch (Exception e) {
-	    			currentText.append("Failed to hide file!");
-	    		}
+//	    		} catch (Exception e) {
+//	    			currentText.append(e + System.getProperty("line.separator"));
+//	    			currentText.append("Failed to hide file!");
+//	    		}
 	    		inputFile = "/home/user/git/plain_sight/output/testA_out";
     			outputFile = "/home/user/git/plain_sight/recovered/testA_recovered";
     			inputText = "";
@@ -260,13 +262,15 @@ public class Plain_Sight extends JFrame{
 			       	inputText = scholar.puReadText();
 			       	ruleText = scholar.puReadText(ruleFile);
 			    } catch (Exception e) {
+			    	currentText.append(e + System.getProperty("line.separator"));
 			    	currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 			    }
-		    	try {
+		    	//try {
 		    		currentText.append(pvUnhide(inputText, ruleText, outputFile));
-		    	} catch (Exception e) {
-		    		currentText.append("Failed to hide file!");
-		    	}
+//		    	} catch (Exception e) {
+//		    		currentText.append(e + System.getProperty("line.separator"));
+//		    		currentText.append("Failed to hide file!");
+//		    	}
 		    	
 		    	//test B
 		    	inputFile = "/home/user/git/plain_sight/input/test_text";
@@ -279,13 +283,15 @@ public class Plain_Sight extends JFrame{
 		        	inputText = scholar.puReadText();
 		        	ruleText = scholar.puReadText(ruleFile);
 		    	} catch (Exception e) {
+		    		currentText.append(e + System.getProperty("line.separator"));
 		    		currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 		    	}
-	    		try {
+	    		//try {
 	    			currentText.append(pvHide(inputText, ruleText, outputFile));
-	    		} catch (Exception e) {
-	    			currentText.append("Failed to hide file!");
-	    		}
+//	    		} catch (Exception e) {
+//	    			currentText.append(e + System.getProperty("line.separator"));
+//	    			currentText.append("Failed to hide file!");
+//	    		}
 	    		inputFile = "/home/user/git/plain_sight/output/testB_out";
     			outputFile = "/home/user/git/plain_sight/recovered/testB_recovered";
     			inputText = "";
@@ -295,13 +301,54 @@ public class Plain_Sight extends JFrame{
 			       	inputText = scholar.puReadText();
 			       	ruleText = scholar.puReadText(ruleFile);
 			    } catch (Exception e) {
+			    	currentText.append(e + System.getProperty("line.separator"));
 			    	currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 			    }
-		    	try {
+		    	//try {
 		    		currentText.append(pvUnhide(inputText, ruleText, outputFile));
+//		    	} catch (Exception e) {
+//		    		currentText.append(e + System.getProperty("line.separator"));
+//		    		currentText.append("Failed to hide file!");
+//		    	}
+		    		
+	    		//testC
+	    		inputFile = "/home/user/git/plain_sight/input/test_text";
+    			outputFile = "/home/user/git/plain_sight/output/testC_out";
+    			ruleFile = "/home/user/git/plain_sight/rules/testC";
+    			inputText = "";
+    			ruleText = "";
+	    		try {
+	    			FileRead scholar = new FileRead(inputFile);
+		        	inputText = scholar.puReadText();
+		        	ruleText = scholar.puReadText(ruleFile);
 		    	} catch (Exception e) {
-		    		currentText.append("Failed to hide file!");
+		    		currentText.append(e + System.getProperty("line.separator"));
+		    		currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 		    	}
+	    		//try {
+	    			currentText.append(pvHide(inputText, ruleText, outputFile));
+//		    		} catch (Exception e) {
+//		    			currentText.append(e + System.getProperty("line.separator"));
+//		    			currentText.append("Failed to hide file!");
+//		    		}
+	    		inputFile = "/home/user/git/plain_sight/output/testC_out";
+    			outputFile = "/home/user/git/plain_sight/recovered/testC_recovered";
+    			inputText = "";
+	    		ruleText = "";
+		    	try {
+		    		FileRead scholar = new FileRead(inputFile);
+			       	inputText = scholar.puReadText();
+			       	ruleText = scholar.puReadText(ruleFile);
+			    } catch (Exception e) {
+			    	currentText.append(e + System.getProperty("line.separator"));
+			    	currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			    }
+		    	//try {
+		    		currentText.append(pvUnhide(inputText, ruleText, outputFile));
+//			    	} catch (Exception e) {
+//			    		currentText.append(e + System.getProperty("line.separator"));
+//			    		currentText.append("Failed to hide file!");
+//			    	}
 	    	}
 	    	if(splits[prsfIntZero].compareTo("hide")==prsfIntZero){
 	    		String inputFile = splits[prsfIntOne];
@@ -314,11 +361,13 @@ public class Plain_Sight extends JFrame{
 		        	inputText = scholar.puReadText();
 		        	ruleText = scholar.puReadText(ruleFile);
 		    	} catch (Exception e) {
+		    		currentText.append(e + System.getProperty("line.separator"));
 		    		currentText.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
 		    	}
 	    		try {
 	    			currentText.append(pvHide(inputText, ruleText, outputFile));
 	    		} catch (Exception e) {
+	    			currentText.append(e + System.getProperty("line.separator"));
 	    			currentText.append("Failed to hide file!");
 	    		}
 	    	}
@@ -343,12 +392,14 @@ public class Plain_Sight extends JFrame{
 		        	inputText = scholar.puReadText();
 		        	ruleText = scholar.puReadText(ruleFile);
 		    	} catch (Exception e) {
+		    		currentText.append(e + System.getProperty("line.separator"));
 		    		currentText.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
 		    	}
 	    		try {
 	    			currentText.append(pvUnhide(inputText, ruleText, outputFile));
 	    		} catch (Exception e) {
-	    			currentText.append("Failed to hide file!");
+	    			currentText.append(e + System.getProperty("line.separator"));
+	    			currentText.append("Failed to unhide file!");
 	    		}
 	    	}
 	    }
@@ -397,17 +448,17 @@ public class Plain_Sight extends JFrame{
     	StringBuilder feedback = new StringBuilder();
     	
     	//parse the rules from the rulefile:
-    	try{
+    	//try{
     		if(!pvParseRules(ruleText)){
     			System.out.println("(pvHide) failed because rule file parsing failed!");
     			feedback.append("(pvHide) failed because rule file parsing failed!"+System.getProperty("line.separator"));
     		}
-    	} catch (Exception ex) {
-    		System.out.println(ex);
-    		feedback.append(ex+System.getProperty("line.separator"));
-            System.out.println("(pvHide) failed because rule file parsing failed!");
-            feedback.append("(pvHide) failed because rule file parsing failed!"+System.getProperty("line.separator"));
-    	}
+    	//} catch (Exception ex) {
+    	//	System.out.println(ex);
+    	//	feedback.append(ex+System.getProperty("line.separator"));
+        //    System.out.println("(pvHide) failed because rule file parsing failed!");
+        //    feedback.append("(pvHide) failed because rule file parsing failed!"+System.getProperty("line.separator"));
+    	//}
     	
     	//create the output file 
     	output.append(pvPrefix);
@@ -432,8 +483,9 @@ public class Plain_Sight extends JFrame{
     							if(inputCursor >= inputLength) {
     								if(inputCursor == inputLength) {
     									output.append("NaN");
+    									inputCursor++;
     								} else {
-    									int num = Integer.valueOf(Double.toString(Math.random()*prsfIntOneHundred));
+    									int num = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntOneHundred)));
         								if (num<prsfIntTen){
         									output.append("00" + num);
         								} else if (num<prsfIntOneHundred) {
@@ -462,7 +514,8 @@ public class Plain_Sight extends JFrame{
     						} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("text")==prsfIntZero){
     							if(inputCursor >= inputLength) {
     								if(inputCursor == inputLength) {
-    									output.append("q5-");	
+    									output.append("q5-");
+    									inputCursor++;
     								} else {
     									output.append(inputText.charAt(inputCursor-x));
     								}
@@ -478,6 +531,7 @@ public class Plain_Sight extends JFrame{
     							if(inputCursor >= inputLength) {
     								if(inputCursor == inputLength) {
     									output.append("q5");
+    									inputCursor++;
     								} else {
     									char[] datum = new char[prsfIntOne];
     	    							datum[prsfIntZero] = inputText.charAt(inputCursor-prsfIntTwo*x);
@@ -509,7 +563,7 @@ public class Plain_Sight extends JFrame{
     							feedback.append("(pvHide) Warning: Data type unrecognized for Data Line " + typeNum + System.getProperty("line.separator"));
     						}
     					}
-    					lastLineOrderCursor = lineOrderCursor;
+    					lastLineOrderCursor = lineOrderCursor + prsfIntOne;
     				} else {
     					System.out.println("(pvHide) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!");
 						feedback.append("(pvHide) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!" + System.getProperty("line.separator"));
@@ -540,17 +594,17 @@ public class Plain_Sight extends JFrame{
     	StringBuilder feedback = new StringBuilder();
     	
     	//parse the rules from the rulefile:
-    	try{
+    	//try{
     		if(!pvParseRules(ruleText)){
     			System.out.println("(pvUnhide) failed because rule file parsing failed!");
     			feedback.append("(pvUnhide) failed because rule file parsing failed!" + System.getProperty("line.separator"));
     		}
-    	} catch (Exception ex) {
-    		System.out.println(ex);
-    		feedback.append(ex);
-            System.out.println("(pvUnhide) failed because rule file parsing failed!");
-            feedback.append("(pvUnhide) failed because rule file parsing failed!" + System.getProperty("line.separator"));
-    	}
+    	//} catch (Exception ex) {
+    	//	System.out.println(ex);
+    	//	feedback.append(ex);
+        //    System.out.println("(pvUnhide) failed because rule file parsing failed!");
+        //    feedback.append("(pvUnhide) failed because rule file parsing failed!" + System.getProperty("line.separator"));
+    	//}
     
     	//create the output file 
     	int inputLength = inputText.length();
@@ -580,54 +634,75 @@ public class Plain_Sight extends JFrame{
     								if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("number")==prsfIntZero){
     									if(inputCursor + prsfIntThree < inputLength){
     										String num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
-    										if(num.compareTo("NaN")==0){
-    											inputCursor = inputLength;
-    											lineOrderCursor = lineOrderLength;
+    										while((inputCursor + prsfIntThree < inputLength)&(!pvTestNumeric(prsfIntZero,num)|!pvTestNumeric(prsfIntOne,num)|!pvTestNumeric(prsfIntTwo,num))){
+    											if(num.compareTo("NaN")==prsfIntZero){
+        											inputCursor = inputLength;
+        											lineOrderCursor = lineOrderLength;
+        											break;
+        										} else {
+        											inputCursor++;
+        											num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
+        										}
+    										}
+    										if(inputCursor!=inputLength){
+	    										char[] data = Character.toChars(Integer.valueOf(num));
+	    										String datum = Character.toString(data[prsfIntZero]);
+	        									output.append(datum);
+	        									inputCursor += prsfIntThree;
+	        									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
+	        										if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
+	        											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
+	        										}
+	        									}
+    										} else {
     											break;
     										}
-    										char[] data = Character.toChars(Integer.valueOf(num));
-    										String datum = Character.toString(data[prsfIntZero]);
-        									output.append(datum);
-        									inputCursor += prsfIntThree;
-        									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
-        										if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
-        											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
-        										}
-        									}
     									}
     								} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("text")==prsfIntZero){
     									if(inputCursor + prsfIntOne < inputLength){
         									String datum = inputText.substring(inputCursor,inputCursor+prsfIntOne);
-        									if(inputText.substring(inputCursor,inputCursor+prsfIntThree).compareTo("q5-")==0){
-    											inputCursor = inputLength;
-    											lineOrderCursor = lineOrderLength;
-    											break;
-    										}
+        									if(inputCursor + prsfIntThree < inputLength){
+	        									if(inputText.substring(inputCursor,inputCursor+prsfIntThree).compareTo("q5-")==0){
+	    											inputCursor = inputLength;
+	    											lineOrderCursor = lineOrderLength;
+	    											break;
+	    										}
+        									}
         									output.append(datum);
         									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
         										if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
         											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
         										}
         									}
+        									inputCursor++;
     									}
     								} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("hex")==prsfIntZero){
     									if(inputCursor + prsfIntTwo < inputLength){
     										String num = inputText.substring(inputCursor,inputCursor+prsfIntTwo);
-        									if(num.compareTo("q5")==0){
-    											inputCursor = inputLength;
-    											lineOrderCursor = lineOrderLength;
-    											break;
-    										}
-        									int temp = pvGetIntFromHexString(num);
-    										char[] data = Character.toChars(temp);
-    										String datum = Character.toString(data[prsfIntZero]);
-    										output.append(datum);
-    										if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
-    											if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
-    												inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
-    											}
-    										}
-    										inputCursor += prsfIntTwo;
+        									while((inputCursor + prsfIntTwo < inputLength)&(!pvTestHex(prsfIntZero,num)|!pvTestHex(prsfIntOne,num))){
+        										if(num.compareTo("q5")==prsfIntZero){
+        											inputCursor = inputLength;
+        											lineOrderCursor = lineOrderLength;
+        											break;
+        										} else {
+        											inputCursor++;
+        											num = inputText.substring(inputCursor,inputCursor+prsfIntTwo);
+        										}
+        									}
+        									if(inputCursor!=inputLength){
+        										int temp = pvGetIntFromHexString(num);
+	        									char[] data = Character.toChars(temp);
+	    										String datum = Character.toString(data[prsfIntZero]);
+	    										output.append(datum);
+	    										if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
+	    											if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
+	    												inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
+	    											}
+	    										}
+	    										inputCursor += prsfIntTwo;
+        									} else {
+        										break;
+        									}
     									}
     								}  else {
     									System.out.println("(pvHide) Warning: Data type unrecognized for Data Line " + typeNum);
@@ -667,26 +742,69 @@ public class Plain_Sight extends JFrame{
     	//tests whether the character at the supplied index is a number
     	boolean answer = false;
     	if(index<test.length()){
-    		if(index>=0){
-    			if(test.substring(index,index+1).compareTo("0")==0){
+    		if(index>=prsfIntZero){
+    			if(test.substring(index,index+prsfIntOne).compareTo("0")==prsfIntZero){
     				answer = true;
-    			} else if(test.substring(index,index+1).compareTo("1")==0){
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("1")==prsfIntZero){
     				answer = true;
-    			} else if(test.substring(index,index+1).compareTo("2")==0){
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("2")==prsfIntZero){
     				answer = true;
-    			} else if(test.substring(index,index+1).compareTo("3")==0){
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("3")==prsfIntZero){
     				answer = true;
-    			} else if(test.substring(index,index+1).compareTo("4")==0){
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("4")==prsfIntZero){
     				answer = true;
-    			} else if(test.substring(index,index+1).compareTo("5")==0){
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("5")==prsfIntZero){
     				answer = true;
-    			} else if(test.substring(index,index+1).compareTo("6")==0){
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("6")==prsfIntZero){
     				answer = true;
-    			} else if(test.substring(index,index+1).compareTo("7")==0){
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("7")==prsfIntZero){
     				answer = true;
-    			} else if(test.substring(index,index+1).compareTo("8")==0){
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("8")==prsfIntZero){
     				answer = true;
-    			} else if(test.substring(index,index+1).compareTo("9")==0){
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("9")==prsfIntZero){
+    				answer = true;
+    			}
+    		}
+    	}
+    	return answer;
+    }
+    
+    private boolean pvTestHex(int index,String test){
+    	//tests whether the character at the supplied index is a hex number
+    	boolean answer = false;
+    	if(index<test.length()){
+    		if(index>=prsfIntZero){
+    			if(test.substring(index,index+prsfIntOne).compareTo("0")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("1")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("2")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("3")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("4")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("5")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("6")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("7")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("8")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("9")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("a")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("b")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("c")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("d")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("e")==prsfIntZero){
+    				answer = true;
+    			} else if(test.substring(index,index+prsfIntOne).compareTo("f")==prsfIntZero){
     				answer = true;
     			}
     		}
@@ -694,7 +812,6 @@ public class Plain_Sight extends JFrame{
     	return answer;
     }
 
-    
     private boolean pvParseRules(String ruleText){
     	//(pvParseRules) parses the rule file into usable data
     	String ruleLine = "";
@@ -718,30 +835,45 @@ public class Plain_Sight extends JFrame{
     	for(int x = prsfIntZero; x < lines.length; x++){
     		ruleLine = lines[x];
     		splits = ruleLine.split(" ");
+    		if (ruleLine.length()>=prsfIntOne){
+    			if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo("#")==prsfIntZero){
+    				continue;
+    			} else if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo(" ")==prsfIntZero){
+    				continue;
+    			}
+    		}
+    		if (ruleLine.length()>=prsfIntTwo){
+    			if(ruleLine.substring(prsfIntZero,prsfIntTwo).compareTo("//")==prsfIntZero){
+    				continue;
+    			} 
+    		}
+    		if (ruleLine.compareTo(System.getProperty("line.separator"))==prsfIntZero){
+				continue;
+			}
     		if (foundStartPrefix) {
     			if (foundEndPrefix) {
-    				System.out.println("pvPrefix =" + pvPrefix + System.getProperty("line.separator"));
+    				//System.out.println("pvPrefix =" + pvPrefix + System.getProperty("line.separator"));
     				if (foundNumDataLineTypes) {
-    					System.out.println("pvNumLineTypes =" + pvNumLineTypes + System.getProperty("line.separator"));
+    					//System.out.println("pvNumLineTypes =" + pvNumLineTypes + System.getProperty("line.separator"));
     					if (foundNextDataLine) {
     						if (foundNextStartLinePrefix) {
     						//System.out.println(pvLinePrefixes[pvLineNum] + System.getProperty("line.separator"));
     							if (foundNextEndLinePrefix) {
-    								System.out.println("pvLinePrefixes["+pvLineNum+"] =" + pvLinePrefixes[pvLineNum] + System.getProperty("line.separator"));
+    								//System.out.println("pvLinePrefixes["+pvLineNum+"] =" + pvLinePrefixes[pvLineNum] + System.getProperty("line.separator"));
     								if (foundNextNumDataCharsPerLine) {
-    									System.out.println("pvNumCharsPerLine["+pvLineNum+"] =" + pvNumCharsPerLine[pvLineNum] + System.getProperty("line.separator"));
+    									//System.out.println("pvNumCharsPerLine["+pvLineNum+"] =" + pvNumCharsPerLine[pvLineNum] + System.getProperty("line.separator"));
     									if (foundNextDataCharType) {
-    										System.out.println("pvDataCharTypes["+pvLineNum+"] =" + pvDataCharTypes[pvLineNum] + System.getProperty("line.separator"));
+    										//System.out.println("pvDataCharTypes["+pvLineNum+"] =" + pvDataCharTypes[pvLineNum] + System.getProperty("line.separator"));
     										if (foundNextStartLineDelimiter) {
     											//System.out.println("pvLineDelimiters["+pvLineNum+"] =" + pvLineDelimiters[pvLineNum] + System.getProperty("line.separator"));
     											if (foundNextEndLineDelimiter) {
-    												System.out.println("pvLineDelimiters["+pvLineNum+"] =" + pvLineDelimiters[pvLineNum] + System.getProperty("line.separator"));
+    												//System.out.println("pvLineDelimiters["+pvLineNum+"] =" + pvLineDelimiters[pvLineNum] + System.getProperty("line.separator"));
     												if (foundStartDataLineOrder) {
     													if (foundEndDataLineOrder) {
-    														System.out.println("pvLineOrder =" + pvLineOrder + System.getProperty("line.separator"));
+    														//System.out.println("pvLineOrder =" + pvLineOrder + System.getProperty("line.separator"));
     														if (foundStartPostFix) {
     															if (foundEndPostFix) {
-    																System.out.println("pvPostfix =" + pvPostfix + System.getProperty("line.separator"));
+    																//System.out.println("pvPostfix =" + pvPostfix + System.getProperty("line.separator"));
     																break; //all done, skip remaining lines
     															} else {
     																//haven't found the end of the postfix (</FilePostfix>)
@@ -749,7 +881,7 @@ public class Plain_Sight extends JFrame{
     																	if(ruleLine.substring(y-prsfIntFourteen,y).compareTo("</FilePostfix>")==prsfIntZero){
     																		pvPostfix = pvPostfix.concat(ruleLine.substring(prsfIntZero,y-prsfIntFourteen));
     																		foundEndPostFix = true;
-    																		System.out.println("pvPostfix =" + pvPostfix + System.getProperty("line.separator"));
+    																		//System.out.println("pvPostfix =" + pvPostfix + System.getProperty("line.separator"));
     																		return true;
     																	}
     																}
@@ -759,13 +891,7 @@ public class Plain_Sight extends JFrame{
     															}
     														} else {
     															//haven't found the start of the postfix <FilePostfix>
-    															if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo("#")==prsfIntZero){
-    																//skip line
-    															} else if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo(" ")==prsfIntZero){
-    																//skip line
-    															} else if (ruleLine.substring(prsfIntZero,prsfIntTwo).compareTo("//")==prsfIntZero){
-    																//skip line
-    															} else if (ruleLine.length()>=prsfIntThirteen){ 
+    															if (ruleLine.length()>=prsfIntThirteen){ 
     																if (ruleLine.substring(prsfIntZero,prsfIntThirteen).compareTo("<FilePostfix>")==prsfIntZero){
     																	foundStartPostFix = true;
     																	pvPostfix = ruleLine.substring(prsfIntThirteen,ruleLine.length())+System.getProperty("line.separator");
@@ -798,13 +924,7 @@ public class Plain_Sight extends JFrame{
     													}
     												} else {
     													//haven't found the start of the data line order <DataLineOrder>
-    													if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo("#")==prsfIntZero){
-															//skip line
-														} else if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo(" ")==prsfIntZero){
-															//skip line
-														} else if (ruleLine.substring(prsfIntZero,prsfIntTwo).compareTo("//")==prsfIntZero){
-															//skip line
-														} else if (ruleLine.length()>=prsfIntFifteen){ 
+    													if (ruleLine.length()>=prsfIntFifteen){ 
 															if (ruleLine.substring(prsfIntZero,prsfIntFifteen).compareTo("<DataLineOrder>")==prsfIntZero){
 																foundStartDataLineOrder = true;
 																pvLineOrder = ruleLine.substring(prsfIntFifteen,ruleLine.length())+System.getProperty("line.separator");
@@ -814,7 +934,7 @@ public class Plain_Sight extends JFrame{
 																			pvLineOrder = ruleLine.substring(prsfIntFifteen,y-prsfIntSixteen);
 																			foundEndDataLineOrder = true;
 																			break;
-																		}
+																		}								
 																	}
 																	
 																}
@@ -850,13 +970,7 @@ public class Plain_Sight extends JFrame{
     											}
     										} else {
     											//haven't found the start of the next line delimiter "<LineDelimiter>"
-    											if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo("#")==prsfIntZero){
-													//skip line
-												} else if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo(" ")==prsfIntZero){
-													//skip line
-												} else if (ruleLine.substring(prsfIntZero,prsfIntTwo).compareTo("//")==prsfIntZero){
-													//skip line
-												} else if (ruleLine.length()>=prsfIntFifteen){ 
+    											if (ruleLine.length()>=prsfIntFifteen){ 
 													if (ruleLine.substring(prsfIntZero,prsfIntFifteen).compareTo("<LineDelimiter>")==prsfIntZero){
 														foundNextStartLineDelimiter = true;
 														pvLineDelimiters[pvLineNum] = ruleLine.substring(prsfIntFifteen,ruleLine.length())+System.getProperty("line.separator");
@@ -887,13 +1001,7 @@ public class Plain_Sight extends JFrame{
     										}
     									} else {
     										//haven't found the next data char type "DataCharType"
-    										if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo("#")==prsfIntZero){
-												//skip line
-											} else if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo(" ")==prsfIntZero){
-												//skip line
-											} else if (ruleLine.substring(prsfIntZero,prsfIntTwo).compareTo("//")==prsfIntZero){
-												//skip line
-											} else if (ruleLine.length()>=prsfIntTwelve){ 
+    										if (ruleLine.length()>=prsfIntTwelve){ 
 												if (splits[0].compareTo("DataCharType")==prsfIntZero){
 													if (splits.length>prsfIntOne){
 														if(splits[prsfIntOne].length()>=prsfIntOne){
@@ -910,13 +1018,7 @@ public class Plain_Sight extends JFrame{
     									}
     								} else {
     									//haven't found next number of data chars per line "NumDataCharsPerLine"
-    									if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo("#")==prsfIntZero){
-											//skip line
-										} else if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo(" ")==prsfIntZero){
-											//skip line
-										} else if (ruleLine.substring(prsfIntZero,prsfIntTwo).compareTo("//")==prsfIntZero){
-											//skip line
-										} else if (ruleLine.length()>=prsfIntNineteen){ 
+    									if (ruleLine.length()>=prsfIntNineteen){ 
 											if (splits[prsfIntZero].compareTo("NumDataCharsPerLine")==prsfIntZero){
 												if (splits.length>prsfIntOne){
 													if(splits[prsfIntOne].length()>=prsfIntOne){
@@ -947,13 +1049,7 @@ public class Plain_Sight extends JFrame{
     							}
     						} else {
     							//haven't found the start of the next line prefix "<LinePrefix>"
-    							if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo("#")==prsfIntZero){
-									//skip line
-								} else if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo(" ")==prsfIntZero){
-									//skip line
-								} else if (ruleLine.substring(prsfIntZero,prsfIntTwo).compareTo("//")==prsfIntZero){
-									//skip line
-								} else if (ruleLine.length()>=prsfIntTwelve){ 
+    							if (ruleLine.length()>=prsfIntTwelve){ 
 									if (ruleLine.substring(prsfIntZero,prsfIntTwelve).compareTo("<LinePrefix>")==prsfIntZero){
 										foundNextStartLinePrefix = true;
 										pvLinePrefixes[pvLineNum] = ruleLine.substring(prsfIntTwelve,ruleLine.length())+System.getProperty("line.separator");
@@ -972,13 +1068,7 @@ public class Plain_Sight extends JFrame{
     						}
     					} else {
     						//haven't found the next data line "DataLine"
-    						if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo("#")==prsfIntZero){
-								//skip line
-							} else if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo(" ")==prsfIntZero){
-								//skip line
-							} else if (ruleLine.substring(prsfIntZero,prsfIntTwo).compareTo("//")==prsfIntZero){
-								//skip line
-							} else if (ruleLine.length()>=prsfIntEight){ 
+    						if (ruleLine.length()>=prsfIntEight){ 
 								//System.out.println(ruleLine);
 								//System.out.println(splits[prsfIntZero]);
 								//System.out.println(splits[prsfIntOne]);
@@ -1002,13 +1092,7 @@ public class Plain_Sight extends JFrame{
     					}
     				} else {
     					//haven't found the number of data lines "NumDataLineTypes"
-    					if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo("#")==prsfIntZero){
-							//skip line
-						} else if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo(" ")==prsfIntZero){
-							//skip line
-						} else if (ruleLine.substring(prsfIntZero,prsfIntTwo).compareTo("//")==prsfIntZero){
-							//skip line
-						} else if (ruleLine.length()>=prsfIntSixteen){ 
+    					if (ruleLine.length()>=prsfIntSixteen){ 
 							//System.out.println(ruleLine);
 							//System.out.println(splits[prsfIntZero]);
 							if (splits[prsfIntZero].compareTo("NumDataLineTypes")==prsfIntZero){
@@ -1051,13 +1135,7 @@ public class Plain_Sight extends JFrame{
     			}
     		} else {
     			//haven't found the start of the file prefix "<FilePrefix>"
-    			if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo("#")==prsfIntZero){
-					//skip line
-				} else if (ruleLine.substring(prsfIntZero,prsfIntOne).compareTo(" ")==prsfIntZero){
-					//skip line
-				} else if (ruleLine.substring(prsfIntZero,prsfIntTwo).compareTo("//")==prsfIntZero){
-					//skip line
-				} else if (ruleLine.length()>=prsfIntTwelve){ 
+    			if (ruleLine.length()>=prsfIntTwelve){ 
 					if (ruleLine.substring(prsfIntZero,prsfIntTwelve).compareTo("<FilePrefix>")==prsfIntZero){
 						foundStartPrefix = true;
 						pvPrefix = ruleLine.substring(prsfIntTwelve,ruleLine.length())+System.getProperty("line.separator");
@@ -1083,21 +1161,26 @@ public class Plain_Sight extends JFrame{
     	int length = hex.length();
     	int number = prsfIntZero;
     	int product = prsfIntOne;
+    	
     	for (int x = prsfIntZero; x < length; x++) {
-    		if(hex.substring(length-x-prsfIntOne,length-x).compareTo("a")==prsfIntZero){
-    			number += prsfIntTen*product;
-    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("b")==prsfIntZero){
-    			number += prsfIntEleven*product;
-    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("c")==prsfIntZero){
-    			number += prsfIntTwelve*product;
-    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("d")==prsfIntZero){
-    			number += prsfIntThirteen*product;
-    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("e")==prsfIntZero){
-    			number += prsfIntFourteen*product;
-    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("f")==prsfIntZero){
-    			number += prsfIntFifteen*product;
+    		if(pvTestHex(x,hex)){
+	    		if(hex.substring(length-x-prsfIntOne,length-x).compareTo("a")==prsfIntZero){
+	    			number += prsfIntTen*product;
+	    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("b")==prsfIntZero){
+	    			number += prsfIntEleven*product;
+	    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("c")==prsfIntZero){
+	    			number += prsfIntTwelve*product;
+	    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("d")==prsfIntZero){
+	    			number += prsfIntThirteen*product;
+	    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("e")==prsfIntZero){
+	    			number += prsfIntFourteen*product;
+	    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("f")==prsfIntZero){
+	    			number += prsfIntFifteen*product;
+	    		} else {
+	    			number += Integer.valueOf(hex.substring(length-x-prsfIntOne,length-x))*product;
+	    		}
     		} else {
-    			number += Integer.valueOf(hex.substring(length-x-prsfIntOne,length-x))*product;
+    			return prsfIntMinusOne;
     		}
     		product = product*prsfIntSixteen;
     	}

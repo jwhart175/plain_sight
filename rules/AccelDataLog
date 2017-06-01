@@ -1,5 +1,4 @@
-<FilePrefix> 
-The following data was recorded at 60 second intervals.
+<FilePrefix>The following data was recorded at 60 second intervals.
 The Data is arranged as follows:
 xPosition, yPosition, zPosition, xVelocity, yVelocity, zVelocity, xAcceleration, yAcceleration, zAcceleration </FilePrefix>
 NumDataLineTypes 1

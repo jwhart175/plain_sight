@@ -1,7 +1,7 @@
 #This is the template rule file which defines the proper format for rule files
 #The "#" comments out a line if placed at the beginning, does not work if placed later in the line.
 #<FilePrefix> text </FilePrefix> Adds "text" to the start of the output file, including line and space formatting
-<FilePrefix>TestB
+<FilePrefix>TestC
 TestB_Prefix</FilePrefix>
 #NumDataLineTypes <integer> defines the number of types of data lines to be included in the output file
 #DataLine <integer> starts the definition of the DataLine determined by the integer
@@ -11,47 +11,36 @@ TestB_Prefix</FilePrefix>
 #<LineDelimiter> text </LineDelimiter> Adds "text" in between the data transforms
 NumDataLineTypes 6
 DataLine 1
-<LinePrefix>testB_Dataline1:</LinePrefix>
+<LinePrefix></LinePrefix>
 NumDataCharsPerLine 3
 DataCharType number
-<LineDelimiter>testB_Dataline1_Delimiter</LineDelimiter>
+<LineDelimiter>011</LineDelimiter>
 DataLine 2
-<LinePrefix>testB_Dataline2:
+<LinePrefix>023
 </LinePrefix>
-NumDataCharsPerLine 1
+NumDataCharsPerLine 4
 DataCharType text
-<LineDelimiter>testB_Dataline2_Delimiter
-</LineDelimiter>
+<LineDelimiter></LineDelimiter>
 DataLine 3
-<LinePrefix>
-testB_Dataline3
-</LinePrefix>
+<LinePrefix></LinePrefix>
 NumDataCharsPerLine 5
 DataCharType hex
-<LineDelimiter>
-testB_Dataline3_Delimiter
-</LineDelimiter>
+<LineDelimiter>02</LineDelimiter>
 DataLine 4
-<LinePrefix>testB_Dataline4:</LinePrefix>
+<LinePrefix>3d</LinePrefix>
 NumDataCharsPerLine 1
 DataCharType number
-<LineDelimiter>testB_Dataline4_Delimiter</LineDelimiter>
+<LineDelimiter>023</LineDelimiter>
 DataLine 5
-<LinePrefix>testB_Dataline5:
-</LinePrefix>
+<LinePrefix>055</LinePrefix>
 NumDataCharsPerLine 3
 DataCharType text
-<LineDelimiter>testB_Dataline5_Delimiter
-</LineDelimiter>
+<LineDelimiter>a</LineDelimiter>
 DataLine 6
-<LinePrefix>
-testB_Dataline6
-</LinePrefix>
+<LinePrefix>q5-</LinePrefix>
 NumDataCharsPerLine 1
 DataCharType hex
-<LineDelimiter>
-testB_Dataline6_Delimiter
-</LineDelimiter>
+<LineDelimiter>04</LineDelimiter>
 #<DataLineOrder> Arrangement of integers </DataLineOrder> Defines how the DataLines will be arranged in the file.  
 #DataLines will be repeated until all of the data has been written
 <DataLineOrder>1
@@ -62,4 +51,4 @@ testB_Dataline6_Delimiter
 6
 123</DataLineOrder>
 #<FilePostfix> text </FilePostfix> Adds "text" to the end of the output file
-<FilePostfix>testB_Postfix</FilePostfix>
+<FilePostfix>21</FilePostfix>

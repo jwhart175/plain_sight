@@ -1,5 +1,4 @@
-<FilePrefix>
-Aug 08 10:50:02 INFO --- logging initialized ---
+<FilePrefix>Aug 08 10:50:02 INFO --- logging initialized ---
 Aug 08 10:50:02 DDEBUG timer: config: 48 ms
 Aug 08 10:50:02 DEBUG cachedir: /var/cache/dnf
 Aug 08 10:50:02 DEBUG Loaded plugins: noroot, protected_packages, generate_completion_cache, copr, Query, needs-restarting, config

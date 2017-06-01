@@ -17,7 +17,7 @@ DataCharType number
 DataLine 2
 <LinePrefix>TestA_Dataline2:
 </LinePrefix>
-NumDataCharsPerLine 1
+NumDataCharsPerLine 5
 DataCharType text
 <LineDelimiter>TestA_Dataline2_Delimiter
 </LineDelimiter>
