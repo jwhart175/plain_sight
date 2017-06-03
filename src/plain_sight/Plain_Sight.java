@@ -468,7 +468,6 @@ public class Plain_Sight extends JFrame{
 		int lineOrderCursor = prsfIntZero;
 		int lastLineOrderCursor = prsfIntZero;
 		int typeNum = prsfIntZero;
-		String dataLine = "";
     	while(inputCursor < inputLength){
     		lineOrderCursor = prsfIntZero;
     		lastLineOrderCursor = prsfIntZero;
@@ -609,111 +608,120 @@ public class Plain_Sight extends JFrame{
     	//create the output file 
     	int inputLength = inputText.length();
     	int inputCursor = prsfIntZero;
-    	if (inputText.substring(prsfIntZero,pvPrefix.length()).compareTo(pvPrefix)!=prsfIntZero){
-    		inputCursor = pvPrefix.length() - prsfIntOne;
+    	int lastInputCursor = prsfIntZero;
+//    	System.out.println(inputText.substring(prsfIntZero,pvPrefix.length()));
+//    	System.out.println(pvPrefix);
+    	
+    
+    	if (inputText.substring(prsfIntZero,pvPrefix.length()).compareTo(pvPrefix)==prsfIntZero){
+    		inputCursor = pvPrefix.length();
+    		//System.out.println("Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
     	} else {
     		System.out.println("(pvUnhide) Warning! File Prefix Not Found!");
     		feedback.append("(pvUnhide) Warning! File Prefix Not Found!" + System.getProperty("line.separator"));
     	}
     	int lineOrderLength = pvLineOrder.length();
 		int lineOrderCursor = prsfIntZero;
-		int lastLineOrderCursor = prsfIntZero;
 		int typeNum = prsfIntZero;
 		String dataLine = "";
+		
+		
+		
     	while(inputCursor < inputLength){
     		lineOrderCursor = prsfIntZero;
-    		lastLineOrderCursor = prsfIntZero;
+    		lastInputCursor = inputCursor;
     		while(lineOrderCursor < lineOrderLength){
     			if(pvTestNumeric(lineOrderCursor,pvLineOrder)){
-    				typeNum = Integer.valueOf(pvLineOrder.substring(lineOrderCursor,lineOrderCursor+prsfIntOne));	
+    				typeNum = Integer.valueOf(pvLineOrder.substring(lineOrderCursor,lineOrderCursor+prsfIntOne));
     				if (((typeNum)<=pvNumLineTypes)&((typeNum)>prsfIntZero)){
     					if(inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length() < inputLength){
-    						if (inputText.substring(inputCursor,inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length()).compareTo(pvLinePrefixes[typeNum-prsfIntOne])==prsfIntZero){
-    							inputCursor = inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length();
-    							for(int x = prsfIntZero; x < pvNumCharsPerLine[typeNum-prsfIntOne]; x++){
-    								if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("number")==prsfIntZero){
-    									if(inputCursor + prsfIntThree < inputLength){
-    										String num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
-    										while((inputCursor + prsfIntThree < inputLength)&(!pvTestNumeric(prsfIntZero,num)|!pvTestNumeric(prsfIntOne,num)|!pvTestNumeric(prsfIntTwo,num))){
-    											if(num.compareTo("NaN")==prsfIntZero){
-        											inputCursor = inputLength;
-        											lineOrderCursor = lineOrderLength;
-        											break;
-        										} else {
-        											inputCursor++;
-        											num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
-        										}
-    										}
-    										if(inputCursor!=inputLength){
-	    										char[] data = Character.toChars(Integer.valueOf(num));
-	    										String datum = Character.toString(data[prsfIntZero]);
-	        									output.append(datum);
-	        									inputCursor += prsfIntThree;
-	        									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
-	        										if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
-	        											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
-	        										}
-	        									}
-    										} else {
+    						inputCursor = inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length();
+    						//System.out.println("Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
+    						for(int x = prsfIntZero; x < pvNumCharsPerLine[typeNum-prsfIntOne]; x++){
+								if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("number")==prsfIntZero){
+									if(inputCursor + prsfIntThree < inputLength){
+										String num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
+										while((inputCursor + prsfIntThree < inputLength)&(!pvTestNumeric(prsfIntZero,num)|!pvTestNumeric(prsfIntOne,num)|!pvTestNumeric(prsfIntTwo,num))){
+											//System.out.println("While loop detected! Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
+											if(num.compareTo("NaN")==prsfIntZero){
+    											inputCursor = inputLength;
+    											lineOrderCursor = lineOrderLength;
     											break;
+    										} else {
+    											inputCursor++;
+    											num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
     										}
-    									}
-    								} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("text")==prsfIntZero){
-    									if(inputCursor + prsfIntOne < inputLength){
-        									String datum = inputText.substring(inputCursor,inputCursor+prsfIntOne);
-        									if(inputCursor + prsfIntThree < inputLength){
-	        									if(inputText.substring(inputCursor,inputCursor+prsfIntThree).compareTo("q5-")==0){
-	    											inputCursor = inputLength;
-	    											lineOrderCursor = lineOrderLength;
-	    											break;
-	    										}
-        									}
+										}
+										if(inputCursor!=inputLength){
+    										char[] data = Character.toChars(Integer.valueOf(num));
+    										String datum = Character.toString(data[prsfIntZero]);
         									output.append(datum);
+        									inputCursor += prsfIntThree;
+        									//System.out.println("Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
         									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
         										if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
         											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
         										}
         									}
-        									inputCursor++;
+										} else {
+											break;
+										}
+									}
+								} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("text")==prsfIntZero){
+									if(inputCursor + prsfIntOne < inputLength){
+    									String datum = inputText.substring(inputCursor,inputCursor+prsfIntOne);
+    									if(inputCursor + prsfIntThree < inputLength){
+        									if(inputText.substring(inputCursor,inputCursor+prsfIntThree).compareTo("q5-")==prsfIntZero){
+    											inputCursor = inputLength;
+    											lineOrderCursor = lineOrderLength;
+    											break;
+    										}
     									}
-    								} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("hex")==prsfIntZero){
-    									if(inputCursor + prsfIntTwo < inputLength){
-    										String num = inputText.substring(inputCursor,inputCursor+prsfIntTwo);
-        									while((inputCursor + prsfIntTwo < inputLength)&(!pvTestHex(prsfIntZero,num)|!pvTestHex(prsfIntOne,num))){
-        										if(num.compareTo("q5")==prsfIntZero){
-        											inputCursor = inputLength;
-        											lineOrderCursor = lineOrderLength;
-        											break;
-        										} else {
-        											inputCursor++;
-        											num = inputText.substring(inputCursor,inputCursor+prsfIntTwo);
-        										}
-        									}
-        									if(inputCursor!=inputLength){
-        										int temp = pvGetIntFromHexString(num);
-	        									char[] data = Character.toChars(temp);
-	    										String datum = Character.toString(data[prsfIntZero]);
-	    										output.append(datum);
-	    										if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
-	    											if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
-	    												inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
-	    											}
-	    										}
-	    										inputCursor += prsfIntTwo;
-        									} else {
-        										break;
-        									}
+    									output.append(datum);
+    									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
+    										inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
     									}
-    								}  else {
-    									System.out.println("(pvHide) Warning: Data type unrecognized for Data Line " + typeNum);
-    									feedback.append("(pvHide) Warning: Data type unrecognized for Data Line " + typeNum + System.getProperty("line.separator"));
-    								}
-    							}
-    						}
-    						
-    						
+    									inputCursor++;
+    									//System.out.println("Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
+									}
+								} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("hex")==prsfIntZero){
+									if(inputCursor + prsfIntTwo < inputLength){
+										String num = inputText.substring(inputCursor,inputCursor+prsfIntTwo);
+    									while((inputCursor + prsfIntTwo < inputLength)&(!pvTestHex(prsfIntZero,num)|!pvTestHex(prsfIntOne,num))){
+    										//System.out.println("While loop detected! Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
+    										if(num.compareTo("q5")==prsfIntZero){
+    											inputCursor = inputLength;
+    											lineOrderCursor = lineOrderLength;
+    											break;
+    										} else {
+    											inputCursor++;
+    											num = inputText.substring(inputCursor,inputCursor+prsfIntTwo);
+    										}
+    									}
+    									if(inputCursor!=inputLength&&pvTestHex(prsfIntZero,num)&&pvTestHex(prsfIntOne,num)){
+    										//System.out.println(num);
+											int temp = pvGetIntFromHexString(num);
+        									char[] data = Character.toChars(temp);
+    										String datum = Character.toString(data[prsfIntZero]);
+    										output.append(datum);
+    										inputCursor += prsfIntTwo;
+    										if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
+    											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
+    										}
+    										//System.out.println("Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
+    									} else {
+    										break;
+    									}
+									}
+								}  else {
+									System.out.println("(pvHide) Warning: Data type unrecognized for Data Line " + typeNum);
+									feedback.append("(pvHide) Warning: Data type unrecognized for Data Line " + typeNum + System.getProperty("line.separator"));
+								}
+							}
+    					} else { 
+    						inputCursor = inputLength;
+    						break;
     					}
-    					lastLineOrderCursor = lineOrderCursor;
     				} else {
     					System.out.println("(pvHide) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!");
 						feedback.append("(pvHide) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!" + System.getProperty("line.separator"));
@@ -721,9 +729,12 @@ public class Plain_Sight extends JFrame{
     				lineOrderCursor++;
     			} else {
     				lineOrderCursor++;
+    				inputCursor++;
     			}
     		}
-    		inputCursor++;
+    		if(inputCursor==lastInputCursor){
+    			inputCursor++;
+    		}	
     	}
     	
     	//print the output to the new file:
@@ -1176,8 +1187,10 @@ public class Plain_Sight extends JFrame{
 	    			number += prsfIntFourteen*product;
 	    		} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("f")==prsfIntZero){
 	    			number += prsfIntFifteen*product;
-	    		} else {
+	    		} else if(pvTestNumeric(length-x-prsfIntOne,hex)){
 	    			number += Integer.valueOf(hex.substring(length-x-prsfIntOne,length-x))*product;
+	    		} else {
+	    			return prsfIntMinusOne;
 	    		}
     		} else {
     			return prsfIntMinusOne;
