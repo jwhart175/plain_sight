@@ -53,6 +53,9 @@ public class Plain_Sight extends JFrame{
 	//hide /home/user/git/plain_sight/input/test_text /home/user/git/plain_sight/output/out_log /home/user/git/plain_sight/rules/dnfLog
 	//unhide /home/user/git/plain_sight/output/out_accel /home/user/git/plain_sight/recovered/accel_recovered /home/user/git/plain_sight/rules/AccelDataLog
 	//hide /home/user/git/plain_sight/input/test_text /home/user/git/plain_sight/output/out_accel /home/user/git/plain_sight/rules/AccelDataLog
+	//unhide /home/user/git/plain_sight/output/out_crypt /home/user/git/plain_sight/recovered/crypt_recovered /home/user/git/plain_sight/rules/testC
+	//hide /home/user/git/plain_sight/input/crypt_file.gpg /home/user/git/plain_sight/output/out_crypt /home/user/git/plain_sight/rules/testC
+	
 	private static final int prsfIntMinusOne = -1;
 	private static final int prsfIntZero = 0;
 	private static final int prsfIntOne = 1;
@@ -95,6 +98,7 @@ public class Plain_Sight extends JFrame{
 	private String[] pvDataCharTypes = new String[prsfIntOne];
 	private String[] pvLineDelimiters = new String[prsfIntOne];
 	private String pvLineOrder = "";
+	private StringBuilder pvLog = new StringBuilder();
 	
 
     public Plain_Sight() {
@@ -174,40 +178,43 @@ public class Plain_Sight extends JFrame{
     	boolean writeToFile = false;
     	int fileNum = prsfIntZero;
     	pvTextField.setText("");
-    	StringBuilder currentText = new StringBuilder();
+    	pvLog = new StringBuilder();
     	StringBuilder pastText = new StringBuilder();
     	pastText.append(pvTextPane.getText() + System.getProperty("line.separator") + ">: " + commandString + System.getProperty("line.separator"));
     	pvTextPane.setText(pastText.toString());
-    	currentText.append("Executing...: " + commandString + System.getProperty("line.separator"));
+    	pvLog.append("Executing...: " + commandString + System.getProperty("line.separator"));
     	//interpret command and print response or error
     	if(commandString.contains("help")){
-    		currentText.append(System.getProperty("line.separator"));
-    		currentText.append("The program commands are: " + System.getProperty("line.separator"));
-    		currentText.append(System.getProperty("line.separator"));
-    		currentText.append(">: clear" + System.getProperty("line.separator"));
-    		currentText.append("This command clears the console." + System.getProperty("line.separator"));
-    		currentText.append(System.getProperty("line.separator"));
-    		currentText.append(">: <exit or quit>" + System.getProperty("line.separator"));
-    		currentText.append("This command closes the console, no work will be saved." + System.getProperty("line.separator"));
-    		currentText.append(System.getProperty("line.separator"));
-    		currentText.append(">: hide <input text file path> <output text file path> <rule file path>" + System.getProperty("line.separator"));
-    		currentText.append("This command reads the input file and outputs a file which seems like something else but contains the input text file data.  The transformation is governed by the rule file." + System.getProperty("line.separator"));
-    		currentText.append(">: unhide <input text file path> <output text file path> <rule file path>" + System.getProperty("line.separator"));
-    		currentText.append("This command attempts to extract the output file from the input file based upon the rules in the specified rule file." + System.getProperty("line.separator"));
-    		currentText.append(System.getProperty("line.separator"));
-    		currentText.append(">: <AnyOtherCommand> > <File> "+ System.getProperty("line.separator"));
-    		currentText.append("This command appends the output of whatever <command> precedes it into the specified <file>. "+ System.getProperty("line.separator"));
+    		pvLog.append(System.getProperty("line.separator"));
+    		pvLog.append("The program commands are: " + System.getProperty("line.separator"));
+    		pvLog.append(System.getProperty("line.separator"));
+    		pvLog.append(">: clear" + System.getProperty("line.separator"));
+    		pvLog.append("This command clears the console." + System.getProperty("line.separator"));
+    		pvLog.append(System.getProperty("line.separator"));
+    		pvLog.append(">: <exit or quit>" + System.getProperty("line.separator"));
+    		pvLog.append("This command closes the console, no work will be saved." + System.getProperty("line.separator"));
+    		pvLog.append(System.getProperty("line.separator"));
+    		pvLog.append(">: read batch <File>" + System.getProperty("line.separator"));
+    		pvLog.append("This command opens the specified file and attempts to execute the commands stored therein." + System.getProperty("line.separator"));
+    		pvLog.append(System.getProperty("line.separator"));
+    		pvLog.append(">: hide <input text file path> <output text file path> <rule file path>" + System.getProperty("line.separator"));
+    		pvLog.append("This command reads the input file and outputs a file which seems like something else but contains the input text file data.  The transformation is governed by the rule file." + System.getProperty("line.separator"));
+    		pvLog.append(">: unhide <input text file path> <output text file path> <rule file path>" + System.getProperty("line.separator"));
+    		pvLog.append("This command attempts to extract the output file from the input file based upon the rules in the specified rule file." + System.getProperty("line.separator"));
+    		pvLog.append(System.getProperty("line.separator"));
+    		pvLog.append(">: <AnyOtherCommand> > <File> "+ System.getProperty("line.separator"));
+    		pvLog.append("This command appends the output of whatever <command> precedes it into the specified <file>. "+ System.getProperty("line.separator"));
     	}
     	if(commandString.contains("example")){
-    		currentText.append(System.getProperty("line.separator"));
-    		currentText.append("To get started, type: " + System.getProperty("line.separator"));
-    		currentText.append(">: example > <test text file path>" + System.getProperty("line.separator"));
-    		currentText.append("This command will write this example text into a file, which can then be hidden using the following command:" + System.getProperty("line.separator"));
-    		currentText.append(">: hide <test text file path> <output file path> <rule file path>" + System.getProperty("line.separator"));
-    		currentText.append("This command will use the rules in the rule file to convert the test file text into another text file which preserves the data, but makes it unreadable." + System.getProperty("line.separator"));
-    		currentText.append("Next, the conversion process can be reversed using:" + System.getProperty("line.separator"));
-    		currentText.append(">: unhide <past output file path> <path for revealed file> <rule file path>" + System.getProperty("line.separator"));
-    		currentText.append("This command will faithfully recreate the original data as long as the correct rule file is used." + System.getProperty("line.separator"));
+    		pvLog.append(System.getProperty("line.separator"));
+    		pvLog.append("To get started, type: " + System.getProperty("line.separator"));
+    		pvLog.append(">: example > <test text file path>" + System.getProperty("line.separator"));
+    		pvLog.append("This command will write this example text into a file, which can then be hidden using the following command:" + System.getProperty("line.separator"));
+    		pvLog.append(">: hide <test text file path> <output file path> <rule file path>" + System.getProperty("line.separator"));
+    		pvLog.append("This command will use the rules in the rule file to convert the test file text into another text file which preserves the data, but makes it unreadable." + System.getProperty("line.separator"));
+    		pvLog.append("Next, the conversion process can be reversed using:" + System.getProperty("line.separator"));
+    		pvLog.append(">: unhide <past output file path> <path for revealed file> <rule file path>" + System.getProperty("line.separator"));
+    		pvLog.append("This command will faithfully recreate the original data as long as the correct rule file is used." + System.getProperty("line.separator"));
     	}
     	String splits[];
     	if(commandString.contains(" > ")){
@@ -217,7 +224,249 @@ public class Plain_Sight extends JFrame{
     	    	fileNum = pvScrivener.puGetNumFiles();
     	    	writeToFile = true;
     		} catch (Exception e) {
-    			currentText.append("Failed to open file = " + parse[prsfIntOne] + " cannot write to that file!" + System.getProperty("line.separator"));
+    			pvLog.append("Failed to open file = " + parse[prsfIntOne] + " cannot write to that file!" + System.getProperty("line.separator"));
+    			writeToFile = false;
+    		} finally {
+    			splits = parse[prsfIntZero].split(" ");
+    		}
+		} else {
+			splits = commandString.split(" ");
+		}
+    	if(splits[prsfIntZero].length()==prsfIntFour){
+	    	if(splits[prsfIntZero].compareTo("quit")==prsfIntZero){
+	    		this.dispose();
+	    	}
+	    	if(splits[prsfIntZero].compareTo("exit")==prsfIntZero){
+	    		this.dispose();
+	    	}
+	    	if(splits[prsfIntZero].compareTo("read")==prsfIntZero){
+	    		if(splits[prsfIntOne].compareTo("batch")==prsfIntZero){
+		    		try {
+		    			FileRead bookish = new FileRead(splits[prsfIntTwo]);
+		    			String input = bookish.puReadText();
+		    	    	String[] commandParse = input.split(System.getProperty("line.separator"));
+		    	    	for(int x = prsfIntZero; x < commandParse.length; x++) {
+		    	    		pvBatchCommand(commandParse[x]);
+		    	    	}
+		    		} catch (Exception e) {
+		    			pvLog.append("Failed to open file = " + splits[prsfIntTwo] + " cannot read that file!" + System.getProperty("line.separator"));
+		    		}
+	    		}
+	    	}
+	    	if(splits[prsfIntZero].compareTo("test")==prsfIntZero){
+	    		//test A
+	    		String inputFile = "/home/user/git/plain_sight/input/test_text";
+    			String outputFile = "/home/user/git/plain_sight/output/testA_out";
+    			String ruleFile = "/home/user/git/plain_sight/rules/testA";
+    			String inputText = "";
+    			String ruleText = "";
+	    		try {
+	    			FileRead scholar = new FileRead(inputFile);
+		        	inputText = scholar.puReadText();
+		        	ruleText = scholar.puReadText(ruleFile);
+		    	} catch (Exception e) {
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+		    	}
+	    		try {
+	    			pvLog.append(pvHide(inputText, ruleText, outputFile));
+	    		} catch (Exception e) {
+	    			pvLog.append(e + System.getProperty("line.separator"));
+	    			pvLog.append("Failed to hide file!");
+	    		}
+	    		inputFile = "/home/user/git/plain_sight/output/testA_out";
+    			outputFile = "/home/user/git/plain_sight/recovered/testA_recovered";
+    			inputText = "";
+	    		ruleText = "";
+		    	try {
+		    		FileRead scholar = new FileRead(inputFile);
+			       	inputText = scholar.puReadText();
+			       	ruleText = scholar.puReadText(ruleFile);
+			    } catch (Exception e) {
+			    	pvLog.append(e + System.getProperty("line.separator"));
+			    	pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			    }
+		    	try {
+		    		pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+		    	} catch (Exception e) {
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to hide file!");
+		    	}
+		    	
+		    	//test B
+		    	inputFile = "/home/user/git/plain_sight/input/test_text";
+    			outputFile = "/home/user/git/plain_sight/output/testB_out";
+    			ruleFile = "/home/user/git/plain_sight/rules/testB";
+    			inputText = "";
+    			ruleText = "";
+	    		try {
+	    			FileRead scholar = new FileRead(inputFile);
+		        	inputText = scholar.puReadText();
+		        	ruleText = scholar.puReadText(ruleFile);
+		    	} catch (Exception e) {
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+		    	}
+	    		try {
+	    			pvLog.append(pvHide(inputText, ruleText, outputFile));
+	    		} catch (Exception e) {
+	    			pvLog.append(e + System.getProperty("line.separator"));
+	    			pvLog.append("Failed to hide file!");
+	    		}
+	    		inputFile = "/home/user/git/plain_sight/output/testB_out";
+    			outputFile = "/home/user/git/plain_sight/recovered/testB_recovered";
+    			inputText = "";
+	    		ruleText = "";
+		    	try {
+		    		FileRead scholar = new FileRead(inputFile);
+			       	inputText = scholar.puReadText();
+			       	ruleText = scholar.puReadText(ruleFile);
+			    } catch (Exception e) {
+			    	pvLog.append(e + System.getProperty("line.separator"));
+			    	pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			    }
+		    	try {
+		    		pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+		    	} catch (Exception e) {
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to hide file!");
+		    	}
+		    		
+	    		//testC
+	    		inputFile = "/home/user/git/plain_sight/input/test_text";
+    			outputFile = "/home/user/git/plain_sight/output/testC_out";
+    			ruleFile = "/home/user/git/plain_sight/rules/testC";
+    			inputText = "";
+    			ruleText = "";
+	    		try {
+	    			FileRead scholar = new FileRead(inputFile);
+		        	inputText = scholar.puReadText();
+		        	ruleText = scholar.puReadText(ruleFile);
+		    	} catch (Exception e) {
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+		    	}
+	    		try {
+	    			pvLog.append(pvHide(inputText, ruleText, outputFile));
+		    	} catch (Exception e) {
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to hide file!");
+		    	}
+	    		inputFile = "/home/user/git/plain_sight/output/testC_out";
+    			outputFile = "/home/user/git/plain_sight/recovered/testC_recovered";
+    			inputText = "";
+	    		ruleText = "";
+		    	try {
+		    		FileRead scholar = new FileRead(inputFile);
+			       	inputText = scholar.puReadText();
+			       	ruleText = scholar.puReadText(ruleFile);
+			    } catch (Exception e) {
+			    	pvLog.append(e + System.getProperty("line.separator"));
+			    	pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			    }
+		    	try {
+		    		pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+			    } catch (Exception e) {
+			    	pvLog.append(e + System.getProperty("line.separator"));
+			    	pvLog.append("Failed to hide file!");
+			    }
+	    	}
+	    	if(splits[prsfIntZero].compareTo("hide")==prsfIntZero){
+	    		String inputFile = splits[prsfIntOne];
+    			String outputFile = splits[prsfIntTwo];
+    			String ruleFile = splits[prsfIntThree];
+    			String inputText = "";
+    			String ruleText = "";
+	    		try {
+	    			FileRead scholar = new FileRead(inputFile);
+		        	inputText = scholar.puReadText();
+		        	ruleText = scholar.puReadText(ruleFile);
+		    	} catch (Exception e) {
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
+		    	}
+	    		try {
+	    			pvLog.append(pvHide(inputText, ruleText, outputFile));
+	    		} catch (Exception e) {
+	    			pvLog.append(e + System.getProperty("line.separator"));
+	    			pvLog.append("Failed to hide file!");
+	    		}
+	    	}
+    	}
+	    if(splits[prsfIntZero].length()==prsfIntFive){
+	    	if(splits[prsfIntZero].compareTo("clear")==prsfIntZero){
+	    		pvLog = new StringBuilder();
+	    		pastText = new StringBuilder();
+	    		pvTextPane.setText("");
+	    		pvLog.append(">:" + System.getProperty("line.separator"));
+	    	}
+    	}
+	    if(splits[prsfIntZero].length()==prsfIntSix){
+	    	if(splits[prsfIntZero].compareTo("unhide")==prsfIntZero){
+	    		String inputFile = splits[prsfIntOne];
+    			String outputFile = splits[prsfIntTwo];
+    			String ruleFile = splits[prsfIntThree];
+    			String inputText = "";
+    			String ruleText = "";
+	    		try {
+	    			FileRead scholar = new FileRead(inputFile);
+		        	inputText = scholar.puReadText();
+		        	ruleText = scholar.puReadText(ruleFile);
+		    	} catch (Exception e) {
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
+		    	}
+	    		try {
+	    			pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+	    		} catch (Exception e) {
+	    			pvLog.append(e + System.getProperty("line.separator"));
+	    			pvLog.append("Failed to unhide file!");
+	    		}
+	    	}
+	    }
+    	//write the final output to the terminal
+    	pastText.append(pvLog);
+		pvTextPane.setText(pastText.toString());
+		//write the final output to a file if pipe requested
+    	if(writeToFile){
+    		try{
+    			pvScrivener.puAppendStringToFile(fileNum-prsfIntOne, pvLog.toString());
+    			pvScrivener.puCloseFile(fileNum-prsfIntOne);
+    			pastText = new StringBuilder();
+    			pastText.append(pvTextPane.getText());
+    			pastText.append("File written successfully!" + System.getProperty("line.separator"));
+    		} catch (Exception e) {
+    			pastText = new StringBuilder();
+    			pastText.append(pvTextPane.getText());
+    			pastText.append("File failed to write!" + System.getProperty("line.separator"));
+    		} finally {
+    			pvTextPane.setText(pastText.toString());
+    		}
+    	}
+    	//clear the log
+    	pvLog = new StringBuilder();
+    }
+	
+	private void pvBatchCommand(String commandString){
+    	//accept a String from another function and process the command therein
+    	//help, example, quit, exit, and read are disabled
+    	boolean writeToFile = false;
+    	int batchFileNum = 0;
+    	pvLog = new StringBuilder();
+    	StringBuilder pastText = new StringBuilder();
+    	pastText.append(pvTextPane.getText() + System.getProperty("line.separator") + ">: " + commandString + System.getProperty("line.separator"));
+    	pvTextPane.setText(pastText.toString());
+    	pvLog.append("Executing...: " + commandString + System.getProperty("line.separator"));
+    	//interpret command and print response or error
+    	String splits[];
+    	if(commandString.contains(" > ")){
+    		String[] parse = commandString.split(" > ");
+    		try {
+    			pvScrivener.puOpenNewFile(parse[prsfIntOne]);
+    	    	batchFileNum = pvScrivener.puGetNumFiles();
+    	    	writeToFile = true;
+    		} catch (Exception e) {
+    			pvLog.append("Failed to open file = " + parse[prsfIntOne] + " cannot write to that file!" + System.getProperty("line.separator"));
     			writeToFile = false;
     		} finally {
     			splits = parse[prsfIntZero].split(" ");
@@ -244,15 +493,15 @@ public class Plain_Sight extends JFrame{
 		        	inputText = scholar.puReadText();
 		        	ruleText = scholar.puReadText(ruleFile);
 		    	} catch (Exception e) {
-		    		currentText.append(e + System.getProperty("line.separator"));
-		    		currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 		    	}
-	    		//try {
-	    			currentText.append(pvHide(inputText, ruleText, outputFile));
-//	    		} catch (Exception e) {
-//	    			currentText.append(e + System.getProperty("line.separator"));
-//	    			currentText.append("Failed to hide file!");
-//	    		}
+	    		try {
+	    			pvLog.append(pvHide(inputText, ruleText, outputFile));
+	    		} catch (Exception e) {
+	    			pvLog.append(e + System.getProperty("line.separator"));
+	    			pvLog.append("Failed to hide file!");
+	    		}
 	    		inputFile = "/home/user/git/plain_sight/output/testA_out";
     			outputFile = "/home/user/git/plain_sight/recovered/testA_recovered";
     			inputText = "";
@@ -262,15 +511,15 @@ public class Plain_Sight extends JFrame{
 			       	inputText = scholar.puReadText();
 			       	ruleText = scholar.puReadText(ruleFile);
 			    } catch (Exception e) {
-			    	currentText.append(e + System.getProperty("line.separator"));
-			    	currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			    	pvLog.append(e + System.getProperty("line.separator"));
+			    	pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 			    }
-		    	//try {
-		    		currentText.append(pvUnhide(inputText, ruleText, outputFile));
-//		    	} catch (Exception e) {
-//		    		currentText.append(e + System.getProperty("line.separator"));
-//		    		currentText.append("Failed to hide file!");
-//		    	}
+		    	try {
+		    		pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+		    	} catch (Exception e) {
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to hide file!");
+		    	}
 		    	
 		    	//test B
 		    	inputFile = "/home/user/git/plain_sight/input/test_text";
@@ -283,15 +532,15 @@ public class Plain_Sight extends JFrame{
 		        	inputText = scholar.puReadText();
 		        	ruleText = scholar.puReadText(ruleFile);
 		    	} catch (Exception e) {
-		    		currentText.append(e + System.getProperty("line.separator"));
-		    		currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 		    	}
-	    		//try {
-	    			currentText.append(pvHide(inputText, ruleText, outputFile));
-//	    		} catch (Exception e) {
-//	    			currentText.append(e + System.getProperty("line.separator"));
-//	    			currentText.append("Failed to hide file!");
-//	    		}
+	    		try {
+	    			pvLog.append(pvHide(inputText, ruleText, outputFile));
+	    		} catch (Exception e) {
+	    			pvLog.append(e + System.getProperty("line.separator"));
+	    			pvLog.append("Failed to hide file!");
+	    		}
 	    		inputFile = "/home/user/git/plain_sight/output/testB_out";
     			outputFile = "/home/user/git/plain_sight/recovered/testB_recovered";
     			inputText = "";
@@ -301,15 +550,15 @@ public class Plain_Sight extends JFrame{
 			       	inputText = scholar.puReadText();
 			       	ruleText = scholar.puReadText(ruleFile);
 			    } catch (Exception e) {
-			    	currentText.append(e + System.getProperty("line.separator"));
-			    	currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			    	pvLog.append(e + System.getProperty("line.separator"));
+			    	pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 			    }
-		    	//try {
-		    		currentText.append(pvUnhide(inputText, ruleText, outputFile));
-//		    	} catch (Exception e) {
-//		    		currentText.append(e + System.getProperty("line.separator"));
-//		    		currentText.append("Failed to hide file!");
-//		    	}
+		    	try {
+		    		pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+		    	} catch (Exception e) {
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to hide file!");
+		    	}
 		    		
 	    		//testC
 	    		inputFile = "/home/user/git/plain_sight/input/test_text";
@@ -322,15 +571,15 @@ public class Plain_Sight extends JFrame{
 		        	inputText = scholar.puReadText();
 		        	ruleText = scholar.puReadText(ruleFile);
 		    	} catch (Exception e) {
-		    		currentText.append(e + System.getProperty("line.separator"));
-		    		currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 		    	}
-	    		//try {
-	    			currentText.append(pvHide(inputText, ruleText, outputFile));
-//		    		} catch (Exception e) {
-//		    			currentText.append(e + System.getProperty("line.separator"));
-//		    			currentText.append("Failed to hide file!");
-//		    		}
+	    		try {
+	    			pvLog.append(pvHide(inputText, ruleText, outputFile));
+		    	} catch (Exception e) {
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to hide file!");
+		    	}
 	    		inputFile = "/home/user/git/plain_sight/output/testC_out";
     			outputFile = "/home/user/git/plain_sight/recovered/testC_recovered";
     			inputText = "";
@@ -340,15 +589,15 @@ public class Plain_Sight extends JFrame{
 			       	inputText = scholar.puReadText();
 			       	ruleText = scholar.puReadText(ruleFile);
 			    } catch (Exception e) {
-			    	currentText.append(e + System.getProperty("line.separator"));
-			    	currentText.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			    	pvLog.append(e + System.getProperty("line.separator"));
+			    	pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 			    }
-		    	//try {
-		    		currentText.append(pvUnhide(inputText, ruleText, outputFile));
-//			    	} catch (Exception e) {
-//			    		currentText.append(e + System.getProperty("line.separator"));
-//			    		currentText.append("Failed to hide file!");
-//			    	}
+		    	try {
+		    		pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+			    } catch (Exception e) {
+			    	pvLog.append(e + System.getProperty("line.separator"));
+			    	pvLog.append("Failed to hide file!");
+			    }
 	    	}
 	    	if(splits[prsfIntZero].compareTo("hide")==prsfIntZero){
 	    		String inputFile = splits[prsfIntOne];
@@ -361,23 +610,23 @@ public class Plain_Sight extends JFrame{
 		        	inputText = scholar.puReadText();
 		        	ruleText = scholar.puReadText(ruleFile);
 		    	} catch (Exception e) {
-		    		currentText.append(e + System.getProperty("line.separator"));
-		    		currentText.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
 		    	}
 	    		try {
-	    			currentText.append(pvHide(inputText, ruleText, outputFile));
+	    			pvLog.append(pvHide(inputText, ruleText, outputFile));
 	    		} catch (Exception e) {
-	    			currentText.append(e + System.getProperty("line.separator"));
-	    			currentText.append("Failed to hide file!");
+	    			pvLog.append(e + System.getProperty("line.separator"));
+	    			pvLog.append("Failed to hide file!");
 	    		}
 	    	}
     	}
 	    if(splits[prsfIntZero].length()==prsfIntFive){
 	    	if(splits[prsfIntZero].compareTo("clear")==prsfIntZero){
-	    		currentText = new StringBuilder();
+	    		pvLog = new StringBuilder();
 	    		pastText = new StringBuilder();
 	    		pvTextPane.setText("");
-	    		currentText.append(">:" + System.getProperty("line.separator"));
+	    		pvLog.append(">:" + System.getProperty("line.separator"));
 	    	}
     	}
 	    if(splits[prsfIntZero].length()==prsfIntSix){
@@ -392,25 +641,25 @@ public class Plain_Sight extends JFrame{
 		        	inputText = scholar.puReadText();
 		        	ruleText = scholar.puReadText(ruleFile);
 		    	} catch (Exception e) {
-		    		currentText.append(e + System.getProperty("line.separator"));
-		    		currentText.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
+		    		pvLog.append(e + System.getProperty("line.separator"));
+		    		pvLog.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
 		    	}
 	    		try {
-	    			currentText.append(pvUnhide(inputText, ruleText, outputFile));
+	    			pvLog.append(pvUnhide(inputText, ruleText, outputFile));
 	    		} catch (Exception e) {
-	    			currentText.append(e + System.getProperty("line.separator"));
-	    			currentText.append("Failed to unhide file!");
+	    			pvLog.append(e + System.getProperty("line.separator"));
+	    			pvLog.append("Failed to unhide file!");
 	    		}
 	    	}
 	    }
     	//write the final output to the terminal
-    	pastText.append(currentText);
+    	pastText.append(pvLog);
 		pvTextPane.setText(pastText.toString());
 		//write the final output to a file if pipe requested
     	if(writeToFile){
     		try{
-    			pvScrivener.puAppendStringToFile(fileNum-prsfIntOne, currentText.toString());
-    			pvScrivener.puCloseFile(fileNum-prsfIntOne);
+    			pvScrivener.puAppendStringToFile(batchFileNum-prsfIntOne, pvLog.toString());
+    			pvScrivener.puCloseFile(batchFileNum-prsfIntOne);
     			pastText = new StringBuilder();
     			pastText.append(pvTextPane.getText());
     			pastText.append("File written successfully!" + System.getProperty("line.separator"));
@@ -422,7 +671,9 @@ public class Plain_Sight extends JFrame{
     			pvTextPane.setText(pastText.toString());
     		}
     	}
+    	pvLog = new StringBuilder();
     }
+
 	
     private void pvLogCommand(String command){
     	//adds a (command) to the (pvCommandLog)
@@ -448,17 +699,17 @@ public class Plain_Sight extends JFrame{
     	StringBuilder feedback = new StringBuilder();
     	
     	//parse the rules from the rulefile:
-    	//try{
+    	try{
     		if(!pvParseRules(ruleText)){
     			System.out.println("(pvHide) failed because rule file parsing failed!");
     			feedback.append("(pvHide) failed because rule file parsing failed!"+System.getProperty("line.separator"));
     		}
-    	//} catch (Exception ex) {
-    	//	System.out.println(ex);
-    	//	feedback.append(ex+System.getProperty("line.separator"));
-        //    System.out.println("(pvHide) failed because rule file parsing failed!");
-        //    feedback.append("(pvHide) failed because rule file parsing failed!"+System.getProperty("line.separator"));
-    	//}
+    	} catch (Exception ex) {
+    		System.out.println(ex);
+    		feedback.append(ex+System.getProperty("line.separator"));
+            System.out.println("(pvHide) failed because rule file parsing failed!");
+            feedback.append("(pvHide) failed because rule file parsing failed!"+System.getProperty("line.separator"));
+    	}
     	
     	//create the output file 
     	output.append(pvPrefix);
@@ -593,29 +844,24 @@ public class Plain_Sight extends JFrame{
     	StringBuilder feedback = new StringBuilder();
     	
     	//parse the rules from the rulefile:
-    	//try{
+    	try{
     		if(!pvParseRules(ruleText)){
     			System.out.println("(pvUnhide) failed because rule file parsing failed!");
     			feedback.append("(pvUnhide) failed because rule file parsing failed!" + System.getProperty("line.separator"));
     		}
-    	//} catch (Exception ex) {
-    	//	System.out.println(ex);
-    	//	feedback.append(ex);
-        //    System.out.println("(pvUnhide) failed because rule file parsing failed!");
-        //    feedback.append("(pvUnhide) failed because rule file parsing failed!" + System.getProperty("line.separator"));
-    	//}
+    	} catch (Exception ex) {
+    		System.out.println(ex);
+    		feedback.append(ex);
+            System.out.println("(pvUnhide) failed because rule file parsing failed!");
+            feedback.append("(pvUnhide) failed because rule file parsing failed!" + System.getProperty("line.separator"));
+    	}
     
     	//create the output file 
     	int inputLength = inputText.length();
     	int inputCursor = prsfIntZero;
     	int lastInputCursor = prsfIntZero;
-//    	System.out.println(inputText.substring(prsfIntZero,pvPrefix.length()));
-//    	System.out.println(pvPrefix);
-    	
-    
     	if (inputText.substring(prsfIntZero,pvPrefix.length()).compareTo(pvPrefix)==prsfIntZero){
     		inputCursor = pvPrefix.length();
-    		//System.out.println("Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
     	} else {
     		System.out.println("(pvUnhide) Warning! File Prefix Not Found!");
     		feedback.append("(pvUnhide) Warning! File Prefix Not Found!" + System.getProperty("line.separator"));
@@ -624,10 +870,7 @@ public class Plain_Sight extends JFrame{
 		int lineOrderCursor = prsfIntZero;
 		int typeNum = prsfIntZero;
 		String dataLine = "";
-		
-		
-		
-    	while(inputCursor < inputLength){
+		while(inputCursor < inputLength){
     		lineOrderCursor = prsfIntZero;
     		lastInputCursor = inputCursor;
     		while(lineOrderCursor < lineOrderLength){
@@ -636,13 +879,11 @@ public class Plain_Sight extends JFrame{
     				if (((typeNum)<=pvNumLineTypes)&((typeNum)>prsfIntZero)){
     					if(inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length() < inputLength){
     						inputCursor = inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length();
-    						//System.out.println("Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
     						for(int x = prsfIntZero; x < pvNumCharsPerLine[typeNum-prsfIntOne]; x++){
 								if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("number")==prsfIntZero){
 									if(inputCursor + prsfIntThree < inputLength){
 										String num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
 										while((inputCursor + prsfIntThree < inputLength)&(!pvTestNumeric(prsfIntZero,num)|!pvTestNumeric(prsfIntOne,num)|!pvTestNumeric(prsfIntTwo,num))){
-											//System.out.println("While loop detected! Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
 											if(num.compareTo("NaN")==prsfIntZero){
     											inputCursor = inputLength;
     											lineOrderCursor = lineOrderLength;
@@ -657,7 +898,6 @@ public class Plain_Sight extends JFrame{
     										String datum = Character.toString(data[prsfIntZero]);
         									output.append(datum);
         									inputCursor += prsfIntThree;
-        									//System.out.println("Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
         									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
         										if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
         											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
@@ -682,13 +922,11 @@ public class Plain_Sight extends JFrame{
     										inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
     									}
     									inputCursor++;
-    									//System.out.println("Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
-									}
+    								}
 								} else if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("hex")==prsfIntZero){
 									if(inputCursor + prsfIntTwo < inputLength){
 										String num = inputText.substring(inputCursor,inputCursor+prsfIntTwo);
     									while((inputCursor + prsfIntTwo < inputLength)&(!pvTestHex(prsfIntZero,num)|!pvTestHex(prsfIntOne,num))){
-    										//System.out.println("While loop detected! Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
     										if(num.compareTo("q5")==prsfIntZero){
     											inputCursor = inputLength;
     											lineOrderCursor = lineOrderLength;
@@ -699,8 +937,7 @@ public class Plain_Sight extends JFrame{
     										}
     									}
     									if(inputCursor!=inputLength&&pvTestHex(prsfIntZero,num)&&pvTestHex(prsfIntOne,num)){
-    										//System.out.println(num);
-											int temp = pvGetIntFromHexString(num);
+    										int temp = pvGetIntFromHexString(num);
         									char[] data = Character.toChars(temp);
     										String datum = Character.toString(data[prsfIntZero]);
     										output.append(datum);
@@ -708,7 +945,6 @@ public class Plain_Sight extends JFrame{
     										if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
     											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
     										}
-    										//System.out.println("Cursor location: " + inputText.substring(inputCursor,inputCursor+prsfIntTen));
     									} else {
     										break;
     									}
@@ -862,29 +1098,32 @@ public class Plain_Sight extends JFrame{
 				continue;
 			}
     		if (foundStartPrefix) {
+    			pvLog.append("Rule File Parsing: Found <FilePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
     			if (foundEndPrefix) {
-    				//System.out.println("pvPrefix =" + pvPrefix + System.getProperty("line.separator"));
-    				if (foundNumDataLineTypes) {
-    					//System.out.println("pvNumLineTypes =" + pvNumLineTypes + System.getProperty("line.separator"));
-    					if (foundNextDataLine) {
-    						if (foundNextStartLinePrefix) {
-    						//System.out.println(pvLinePrefixes[pvLineNum] + System.getProperty("line.separator"));
-    							if (foundNextEndLinePrefix) {
-    								//System.out.println("pvLinePrefixes["+pvLineNum+"] =" + pvLinePrefixes[pvLineNum] + System.getProperty("line.separator"));
-    								if (foundNextNumDataCharsPerLine) {
-    									//System.out.println("pvNumCharsPerLine["+pvLineNum+"] =" + pvNumCharsPerLine[pvLineNum] + System.getProperty("line.separator"));
-    									if (foundNextDataCharType) {
-    										//System.out.println("pvDataCharTypes["+pvLineNum+"] =" + pvDataCharTypes[pvLineNum] + System.getProperty("line.separator"));
-    										if (foundNextStartLineDelimiter) {
-    											//System.out.println("pvLineDelimiters["+pvLineNum+"] =" + pvLineDelimiters[pvLineNum] + System.getProperty("line.separator"));
-    											if (foundNextEndLineDelimiter) {
-    												//System.out.println("pvLineDelimiters["+pvLineNum+"] =" + pvLineDelimiters[pvLineNum] + System.getProperty("line.separator"));
-    												if (foundStartDataLineOrder) {
-    													if (foundEndDataLineOrder) {
-    														//System.out.println("pvLineOrder =" + pvLineOrder + System.getProperty("line.separator"));
-    														if (foundStartPostFix) {
-    															if (foundEndPostFix) {
-    																//System.out.println("pvPostfix =" + pvPostfix + System.getProperty("line.separator"));
+    				pvLog.append("Rule File Parsing: Found </FilePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+        			if (foundNumDataLineTypes) {
+        				pvLog.append("Rule File Parsing: Found NumDataLineTypes on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+            			if (foundNextDataLine) {
+            				pvLog.append("Rule File Parsing: Found DataLine on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                			if (foundNextStartLinePrefix) {
+                				pvLog.append("Rule File Parsing: Found <LinePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                    			if (foundNextEndLinePrefix) {
+                    				pvLog.append("Rule File Parsing: Found </LinePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                        			if (foundNextNumDataCharsPerLine) {
+                        				pvLog.append("Rule File Parsing: Found NumDataCharsPerLine on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                            			if (foundNextDataCharType) {
+                            				pvLog.append("Rule File Parsing: Found DataCharType on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                			if (foundNextStartLineDelimiter) {
+                                				pvLog.append("Rule File Parsing: Found <LineDelimiter> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                    			if (foundNextEndLineDelimiter) {
+                                    				pvLog.append("Rule File Parsing: Found </LineDelimiter> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                        			if (foundStartDataLineOrder) {
+                                        				pvLog.append("Rule File Parsing: Found <DataLineOrder> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                            			if (foundEndDataLineOrder) {
+                                            				pvLog.append("Rule File Parsing: Found </DataLineOrder> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                                			if (foundStartPostFix) {
+                                                				pvLog.append("Rule File Parsing: Found <FilePostfix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                                    			if (foundEndPostFix) {
     																break; //all done, skip remaining lines
     															} else {
     																//haven't found the end of the postfix (</FilePostfix>)
@@ -892,7 +1131,6 @@ public class Plain_Sight extends JFrame{
     																	if(ruleLine.substring(y-prsfIntFourteen,y).compareTo("</FilePostfix>")==prsfIntZero){
     																		pvPostfix = pvPostfix.concat(ruleLine.substring(prsfIntZero,y-prsfIntFourteen));
     																		foundEndPostFix = true;
-    																		//System.out.println("pvPostfix =" + pvPostfix + System.getProperty("line.separator"));
     																		return true;
     																	}
     																}
@@ -911,7 +1149,6 @@ public class Plain_Sight extends JFrame{
     																			if(ruleLine.substring(y-prsfIntFourteen,y).compareTo("</FilePostfix>")==prsfIntZero){
     																				pvPostfix = ruleLine.substring(prsfIntThirteen,y-prsfIntFourteen);
     																				foundEndPostFix = true;
-    																				//System.out.println("pvPostfix =" + pvPostfix + System.getProperty("line.separator"));
     																				return true;
     																			}
     																		}
