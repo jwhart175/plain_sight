@@ -83,6 +83,9 @@ public class Plain_Sight extends JFrame{
 	private static final int prsfIntOneThousand = 1000;
 	private static final int prsfIntEightHundred = 800;
 	private static final int prsfIntFourHundred = 400;
+	private static final double prsfDoubleZero = 0.0;
+	private static final double prsfDoubleTwoFiftyFive = 255.0;
+	private static final double prsfDoubleAlmostTwo = 1.99;
 
     private JTextPane pvTextPane;
     private JTextField pvTextField;
@@ -99,6 +102,7 @@ public class Plain_Sight extends JFrame{
 	private String[] pvLineDelimiters = new String[prsfIntOne];
 	private String pvLineOrder = "";
 	private StringBuilder pvLog = new StringBuilder();
+	private int[] pvNumDigits = new int[prsfIntOne];
 	
 
     public Plain_Sight() {
@@ -735,20 +739,37 @@ public class Plain_Sight extends JFrame{
     									output.append("NaN");
     									inputCursor++;
     								} else {
-    									int num = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntOneHundred)));
-        								if (num<prsfIntTen){
+    									int num = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntTwoFiftyFive)));
+    									String outNum = Long.toString(Math.round((num*prsfIntThree+Math.random()*prsfDoubleAlmostTwo)*Math.pow(prsfIntTen, pvNumDigits[typeNum-prsfIntOne]-prsfIntThree)));
+        								for(int z = pvNumDigits[typeNum-prsfIntOne]; z > prsfIntOne; z--){
+        									if(outNum.length()<z){
+        										outNum = "0" + outNum;
+        									}
+        								}
+        								output.append(outNum);
+        								/*
+    									if (num<prsfIntTen){
         									output.append("00" + num);
         								} else if (num<prsfIntOneHundred) {
         									output.append("0" + num);
         								} else {
         									output.append(num);
         								}
+        								*/
     								}
     								lineOrderCursor = lineOrderLength;
     							} else {
     								char[] datum = new char[prsfIntOne];
     								datum[prsfIntZero] = inputText.charAt(inputCursor);
-    								int num = Character.codePointAt(datum, prsfIntZero);
+    								int num = Character.codePointAt(datum, prsfIntZero); 
+    								String outNum = Long.toString(Math.round((num*prsfIntThree+Math.random()*prsfDoubleAlmostTwo)*Math.pow(prsfIntTen, pvNumDigits[typeNum-prsfIntOne]-prsfIntThree)));
+    								for(int z = pvNumDigits[typeNum-prsfIntOne]; z > prsfIntOne; z--){
+    									if(outNum.length()<z){
+    										outNum = "0" + outNum;
+    									}
+    								}
+    								output.append(outNum);
+    								/*
     								if (num<prsfIntTen){
     									output.append("00" + num);
     								} else if (num<prsfIntOneHundred) {
@@ -756,6 +777,7 @@ public class Plain_Sight extends JFrame{
     								} else {
     									output.append(num);
     								}
+    								*/
     								inputCursor++;
     							}
     							if (x < (pvNumCharsPerLine[typeNum-prsfIntOne] - prsfIntOne)){
@@ -881,28 +903,50 @@ public class Plain_Sight extends JFrame{
     						inputCursor = inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length();
     						for(int x = prsfIntZero; x < pvNumCharsPerLine[typeNum-prsfIntOne]; x++){
 								if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("number")==prsfIntZero){
-									if(inputCursor + prsfIntThree < inputLength){
-										String num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
-										while((inputCursor + prsfIntThree < inputLength)&(!pvTestNumeric(prsfIntZero,num)|!pvTestNumeric(prsfIntOne,num)|!pvTestNumeric(prsfIntTwo,num))){
-											if(num.compareTo("NaN")==prsfIntZero){
+									if(inputCursor + pvNumDigits[typeNum-prsfIntOne] < inputLength){
+										String num = inputText.substring(inputCursor,inputCursor+pvNumDigits[typeNum-prsfIntOne]);
+										while(inputCursor + pvNumDigits[typeNum-prsfIntOne] < inputLength){
+											boolean isNumber = true;
+											for(int z = prsfIntZero; z < pvNumDigits[typeNum-prsfIntOne];z++){
+												if(!pvTestNumeric(z,num)){
+													isNumber = false;
+												}
+											}
+											if(num.contains("NaN")){
     											inputCursor = inputLength;
     											lineOrderCursor = lineOrderLength;
     											break;
-    										} else {
+    										} else if(!isNumber) {
     											inputCursor++;
-    											num = inputText.substring(inputCursor,inputCursor+prsfIntThree);
+    											num = inputText.substring(inputCursor,inputCursor+pvNumDigits[typeNum-prsfIntOne]);
+    										} else {
+    											break;
     										}
 										}
 										if(inputCursor!=inputLength){
-    										char[] data = Character.toChars(Integer.valueOf(num));
-    										String datum = Character.toString(data[prsfIntZero]);
-        									output.append(datum);
-        									inputCursor += prsfIntThree;
-        									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
-        										if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
-        											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
-        										}
-        									}
+											int inNum = prsfIntZero;
+											boolean found = false;
+											for(int y = prsfIntTwoFiftyFive; y >= (prsfIntOne); y--){
+												if(Long.valueOf(num)>=(Math.round((y*prsfIntThree)*Math.pow(prsfIntTen, pvNumDigits[typeNum-prsfIntOne]-prsfIntThree)))){
+													found = true;
+													inNum = y;
+													break;
+												}
+	        									
+	        								}
+    										if(found){
+												char[] data = Character.toChars(inNum);
+	    										String datum = Character.toString(data[prsfIntZero]);
+	        									output.append(datum);
+	        									inputCursor += pvNumDigits[typeNum-prsfIntOne];
+	        									if(x + prsfIntOne < pvNumCharsPerLine[typeNum-prsfIntOne]) {
+	        										if(inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length() < inputLength){
+	        											inputCursor = inputCursor + pvLineDelimiters[typeNum-prsfIntOne].length();
+	        										}
+	        									}
+    										} else {
+    											pvLog.append("(pvUnhide) Warning! No valid number match was found for the input at input Cursor " + inputCursor + System.getProperty("line.separator"));
+    										}
 										} else {
 											break;
 										}
@@ -1078,6 +1122,7 @@ public class Plain_Sight extends JFrame{
     	boolean foundEndDataLineOrder = false;
     	boolean foundStartPostFix = false;
     	boolean foundEndPostFix = false;
+    	boolean switcher = true;
     	String[] splits = new String[prsfIntOne];
     	for(int x = prsfIntZero; x < lines.length; x++){
     		ruleLine = lines[x];
@@ -1098,31 +1143,70 @@ public class Plain_Sight extends JFrame{
 				continue;
 			}
     		if (foundStartPrefix) {
-    			pvLog.append("Rule File Parsing: Found <FilePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+    			if(switcher){
+    				pvLog.append("Rule File Parsing: Found <FilePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+    				switcher = false;
+    			}
     			if (foundEndPrefix) {
-    				pvLog.append("Rule File Parsing: Found </FilePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+    				if(switcher){
+        				pvLog.append("Rule File Parsing: Found </FilePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+        				switcher = false;
+        			}
         			if (foundNumDataLineTypes) {
-        				pvLog.append("Rule File Parsing: Found NumDataLineTypes on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+        				if(switcher){
+            				pvLog.append("Rule File Parsing: Found NumDataLineTypes on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+            				switcher = false;
+            			}
             			if (foundNextDataLine) {
-            				pvLog.append("Rule File Parsing: Found DataLine on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+            				if(switcher){
+                				pvLog.append("Rule File Parsing: Found DataLine on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                				switcher = false;
+                			}
                 			if (foundNextStartLinePrefix) {
-                				pvLog.append("Rule File Parsing: Found <LinePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                				if(switcher){
+                    				pvLog.append("Rule File Parsing: Found <LinePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                    				switcher = false;
+                    			}
                     			if (foundNextEndLinePrefix) {
-                    				pvLog.append("Rule File Parsing: Found </LinePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                    				if(switcher){
+                        				pvLog.append("Rule File Parsing: Found </LinePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                        				switcher = false;
+                        			}
                         			if (foundNextNumDataCharsPerLine) {
-                        				pvLog.append("Rule File Parsing: Found NumDataCharsPerLine on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                        				if(switcher){
+                            				pvLog.append("Rule File Parsing: Found NumDataCharsPerLine on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                            				switcher = false;
+                            			}
                             			if (foundNextDataCharType) {
-                            				pvLog.append("Rule File Parsing: Found DataCharType on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                            				if(switcher){
+                                				pvLog.append("Rule File Parsing: Found DataCharType on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                				switcher = false;
+                                			}
                                 			if (foundNextStartLineDelimiter) {
-                                				pvLog.append("Rule File Parsing: Found <LineDelimiter> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                				if(switcher){
+                                    				pvLog.append("Rule File Parsing: Found <LineDelimiter> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                    				switcher = false;
+                                    			}
                                     			if (foundNextEndLineDelimiter) {
-                                    				pvLog.append("Rule File Parsing: Found </LineDelimiter> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                    				if(switcher){
+                                        				pvLog.append("Rule File Parsing: Found </LineDelimiter> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                        				switcher = false;
+                                        			}
                                         			if (foundStartDataLineOrder) {
-                                        				pvLog.append("Rule File Parsing: Found <DataLineOrder> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                        				if(switcher){
+                                            				pvLog.append("Rule File Parsing: Found <DataLineOrder> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                            				switcher = false;
+                                            			}
                                             			if (foundEndDataLineOrder) {
-                                            				pvLog.append("Rule File Parsing: Found </DataLineOrder> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                            				if(switcher){
+                                                				pvLog.append("Rule File Parsing: Found </DataLineOrder> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                                				switcher = false;
+                                                			}
                                                 			if (foundStartPostFix) {
-                                                				pvLog.append("Rule File Parsing: Found <FilePostfix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                                				if(switcher){
+                                                    				pvLog.append("Rule File Parsing: Found <FilePostfix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+                                                    				switcher = false;
+                                                    			}
                                                     			if (foundEndPostFix) {
     																break; //all done, skip remaining lines
     															} else {
@@ -1131,6 +1215,7 @@ public class Plain_Sight extends JFrame{
     																	if(ruleLine.substring(y-prsfIntFourteen,y).compareTo("</FilePostfix>")==prsfIntZero){
     																		pvPostfix = pvPostfix.concat(ruleLine.substring(prsfIntZero,y-prsfIntFourteen));
     																		foundEndPostFix = true;
+    																		switcher = true;
     																		return true;
     																	}
     																}
@@ -1142,6 +1227,7 @@ public class Plain_Sight extends JFrame{
     															//haven't found the start of the postfix <FilePostfix>
     															if (ruleLine.length()>=prsfIntThirteen){ 
     																if (ruleLine.substring(prsfIntZero,prsfIntThirteen).compareTo("<FilePostfix>")==prsfIntZero){
+    																	switcher = true;
     																	foundStartPostFix = true;
     																	pvPostfix = ruleLine.substring(prsfIntThirteen,ruleLine.length())+System.getProperty("line.separator");
     																	if(pvPostfix.length() >= prsfIntFourteen){
@@ -1149,6 +1235,9 @@ public class Plain_Sight extends JFrame{
     																			if(ruleLine.substring(y-prsfIntFourteen,y).compareTo("</FilePostfix>")==prsfIntZero){
     																				pvPostfix = ruleLine.substring(prsfIntThirteen,y-prsfIntFourteen);
     																				foundEndPostFix = true;
+    																				if(switcher){
+    				                                                    				pvLog.append("Rule File Parsing: Found <FilePostfix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+    				                                                    			}
     																				return true;
     																			}
     																		}
@@ -1163,6 +1252,7 @@ public class Plain_Sight extends JFrame{
 																if(ruleLine.substring(y-prsfIntSixteen,y).compareTo("</DataLineOrder>")==prsfIntZero){
 																	pvLineOrder = pvLineOrder.concat(ruleLine.substring(prsfIntZero,y-prsfIntSixteen));
 																	foundEndDataLineOrder = true;
+																	switcher = true;
 																	break;
 																}
 															}
@@ -1175,12 +1265,16 @@ public class Plain_Sight extends JFrame{
     													if (ruleLine.length()>=prsfIntFifteen){ 
 															if (ruleLine.substring(prsfIntZero,prsfIntFifteen).compareTo("<DataLineOrder>")==prsfIntZero){
 																foundStartDataLineOrder = true;
+																switcher = true;
 																pvLineOrder = ruleLine.substring(prsfIntFifteen,ruleLine.length())+System.getProperty("line.separator");
 																if(pvLineOrder.length() >= prsfIntSixteen){
 																	for(int y = prsfIntSixteen; y <= ruleLine.length(); y++) {
 																		if(ruleLine.substring(y-prsfIntSixteen,y).compareTo("</DataLineOrder>")==prsfIntZero){
 																			pvLineOrder = ruleLine.substring(prsfIntFifteen,y-prsfIntSixteen);
 																			foundEndDataLineOrder = true;
+																			if(switcher){
+					                                            				pvLog.append("Rule File Parsing: Found <DataLineOrder> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+					                                            			}
 																			break;
 																		}								
 																	}
@@ -1197,6 +1291,7 @@ public class Plain_Sight extends JFrame{
 															pvLineDelimiters[pvLineNum] = pvLineDelimiters[pvLineNum].concat(ruleLine.substring(prsfIntZero,y-prsfIntSixteen));
 															hit=true;
 															if(pvLineNum+prsfIntOne==pvNumLineTypes) {
+																switcher = true;
 																foundNextEndLineDelimiter = true;
 																break;
 															} else {
@@ -1220,6 +1315,7 @@ public class Plain_Sight extends JFrame{
     											//haven't found the start of the next line delimiter "<LineDelimiter>"
     											if (ruleLine.length()>=prsfIntFifteen){ 
 													if (ruleLine.substring(prsfIntZero,prsfIntFifteen).compareTo("<LineDelimiter>")==prsfIntZero){
+														switcher = true;
 														foundNextStartLineDelimiter = true;
 														pvLineDelimiters[pvLineNum] = ruleLine.substring(prsfIntFifteen,ruleLine.length())+System.getProperty("line.separator");
 														if(pvLineDelimiters[pvLineNum].length() >= prsfIntSixteen){
@@ -1228,6 +1324,9 @@ public class Plain_Sight extends JFrame{
 																	pvLineDelimiters[pvLineNum] = ruleLine.substring(prsfIntFifteen,y-prsfIntSixteen);
 																	if(pvLineNum+prsfIntOne==pvNumLineTypes) {
 																		foundNextEndLineDelimiter = true;
+																		if(switcher){
+						                                    				pvLog.append("Rule File Parsing: Found <LineDelimiter> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+						                                    			}
 																		break;
 																	} else {
 																		pvLineNum++;
@@ -1250,11 +1349,29 @@ public class Plain_Sight extends JFrame{
     									} else {
     										//haven't found the next data char type "DataCharType"
     										if (ruleLine.length()>=prsfIntTwelve){ 
-												if (splits[0].compareTo("DataCharType")==prsfIntZero){
+												if (splits[prsfIntZero].compareTo("DataCharType")==prsfIntZero){
 													if (splits.length>prsfIntOne){
 														if(splits[prsfIntOne].length()>=prsfIntOne){
+															switcher = true;
 															foundNextDataCharType = true;
 															pvDataCharTypes[pvLineNum] = splits[prsfIntOne];
+															if (splits.length>=prsfIntThree){
+																if(splits[prsfIntTwo].length()>=prsfIntOne){
+																	try {
+																		pvNumDigits[pvLineNum] = Integer.valueOf(splits[prsfIntTwo]);
+																		if(pvNumDigits[pvLineNum]<prsfIntThree){
+																			pvLog.append("Rule File Parsing: Warning! Number of digits can not be less than three!" + System.getProperty("line.separator"));
+																			pvNumDigits[pvLineNum]=prsfIntThree;
+																		}
+																	} catch (Exception e) {
+																		pvLog.append("Rule File Parsing: Warning! Improper format of number bounds on rule line " + (x+prsfIntOne) + System.getProperty("line.separator"));
+																		pvLog.append("Assuming upper bound of 255 and lower bound of 0." + System.getProperty("line.separator"));
+																		pvNumDigits[pvLineNum] = prsfIntThree;
+																	}
+																}
+															} else {	
+																pvNumDigits[pvLineNum] = prsfIntThree;
+															}
 														} else {
 															System.out.println("Warning: No Data Character Type found in rule file after DataCharType declaration statement!");
 														}
@@ -1270,6 +1387,7 @@ public class Plain_Sight extends JFrame{
 											if (splits[prsfIntZero].compareTo("NumDataCharsPerLine")==prsfIntZero){
 												if (splits.length>prsfIntOne){
 													if(splits[prsfIntOne].length()>=prsfIntOne){
+														switcher = true;
 														foundNextNumDataCharsPerLine = true;
 														pvNumCharsPerLine[pvLineNum] = Integer.valueOf(splits[prsfIntOne]);
 													} else {
@@ -1287,6 +1405,7 @@ public class Plain_Sight extends JFrame{
 									for(int y = prsfIntThirteen; y <= ruleLine.length(); y++) {
 										if(ruleLine.substring(y-prsfIntThirteen,y).compareTo("</LinePrefix>")==prsfIntZero){
 											pvLinePrefixes[pvLineNum] = pvLinePrefixes[pvLineNum].concat(ruleLine.substring(prsfIntZero,y-prsfIntThirteen));
+											switcher = true;
 											foundNextEndLinePrefix = true;
 											break;
 										}
@@ -1299,6 +1418,7 @@ public class Plain_Sight extends JFrame{
     							//haven't found the start of the next line prefix "<LinePrefix>"
     							if (ruleLine.length()>=prsfIntTwelve){ 
 									if (ruleLine.substring(prsfIntZero,prsfIntTwelve).compareTo("<LinePrefix>")==prsfIntZero){
+										switcher = true;
 										foundNextStartLinePrefix = true;
 										pvLinePrefixes[pvLineNum] = ruleLine.substring(prsfIntTwelve,ruleLine.length())+System.getProperty("line.separator");
 										if(pvLinePrefixes[pvLineNum].length() >= prsfIntThirteen){
@@ -1306,6 +1426,9 @@ public class Plain_Sight extends JFrame{
 												if(ruleLine.substring(y-prsfIntThirteen,y).compareTo("</LinePrefix>")==prsfIntZero){
 													pvLinePrefixes[pvLineNum] = ruleLine.substring(prsfIntTwelve,y-prsfIntThirteen);
 													foundNextEndLinePrefix = true;
+													if(switcher){
+					                    				pvLog.append("Rule File Parsing: Found <LinePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+					                    			}
 													break;
 												}
 											}
@@ -1317,13 +1440,11 @@ public class Plain_Sight extends JFrame{
     					} else {
     						//haven't found the next data line "DataLine"
     						if (ruleLine.length()>=prsfIntEight){ 
-								//System.out.println(ruleLine);
-								//System.out.println(splits[prsfIntZero]);
-								//System.out.println(splits[prsfIntOne]);
 								if (splits[prsfIntZero].compareTo("DataLine")==prsfIntZero){
 									if (splits.length>prsfIntOne){
 										if(splits[prsfIntOne].length()>=prsfIntOne){
 											if(Integer.valueOf(splits[prsfIntOne])==pvLineNum+prsfIntOne){
+												switcher = true;
 												foundNextDataLine = true;
 											} else {
 												System.out.println("Warning: The DataLine identification numbers found in the rule file are out of order!");
@@ -1341,18 +1462,18 @@ public class Plain_Sight extends JFrame{
     				} else {
     					//haven't found the number of data lines "NumDataLineTypes"
     					if (ruleLine.length()>=prsfIntSixteen){ 
-							//System.out.println(ruleLine);
-							//System.out.println(splits[prsfIntZero]);
 							if (splits[prsfIntZero].compareTo("NumDataLineTypes")==prsfIntZero){
 								if (splits.length>prsfIntOne){
 									if(splits[prsfIntOne].length()>=prsfIntOne){
 										if(Integer.valueOf(splits[prsfIntOne])<prsfIntTen){
+											switcher = true;
 											foundNumDataLineTypes = true;
 											pvNumLineTypes = Integer.valueOf(splits[prsfIntOne]);
 											pvLinePrefixes = new String[pvNumLineTypes];
 											pvNumCharsPerLine = new int[pvNumLineTypes];
 											pvDataCharTypes = new String[pvNumLineTypes];
 											pvLineDelimiters = new String[pvNumLineTypes];
+											pvNumDigits = new int[pvNumLineTypes];
 											pvLineNum = prsfIntZero;
 										} else {
 											System.out.println("Warning: Number of Data Lines should not exceed nine!");
@@ -1373,6 +1494,7 @@ public class Plain_Sight extends JFrame{
     				for(int y = prsfIntThirteen; y <= ruleLine.length(); y++) {
 						if(ruleLine.substring(y-prsfIntThirteen,y).compareTo("</FilePrefix>")==prsfIntZero){
 							pvPrefix = pvPrefix.concat(ruleLine.substring(prsfIntZero,y-prsfIntThirteen));
+							switcher = true;
 							foundEndPrefix = true;
 							break;
 						}
@@ -1385,6 +1507,7 @@ public class Plain_Sight extends JFrame{
     			//haven't found the start of the file prefix "<FilePrefix>"
     			if (ruleLine.length()>=prsfIntTwelve){ 
 					if (ruleLine.substring(prsfIntZero,prsfIntTwelve).compareTo("<FilePrefix>")==prsfIntZero){
+						switcher = true;
 						foundStartPrefix = true;
 						pvPrefix = ruleLine.substring(prsfIntTwelve,ruleLine.length())+System.getProperty("line.separator");
 						if(pvPrefix.length() >= prsfIntThirteen){
@@ -1392,6 +1515,9 @@ public class Plain_Sight extends JFrame{
 								if(ruleLine.substring(y-prsfIntThirteen,y).compareTo("</FilePrefix>")==prsfIntZero){
 									pvPrefix = ruleLine.substring(prsfIntTwelve,y-prsfIntThirteen);
 									foundEndPrefix = true;
+									if(switcher){
+					    				pvLog.append("Rule File Parsing: Found <FilePrefix> on ruleLine " + (x+prsfIntOne) + System.getProperty("line.separator"));
+					    			}
 									break;
 								}
 							}

@@ -13,7 +13,7 @@ NumDataLineTypes 6
 DataLine 1
 <LinePrefix></LinePrefix>
 NumDataCharsPerLine 3
-DataCharType number
+DataCharType number 5
 <LineDelimiter>011</LineDelimiter>
 DataLine 2
 <LinePrefix>023
@@ -29,7 +29,7 @@ DataCharType hex
 DataLine 4
 <LinePrefix>3d</LinePrefix>
 NumDataCharsPerLine 1
-DataCharType number
+DataCharType number 2
 <LineDelimiter>023</LineDelimiter>
 DataLine 5
 <LinePrefix>055</LinePrefix>

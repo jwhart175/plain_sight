@@ -15,7 +15,9 @@ NumDataLineTypes 3
 DataLine 1
 <LinePrefix>Position(x,y,z): </LinePrefix>
 NumDataCharsPerLine 3
-DataCharType number (or hex or text)
+#Optionally: DataCharType number <integer greater than or equal to three> can be used in order to transform the
+#data into numbers with more digits.
+DataCharType number (or hex or text) 
 <LineDelimiter>, </LineDelimiter>
 DataLine 2
 <LinePrefix>Velocity(vx,vy,vz): </LinePrefix>
