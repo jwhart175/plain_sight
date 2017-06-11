@@ -8,7 +8,7 @@
 #NumDataCharsPerLine <integer> defines the number of characters from the original to be included in the line
 #DataCharType <number, hex, or text> defines how the characters from the original will be transformed, if at all
 #<LineDelimiter> text </LineDelimiter> Adds "text" in between the data transforms
-NumDataLineTypes 3
+NumDataLineTypes 4
 DataLine 1
 <LinePrefix>TestA_Dataline1:</LinePrefix>
 NumDataCharsPerLine 3
@@ -30,11 +30,22 @@ DataCharType hex
 <LineDelimiter>
 TestA_Dataline3_Delimiter
 </LineDelimiter>
+DataLine 4
+<LinePrefix>
+TestA_Dataline4
+</LinePrefix>
+NumDataCharsPerLine 5
+DataCharType time
+<LineDelimiter>
+TestA_Dataline4_Delimiter
+</LineDelimiter>
 #<DataLineOrder> Arrangement of integers </DataLineOrder> Defines how the DataLines will be arranged in the file.  
 #DataLines will be repeated until all of the data has been written
 <DataLineOrder>1
 2
 3
+4
+4
 3
 2
 1
