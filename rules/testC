@@ -44,7 +44,7 @@ DataCharType hex
 DataLine 7
 <LinePrefix>00:01:23</LinePrefix>
 NumDataCharsPerLine 3
-DataCharType time 99999999
+DataCharType 24time 99999999
 <LineDelimiter>04:43:12</LineDelimiter>
 #<DataLineOrder> Arrangement of integers </DataLineOrder> Defines how the DataLines will be arranged in the file.  
 #DataLines will be repeated until all of the data has been written

@@ -57,7 +57,7 @@ DataLine 7
 testB_Dataline7
 </LinePrefix>
 NumDataCharsPerLine 3
-DataCharType time 23000
+DataCharType 12time 23000
 <LineDelimiter>
 testB_Dataline7_Delimiter
 </LineDelimiter>
