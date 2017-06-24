@@ -1,0 +1,82 @@
+<FilePrefix>BEGINNING SERVER LOGIN AUDIT</FilePrefix>
+NumDataLineTypes 4
+DataLine 1
+<LinePrefix></LinePrefix>
+NumDataCharsPerLine 1
+DataCharType 24time 7000
+<LineDelimiter></LineDelimiter>
+DataLine 2
+<LinePrefix> LOGIN BY USERID </LinePrefix>
+NumDataCharsPerLine 1
+DataCharType number 4
+<LineDelimiter></LineDelimiter>
+DataLine 3
+<LinePrefix> SUCCESSFUL, LOGIN TOKEN IS </LinePrefix>
+NumDataCharsPerLine 16
+DataCharType hex
+<LineDelimiter></LineDelimiter>
+DataLine 4
+<LinePrefix> LOGIN FAILED, USERID </LinePrefix>
+NumDataCharsPerLine 1
+DataCharType number 4
+<LineDelimiter></LineDelimiter>
+<DataLineOrder>
+123
+123
+123
+14
+123
+123
+123
+123
+14
+123
+123
+123
+123
+123
+123
+14
+123
+123
+123
+14
+123
+123
+123
+123
+123
+123
+123
+123
+123
+123
+14
+123
+123
+123
+123
+14
+123
+123
+123
+14
+123
+123
+123
+123
+123
+123
+123
+123
+123
+123
+123
+123
+123
+123
+123
+123
+123
+14</DataLineOrder>
+<FilePostfix></FilePostfix>
