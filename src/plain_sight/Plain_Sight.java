@@ -100,12 +100,15 @@ public class Plain_Sight extends JFrame{
 	private static final int prsfIntForty = 40;
 	private static final int prsfIntOneHundred = 100;
 	private static final int prsfIntOneFifty = 150;
+	private static final int prsfIntOneSixtySeven = 167;
 	private static final int prsfIntOneSixtyNine = 169;
 	private static final int prsfIntTwoFiftyFive = 255;
 	private static final int prsfIntTwoFiftySix = 256;
 	private static final int prsfIntThreeThirtyEight = 338;
+	private static final int prsfIntThreeThirtySix = 336;
 	private static final int prsfIntOneThousand = 1000;
-	private static final int prsfIntThirteenFourtySix = 1346;
+	private static final int prsfIntThirteenFourtyFour = 1344;
+	private static final int prsfIntFourteenHundred = 1400;
 	private static final int prsfIntEightHundred = 800;
 	private static final int prsfIntFourHundred = 400;
 	private static final int prsfIntNinetyNine = 99;
@@ -677,7 +680,7 @@ public class Plain_Sight extends JFrame{
 		pvLog = new StringBuilder();
 	}
 
-
+	//hide /home/user/git/plain_sight/input/test_text /home/user/git/plain_sight/output/out_login /home/user/git/plain_sight/rules/loginLog
 	private int pvGetIntFromHexString(String hex){
 		//(pvGetIntFromHexString) returns the integer value of a hex string
 		int length = hex.length();
@@ -864,15 +867,15 @@ public class Plain_Sight extends JFrame{
 									datum[prsfIntZero] = inputText.charAt(inputCursor);
 									int num = Character.codePointAt(datum, prsfIntZero);
 									if(lastTime==prsfIntMinusOne){
-										for (int y = prsfIntThirteenFourtySix - prsfIntTwo; y >= prsfIntZero ;y--){
+										for (int y = prsfIntFourteenHundred; y >= prsfIntZero ;y--){
 											if(pvStartTime[typeNum-prsfIntOne]>=(y*prsfIntTwoFiftySix)){
 												pvStartTime[typeNum-prsfIntOne] = y*prsfIntTwoFiftySix;
 												break;
 											}
-										}
+										} 
 										outTime = pvStartTime[typeNum-prsfIntOne] + num;
 										lastTime = pvStartTime[typeNum-prsfIntOne];
-									} else if (lastTime<=(prsfIntThirteenFourtySix*prsfIntTwoFiftySix)){
+									} else if (lastTime<=(prsfIntFourteenHundred*prsfIntTwoFiftySix)){
 										outTime = lastTime + num;
 										lastTime += prsfIntTwoFiftySix;
 									} else {
@@ -968,7 +971,7 @@ public class Plain_Sight extends JFrame{
 									datum[prsfIntZero] = inputText.charAt(inputCursor);
 									int num = Character.codePointAt(datum, prsfIntZero);
 									if(lastTime==prsfIntMinusOne){
-										for (int y = prsfIntThreeThirtyEight - prsfIntTwo; y >= prsfIntZero ;y--){
+										for (int y = prsfIntThreeThirtySix; y >= prsfIntZero ;y--){
 											if(pvStartTime[typeNum-prsfIntOne]>=(y*prsfIntTwoFiftySix)){
 												pvStartTime[typeNum-prsfIntOne] = y*prsfIntTwoFiftySix;
 												break;
@@ -976,7 +979,7 @@ public class Plain_Sight extends JFrame{
 										}
 										outTime = pvStartTime[typeNum-prsfIntOne] + num;
 										lastTime = pvStartTime[typeNum-prsfIntOne];
-									} else if (lastTime<=(prsfIntThreeThirtyEight*prsfIntTwoFiftySix)){
+									} else if (lastTime<=(prsfIntThreeThirtySix*prsfIntTwoFiftySix)){
 										outTime = lastTime + num;
 										lastTime += prsfIntTwoFiftySix;
 									} else {
@@ -1072,7 +1075,7 @@ public class Plain_Sight extends JFrame{
 									datum[prsfIntZero] = inputText.charAt(inputCursor);
 									int num = Character.codePointAt(datum, prsfIntZero);
 									if(lastTime==prsfIntMinusOne){
-										for (int y = prsfIntOneSixtyNine - prsfIntTwo; y >= prsfIntZero ;y--){
+										for (int y = prsfIntOneSixtySeven; y >= prsfIntZero ;y--){
 											if(pvStartTime[typeNum-prsfIntOne]>=(y*prsfIntTwoFiftySix)){
 												pvStartTime[typeNum-prsfIntOne] = y*prsfIntTwoFiftySix;
 												break;
@@ -1080,7 +1083,7 @@ public class Plain_Sight extends JFrame{
 										}
 										outTime = pvStartTime[typeNum-prsfIntOne] + num;
 										lastTime = pvStartTime[typeNum-prsfIntOne];
-									} else if (lastTime<=(prsfIntOneSixtyNine*prsfIntTwoFiftySix)){
+									} else if (lastTime<=(prsfIntOneSixtySeven*prsfIntTwoFiftySix)){
 										outTime = lastTime + num;
 										lastTime += prsfIntTwoFiftySix;
 									} else {
@@ -1926,7 +1929,7 @@ public class Plain_Sight extends JFrame{
 											//System.out.println("seconds = "+seconds);
 											int readTime = (hours*prsfIntSixty*prsfIntSixty)+(minutes*prsfIntSixty)+seconds;
 											//System.out.println("readTime = " + readTime);
-											for (int y = prsfIntThirteenFourtySix; y >= prsfIntZero ;y--){
+											for (int y = prsfIntFourteenHundred; y >= prsfIntZero ;y--){
 												if(readTime>(y*prsfIntTwoFiftySix)){
 													lastTime = y*prsfIntTwoFiftySix;
 													//System.out.println("lastTime = " + lastTime);
