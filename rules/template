@@ -9,7 +9,7 @@ unedited. Until it is ended with: </FilePrefix>
 #DataLine <integer> starts the definition of the DataLine determined by the integer
 #<LinePrefix> text </LinePrefix> Adds "text" to the start of the given DataLine type
 #NumDataCharsPerLine <integer> defines the number of characters from the original to be included in the line
-#DataCharType <number, hex, text, time, 12time, 24time> <for number: digits; for time, 12time, 24time: start time> defines how the characters from the original will be transformed, if at all
+#DataCharType <number, hex, text, time, 12time, 24time, datetime> <for number: digits; for time, 12time, 24time: start time, for datetime: year> <for datetime only: month> <for datetime only: day> <for datetime only: hour (24)> defines how the characters from the original will be transformed, if at all
 #<LineDelimiter> text </LineDelimiter> Adds "text" in between the data transforms
 NumDataLineTypes 3
 DataLine 1

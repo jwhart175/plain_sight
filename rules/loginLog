@@ -3,7 +3,7 @@ NumDataLineTypes 4
 DataLine 1
 <LinePrefix></LinePrefix>
 NumDataCharsPerLine 1
-DataCharType 12time 7000
+DataCharType datetime 2017 4 20 11
 <LineDelimiter></LineDelimiter>
 DataLine 2
 <LinePrefix> LOGIN BY USERID </LinePrefix>
