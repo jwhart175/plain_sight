@@ -19,7 +19,7 @@ sudo yum install java //Fedora
 
 Then clone the git repository with:
 
-git clone https://github.com/jwhart175/Radioactivity_Sim
+git clone https://github.com/jwhart175/plain_sight
 
 Change directories and run the program:
 
