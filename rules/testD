@@ -1,0 +1,39 @@
+#This is the template rule file which defines the proper format for rule files
+#The "#" comments out a line if placed at the beginning, does not work if placed later in the line.
+#<FilePrefix> text </FilePrefix> Adds "text" to the start of the output file, including line and space formatting
+<FilePrefix>TestD
+TestB_Prefix</FilePrefix>
+#NumDataLineTypes <integer> defines the number of types of data lines to be included in the output file
+#DataLine <integer> starts the definition of the DataLine determined by the integer
+#<LinePrefix> text </LinePrefix> Adds "text" to the start of the given DataLine type
+#NumDataCharsPerLine <integer> defines the number of characters from the original to be included in the line
+#DataCharType <number, hex, or text> defines how the characters from the original will be transformed, if at all
+#<LineDelimiter> text </LineDelimiter> Adds "text" in between the data transforms
+NumDataLineTypes 4
+DataLine 1
+<LinePrefix>time </LinePrefix>
+NumDataCharsPerLine 10
+DataCharType time
+<LineDelimiter>, </LineDelimiter>
+DataLine 2
+<LinePrefix>12time </LinePrefix>
+NumDataCharsPerLine 10
+DataCharType 12time
+<LineDelimiter>, </LineDelimiter>
+DataLine 3
+<LinePrefix>24time </LinePrefix>
+NumDataCharsPerLine 10
+DataCharType 24time
+<LineDelimiter>, </LineDelimiter>
+DataLine 4
+<LinePrefix>datetime </LinePrefix>
+NumDataCharsPerLine 10
+DataCharType datetime 2017 08 23 10
+<LineDelimiter>, </LineDelimiter>
+<DataLineOrder>
+1
+2
+3
+4</DataLineOrder>
+#<FilePostfix> End test </FilePostfix> Adds "text" to the end of the output file
+<FilePostfix>21</FilePostfix>
