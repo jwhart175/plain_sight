@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<!--
+MIT License
+
+Copyright (c) 2018 Jonathan Hart
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+-->
+
+<body>
+<div><h1>Plain_Sight HTML/JS</h1></div>
+<div><span>Text to Process:</span></div>
+<div><input type="file" id="filein" accept="text/*" multiple=false></input></div>
+<div><textarea id="fileintext" rows="8" cols="150"></textarea></div>
+<div><span>Rule file:</span></div>
+<div><input type="file" id="rulefile" accept="text/*" multiple=false></input></div>
+<div><textarea id="rulefiletext" rows="8" cols="150"></textarea></div>
+<div><button id="hideButton">HIDE</button><button id="unhideButton">UNHIDE</button></div>
+<div><span>Output:</span></div>
+<div><textarea id="fileout" row="8" cols="150" readonly=true></textarea></div>
+</body>
+
+<script src="/home/user/git/plain_sight/src/plain_sight/plain_sight.js"></script>
+<script>
+var hideButton = document.getElementById("hideButton");
+var unhideButton = document.getElementById("unhideButton");
+var filein = document.getElementById("filein");
+var fileintext = document.getElementById("fileintext");
+var rulefile = document.getElementById("rulefile");
+var rulefiletext = document.getElementById("rulefiletext");
+var fileout = document.getElementById("fileout");
+var mask = new Mask();
+
+filein.onchange = function(event) {
+	var input = event.target;
+	inReader = new FileReader();
+	inReader.readAsText(input.files[0]);
+	inReader.onload = function() {
+		fileintext.value = inReader.result;
+	};
+}
+
+rulefile.onchange = function(event) {
+	var input = event.target;
+	inReader = new FileReader();
+	inReader.readAsText(input.files[0]);
+	inReader.onload = function() {
+		rulefiletext.value = inReader.result;
+	};
+}
+
+hideButton.onclick = function() {
+		var inputText = fileintext.value;
+		var ruleText = rulefiletext.value;
+		mask.setInString(inputText);
+		mask.setRuleString(ruleText);
+		var output = mask.hide;
+		fileout.value = output;
+}
+
+unhideButton.onclick = function() {
+		var inputText = fileintext.value
+		var ruleText = rulefiletext.value
+		mask.setInString(inputText);
+		mask.setRuleString(ruleText);
+		var output = mask.unhide;
+		fileout.value = output;
+}
+</script>

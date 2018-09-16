@@ -1,0 +1,47 @@
+<FilePrefix>BEGINNING SERVER LOGIN AUDIT</FilePrefix>
+NumDataLineTypes 6
+DataLine 1
+<LinePrefix></LinePrefix>
+NumDataCharsPerLine 1
+DataCharType datetime 2018 9 2 5
+<LineDelimiter></LineDelimiter>
+DataLine 2
+<LinePrefix> LOGIN BY USERID </LinePrefix>
+NumDataCharsPerLine 1
+DataCharType number 4
+<LineDelimiter></LineDelimiter>
+DataLine 3
+<LinePrefix> SUCCESSFUL, LOGIN TOKEN IS </LinePrefix>
+NumDataCharsPerLine 16
+DataCharType hex
+<LineDelimiter></LineDelimiter>
+DataLine 4
+<LinePrefix> LOGIN FAILED, USERID </LinePrefix>
+NumDataCharsPerLine 1
+DataCharType number 4
+<LineDelimiter></LineDelimiter>
+DataLine 5
+<LinePrefix>-</LinePrefix>
+NumDataCharsPerLine 1
+DataCharType number 3
+<LineDelimiter></LineDelimiter>
+DataLine 6
+<LinePrefix>-</LinePrefix>
+NumDataCharsPerLine 2
+DataCharType hex
+<LineDelimiter>.</LineDelimiter>
+<DataLineOrder>
+12563
+12563
+12563
+1456
+12563
+12563
+12563
+12563
+1456
+12563
+12563
+12563
+12563</DataLineOrder>
+<FilePostfix></FilePostfix>

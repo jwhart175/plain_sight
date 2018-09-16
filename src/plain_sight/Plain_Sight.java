@@ -1,6 +1,6 @@
 /* MIT License
 
-Copyright (c) 2017 Jonathan Wayne Hart
+Copyright (c) 2018 Jonathan Wayne Hart
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ public class Plain_Sight extends JFrame{
 	 * prsf = protected static final
 	 * pusf = public static final
 	 */
-	
+
 	private class prTerminalKeyListener implements KeyListener {
 		public void keyPressed(KeyEvent e){
 			//scroll back through old commands when up or down keys are pressed
@@ -146,7 +146,7 @@ public class Plain_Sight extends JFrame{
 	private int[] pvStartMonth = new int[prsfIntOne];
 	private int[] pvStartDay = new int[prsfIntOne];
 	private int[] pvStartHour = new int[prsfIntOne];
-	
+
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -154,7 +154,7 @@ public class Plain_Sight extends JFrame{
 			}
 		});
 	}
-	
+
 	private static void prsShowGUI() {
 		//Create and set up the window.
 		final Plain_Sight frame = new Plain_Sight();
@@ -162,7 +162,7 @@ public class Plain_Sight extends JFrame{
 		frame.pack();
 		frame.setVisible(true);
 	}
-	
+
 	public Plain_Sight() {
 		super("Plain_Sight Terminal");
 		//creates a simple console
@@ -612,7 +612,7 @@ public class Plain_Sight extends JFrame{
 					pvLog.append(e + System.getProperty("line.separator"));
 					pvLog.append("Failed to unhide file!");
 				}
-				
+
 				//testD
 				inputFile = "/home/user/git/plain_sight/input/test_text";
 				outputFile = "/home/user/git/plain_sight/output/testD_out";
@@ -750,7 +750,7 @@ public class Plain_Sight extends JFrame{
 				} else if(hex.substring(length-x-prsfIntOne,length-x).compareTo("f")==prsfIntZero){
 					number += prsfIntFifteen*product;
 				} else if(pvTestNumeric(length-x-prsfIntOne,hex)){
-					number += Integer.valueOf(hex.substring(length-x-prsfIntOne,length-x))*product;
+					number += Integer.valueOf(hex.substring(length-x-prsfIntOne,length-x)).intValue()*product;
 				} else {
 					return prsfIntMinusOne;
 				}
@@ -803,7 +803,7 @@ public class Plain_Sight extends JFrame{
 			while(lineOrderCursor < lineOrderLength){
 				//System.out.println(lineOrderCursor + "<" + lineOrderLength);
 				if(pvTestNumeric(lineOrderCursor,pvLineOrder)){
-					typeNum = Integer.valueOf(pvLineOrder.substring(lineOrderCursor,lineOrderCursor+prsfIntOne));
+					typeNum = Integer.valueOf(pvLineOrder.substring(lineOrderCursor,lineOrderCursor+prsfIntOne)).intValue();
 					if (((typeNum)<=pvNumLineTypes)&((typeNum)>prsfIntZero)){
 						output.append(pvLineOrder.substring(lastLineOrderCursor,lineOrderCursor));
 						output.append(pvLinePrefixes[typeNum-prsfIntOne]);
@@ -814,7 +814,7 @@ public class Plain_Sight extends JFrame{
 										output.append("NaN");
 										inputCursor++;
 									} else {
-										int num = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntTwoFiftyFive)));
+										int num = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntTwoFiftyFive))).intValue();
 										String outNum = Long.toString(Math.round(((num*prsfIntThree)+(Math.random()*prsfDoubleAlmostTwo))*Math.pow(prsfIntTen, pvNumDigits[typeNum-prsfIntOne]-prsfIntThree)));
 										for(int z = pvNumDigits[typeNum-prsfIntOne]; z > prsfIntOne; z--){
 											if(outNum.length()<z){
@@ -905,9 +905,9 @@ public class Plain_Sight extends JFrame{
 										output.append("99:99:99");
 										inputCursor++;
 									} else {
-										int hours = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntEleven)));
-										int minutes = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntFiftyNine)));
-										int seconds = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntFiftyNine)));
+										int hours = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntEleven))).intValue();
+										int minutes = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntFiftyNine))).intValue();
+										int seconds = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntFiftyNine))).intValue();
 										String out = "";
 										if (hours<prsfIntTen){
 											out = "0" + hours + ":";
@@ -938,7 +938,7 @@ public class Plain_Sight extends JFrame{
 												pvStartTime[typeNum-prsfIntOne] = y*prsfIntTwoFiftySix;
 												break;
 											}
-										} 
+										}
 										outTime = pvStartTime[typeNum-prsfIntOne] + num;
 										thisLastTime = pvStartTime[typeNum-prsfIntOne] + prsfIntTwoFiftySix;
 									} else if (thisLastTime<=(limit*prsfIntTwoFiftySix)){
@@ -1017,9 +1017,9 @@ public class Plain_Sight extends JFrame{
 										output.append("9999-12-31 99:99:99");
 										inputCursor++;
 									} else {
-										int hours = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntTwentyThree)));
-										int minutes = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntFiftyNine)));
-										int seconds = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntFiftyNine)));
+										int hours = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntTwentyThree))).intValue();
+										int minutes = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntFiftyNine))).intValue();
+										int seconds = Integer.valueOf(Long.toString(Math.round(Math.random()*prsfIntFiftyNine))).intValue();
 										String out = "";
 										if (hours<prsfIntTen){
 											out = "0" + hours + ":";
@@ -1062,8 +1062,8 @@ public class Plain_Sight extends JFrame{
 												lastDateTime = y*prsfIntTwoFiftySix;
 												break;
 											}
-												
-										} 
+
+										}
 										outTime = lastDateTime + num;
 										outYear = lastYear;
 										outMonth = lastMonth;
@@ -1190,7 +1190,7 @@ public class Plain_Sight extends JFrame{
 											}
 										}
 									}
-									String out = ""; 
+									String out = "";
 									if (outYear<prsfIntTen){
 										out = "000" + outYear + "-";
 									} else if (outYear<prsfIntOneHundred){
@@ -1509,25 +1509,25 @@ public class Plain_Sight extends JFrame{
 																if(splits[prsfIntTwo].length()>=prsfIntOne){
 																	try {
 																		if(pvDataCharTypes[pvLineNum].compareTo("number")==prsfIntZero){
-																			pvNumDigits[pvLineNum] = Integer.valueOf(splits[prsfIntTwo]);
+																			pvNumDigits[pvLineNum] = Integer.valueOf(splits[prsfIntTwo]).intValue();
 																			if(pvNumDigits[pvLineNum]<prsfIntThree){
 																				pvLog.append("Rule File Parsing: Warning! Number of digits can not be less than three!" + System.getProperty("line.separator"));
 																				pvNumDigits[pvLineNum]=prsfIntThree;
 																			}
 																		} else if(pvDataCharTypes[pvLineNum].compareTo("time")==prsfIntZero){
-																			pvStartTime[pvLineNum] = Integer.valueOf(splits[prsfIntTwo]);
+																			pvStartTime[pvLineNum] = Integer.valueOf(splits[prsfIntTwo]).intValue();
 																			if(pvStartTime[pvLineNum]<prsfIntZero){
 																				pvLog.append("Rule File Parsing: Warning! Start time cannot be less than zero!" + System.getProperty("line.separator"));
 																				pvStartTime[pvLineNum] = prsfIntZero;
 																			}
 																		} else if(pvDataCharTypes[pvLineNum].compareTo("24time")==prsfIntZero){
-																			pvStartTime[pvLineNum] = Integer.valueOf(splits[prsfIntTwo]);
+																			pvStartTime[pvLineNum] = Integer.valueOf(splits[prsfIntTwo]).intValue();
 																			if(pvStartTime[pvLineNum]<prsfIntZero){
 																				pvLog.append("Rule File Parsing: Warning! Start time cannot be less than zero!" + System.getProperty("line.separator"));
 																				pvStartTime[pvLineNum] = prsfIntZero;
 																			}
 																		} else if(pvDataCharTypes[pvLineNum].compareTo("12time")==prsfIntZero){
-																			pvStartTime[pvLineNum] = Integer.valueOf(splits[prsfIntTwo]);
+																			pvStartTime[pvLineNum] = Integer.valueOf(splits[prsfIntTwo]).intValue();
 																			if(pvStartTime[pvLineNum]<prsfIntZero){
 																				pvLog.append("Rule File Parsing: Warning! Start time cannot be less than zero!" + System.getProperty("line.separator"));
 																				pvStartTime[pvLineNum] = prsfIntZero;
@@ -1535,13 +1535,13 @@ public class Plain_Sight extends JFrame{
 																		} else if(pvDataCharTypes[pvLineNum].compareTo("datetime")==prsfIntZero){
 																			pvStartTime[pvLineNum] = prsfIntZero;
 																			pvNumDigits[pvLineNum] = prsfIntThree;
-																			pvStartYear[pvLineNum] = Integer.valueOf(splits[prsfIntTwo]);
+																			pvStartYear[pvLineNum] = Integer.valueOf(splits[prsfIntTwo]).intValue();
 																			if (splits.length>=prsfIntFour){
-																				pvStartMonth[pvLineNum] = Integer.valueOf(splits[prsfIntThree]);
+																				pvStartMonth[pvLineNum] = Integer.valueOf(splits[prsfIntThree]).intValue();
 																				if(splits.length>=prsfIntFive){
-																					pvStartDay[pvLineNum] = Integer.valueOf(splits[prsfIntFour]);
+																					pvStartDay[pvLineNum] = Integer.valueOf(splits[prsfIntFour]).intValue();
 																					if(splits.length>=prsfIntSix){
-																						pvStartHour[pvLineNum] = Integer.valueOf(splits[prsfIntFive]);
+																						pvStartHour[pvLineNum] = Integer.valueOf(splits[prsfIntFive]).intValue();
 																					} else {
 																						pvStartHour[pvLineNum] = prsfIntZero;
 																					}
@@ -1602,7 +1602,7 @@ public class Plain_Sight extends JFrame{
 													if(splits[prsfIntOne].length()>=prsfIntOne){
 														switcher = true;
 														foundNextNumDataCharsPerLine = true;
-														pvNumCharsPerLine[pvLineNum] = Integer.valueOf(splits[prsfIntOne]);
+														pvNumCharsPerLine[pvLineNum] = Integer.valueOf(splits[prsfIntOne]).intValue();
 													} else {
 														System.out.println("Warning: No Number of Characters Per Line found in rule file after NumDataCharsPerLine declaration statement!");
 													}
@@ -1671,7 +1671,7 @@ public class Plain_Sight extends JFrame{
 								if (splits[prsfIntZero].compareTo("DataLine")==prsfIntZero){
 									if (splits.length>prsfIntOne){
 										if(splits[prsfIntOne].length()>=prsfIntOne){
-											if(Integer.valueOf(splits[prsfIntOne])==(pvLineNum+prsfIntOne)){
+											if(Integer.valueOf(splits[prsfIntOne]).intValue()==(pvLineNum+prsfIntOne)){
 												switcher = true;
 												foundNextDataLine = true;
 											} else {
@@ -1698,10 +1698,10 @@ public class Plain_Sight extends JFrame{
 							if (splits[prsfIntZero].compareTo("NumDataLineTypes")==prsfIntZero){
 								if (splits.length>prsfIntOne){
 									if(splits[prsfIntOne].length()>=prsfIntOne){
-										if(Integer.valueOf(splits[prsfIntOne])<prsfIntTen){
+										if(Integer.valueOf(splits[prsfIntOne]).intValue()<prsfIntTen){
 											switcher = true;
 											foundNumDataLineTypes = true;
-											pvNumLineTypes = Integer.valueOf(splits[prsfIntOne]);
+											pvNumLineTypes = Integer.valueOf(splits[prsfIntOne]).intValue();
 											pvLinePrefixes = new String[pvNumLineTypes];
 											pvNumCharsPerLine = new int[pvNumLineTypes];
 											pvDataCharTypes = new String[pvNumLineTypes];
@@ -1898,7 +1898,7 @@ public class Plain_Sight extends JFrame{
 			lastInputCursor = inputCursor;
 			while(lineOrderCursor < lineOrderLength){
 				if(pvTestNumeric(lineOrderCursor,pvLineOrder)){
-					typeNum = Integer.valueOf(pvLineOrder.substring(lineOrderCursor,lineOrderCursor+prsfIntOne));
+					typeNum = Integer.valueOf(pvLineOrder.substring(lineOrderCursor,lineOrderCursor+prsfIntOne)).intValue();
 					if (((typeNum)<=pvNumLineTypes)&((typeNum)>prsfIntZero)){
 						if((inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length()) < inputLength){
 							inputCursor = inputCursor + pvLinePrefixes[typeNum-prsfIntOne].length();
@@ -1928,7 +1928,7 @@ public class Plain_Sight extends JFrame{
 											int inNum = prsfIntZero;
 											boolean found = false;
 											for(int y = prsfIntTwoFiftyFive; y >= (prsfIntOne); y--){
-												if(Long.valueOf(num)>=(Math.round((y*prsfIntThree)*Math.pow(prsfIntTen, pvNumDigits[typeNum-prsfIntOne]-prsfIntThree)))){
+												if(Long.valueOf(num).longValue()>=(Math.round((y*prsfIntThree)*Math.pow(prsfIntTen, pvNumDigits[typeNum-prsfIntOne]-prsfIntThree)))){
 													found = true;
 													inNum = y;
 													break;
@@ -2040,11 +2040,11 @@ public class Plain_Sight extends JFrame{
 										if(isTime&&(inputCursor<inputLength)){
 											//System.out.println("Starting to translate output...");
 											String[] timeSplit = test.split(":");
-											int hours = Integer.valueOf(timeSplit[prsfIntZero]);
+											int hours = Integer.valueOf(timeSplit[prsfIntZero]).intValue();
 											//System.out.println("hours = "+hours);
-											int minutes = Integer.valueOf(timeSplit[prsfIntOne]);
+											int minutes = Integer.valueOf(timeSplit[prsfIntOne]).intValue();
 											//System.out.println("minutes = "+minutes);
-											int seconds = Integer.valueOf(timeSplit[prsfIntTwo]);
+											int seconds = Integer.valueOf(timeSplit[prsfIntTwo]).intValue();
 											//System.out.println("seconds = "+seconds);
 											int readTime = (hours*prsfIntSixty*prsfIntSixty)+(minutes*prsfIntSixty)+seconds;
 											//System.out.println("readTime = " + readTime);
@@ -2053,7 +2053,7 @@ public class Plain_Sight extends JFrame{
 													lastTime = y*prsfIntTwoFiftySix;
 													//System.out.println("lastTime = " + lastTime);
 													break;
-												} 
+												}
 											}
 											int readChar = readTime - lastTime;
 											char[] data = new char[prsfIntOne];
@@ -2119,11 +2119,11 @@ public class Plain_Sight extends JFrame{
 										if(isTime&&(inputCursor<inputLength)){
 											//System.out.println("Starting to translate output...");
 											String[] timeSplit = test.split(":");
-											int hours = Integer.valueOf(timeSplit[prsfIntZero]);
+											int hours = Integer.valueOf(timeSplit[prsfIntZero]).intValue();
 											//System.out.println("hours = "+hours);
-											int minutes = Integer.valueOf(timeSplit[prsfIntOne]);
+											int minutes = Integer.valueOf(timeSplit[prsfIntOne]).intValue();
 											//System.out.println("minutes = "+minutes);
-											int seconds = Integer.valueOf(timeSplit[prsfIntTwo]);
+											int seconds = Integer.valueOf(timeSplit[prsfIntTwo]).intValue();
 											//System.out.println("seconds = "+seconds);
 											int readTime = (hours*prsfIntSixty*prsfIntSixty)+(minutes*prsfIntSixty)+seconds;
 											//System.out.println("readTime = " + readTime);
@@ -2132,7 +2132,7 @@ public class Plain_Sight extends JFrame{
 													last24Time = y*prsfIntTwoFiftySix;
 													//System.out.println("last24Time = " + last24Time);
 													break;
-												} 
+												}
 											}
 											int readChar = readTime - last24Time;
 											char[] data = new char[prsfIntOne];
@@ -2198,11 +2198,11 @@ public class Plain_Sight extends JFrame{
 										if(isTime&&(inputCursor<inputLength)){
 											//System.out.println("Starting to translate output...");
 											String[] timeSplit = test.split(":");
-											int hours = Integer.valueOf(timeSplit[prsfIntZero]);
+											int hours = Integer.valueOf(timeSplit[prsfIntZero]).intValue();
 											//System.out.println("hours = "+hours);
-											int minutes = Integer.valueOf(timeSplit[prsfIntOne]);
+											int minutes = Integer.valueOf(timeSplit[prsfIntOne]).intValue();
 											//System.out.println("minutes = "+minutes);
-											int seconds = Integer.valueOf(timeSplit[prsfIntTwo]);
+											int seconds = Integer.valueOf(timeSplit[prsfIntTwo]).intValue();
 											//System.out.println("seconds = "+seconds);
 											int readTime = (hours*prsfIntSixty*prsfIntSixty)+(minutes*prsfIntSixty)+seconds;
 											//System.out.println("readTime = " + readTime);
@@ -2211,7 +2211,7 @@ public class Plain_Sight extends JFrame{
 													last12Time = y*prsfIntTwoFiftySix;
 													//System.out.println("last12Time = " + last12Time);
 													break;
-												} 
+												}
 											}
 											int readChar = readTime - last12Time;
 											char[] data = new char[prsfIntOne];
@@ -2278,11 +2278,11 @@ public class Plain_Sight extends JFrame{
 										if(isTime&&(inputCursor<inputLength)){
 											//System.out.println("Starting to translate output...");
 											String[] timeSplit = test.split(":");
-											int hours = Integer.valueOf(timeSplit[prsfIntZero]);
+											int hours = Integer.valueOf(timeSplit[prsfIntZero]).intValue();
 											//System.out.println("hours = "+hours);
-											int minutes = Integer.valueOf(timeSplit[prsfIntOne]);
+											int minutes = Integer.valueOf(timeSplit[prsfIntOne]).intValue();
 											//System.out.println("minutes = "+minutes);
-											int seconds = Integer.valueOf(timeSplit[prsfIntTwo]);
+											int seconds = Integer.valueOf(timeSplit[prsfIntTwo]).intValue();
 											//System.out.println("seconds = "+seconds);
 											int readTime = (hours*prsfIntSixty*prsfIntSixty)+(minutes*prsfIntSixty)+seconds;
 											//System.out.println("readTime = " + readTime);
@@ -2291,7 +2291,7 @@ public class Plain_Sight extends JFrame{
 													lastDateTime = y*prsfIntTwoFiftySix;
 													//System.out.println("lastDateTime = " + lastDateTime);
 													break;
-												} 
+												}
 											}
 											int readChar = readTime - lastDateTime;
 											char[] data = new char[prsfIntOne];
