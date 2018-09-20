@@ -1,120 +1,102 @@
-class Mask {
-	constructor(rules) {
-		var count = 0;
-		this.inString="";
-		this.ruleString="";
-		if(rules){
-			if(rules.rPrefix){
-				this.rPrefix=rules.rPrefix;
-			} else {
-				this.rPrefix = "";
-			}
-			if(rules.rPostfix){
-				this.rPostfix=rules.rPostfix;
-			} else {
-				this.rPostfix = "";
-			}
-			if(rules.rNumLineTypes){
-				count++;
-				this.rNumLineTypes=rules.rNumLineTypes;
-			} else {
-				this.rNumLineTypes = 0;
-			}
-			if(rules.rLineNum){
-				count++;
-				this.rLineNum=rules.rLineNum;
-			} else {
-				this.rLineNum = 0;
-			}
-			if(rules.rLinePrefixes){
-				this.rLinePrefixes=rules.rLinePrefixes;
-			} else {
-				this.rLinePrefixes = [""];
-			}
-			if(rules.rNumCharsPerLine){
-				count++;
-				this.rNumCharsPerLine=rules.rNumCharsPerLine
-			} else {
-				this.rNumCharsPerLine = [0];
-			}
-			if(rules.rDataCharTypes){
-				count++;
-				this.rDataCharTypes=rules.rDataCharTypes;
-			} else {
-				this.rDataCharTypes = [""];
-			}
-			if(rules.rLineDelimiters){
-				this.rLineDelimiters=rules.rDataCharTypes;
-			} else {
-				this.rLineDelimiters = [""];
-			}
-			if(rules.rLineOrder){
-				count++;
-				this.rLineOrder=rules.rLineOrder;
-			} else {
-				this.rLineOrder = "";
-			}
-			if(rules.rNumDigits){
-				this.rNumDigits=rules.rNumDigits;
-			} else {
-				this.rNumDigits = [0];
-			}
-			if(rules.rStartTime){
-				this.rStartTime=rules.rStartTime;
-			} else {
-				this.rStartTime = [0];
-			}
-			if(rules.rStartYear){
-				this.rStartYear=rules.rStartYear;
-			} else {
-				this.rStartYear = [0];
-			}
-			if(rules.rStartMonth){
-				this.rStartMonth=rules.rStartMonth;
-			} else {
-				this.rStartMonth = [0];
-			}
-			if(rules.rStartDay){
-				this.rStartDay=rules.rStartDay;
-			} else {
-				this.rStartDay = [0];
-			}
-			if(rules.rStartHour){
-				this.rStartHour=rules.rStartHour;
-			} else {
-				this.rStartHour = [0];
-			}
-			if(count==5){
-				this.rulesValid = true;
-			} else {
-				this.rulesValid = false;
-			}
-		} else {
-			this.rulesValid=false;
+browser.runtime.onConnect.addListener(connect);
+browser.runtime.onMessage.addListener(receiver);
+var ruleString = "";
+var pageContent = "";
+var output = "";
+var ports = {};
+var handshooks = {};
+
+function connect(port) {
+  console.log(port);
+  ports[port.sender.tab.id] = port;
+  handshooks[port.sender.tab.id] = false;
+  port.postMessage({handShake:"shake"});
+  port.onMessage.addListener(receiver);
+}
+
+function receiver(msg,port) {
+	console.log(msg);
+	console.log(port.sender);
+	if(msg.handShake==="shake"){
+		handshooks[port.sender.tab.id] = true;
+	}
+	if(msg.rules){
+		if(typeof msg.rules == typeof "dog"){
+			ruleString = msg.rules;
+			mask.setRuleString(ruleString);
 		}
 	}
+	if(msg.input){
+		if(typeof msg.input == typeof "dog"){
+			mask.setInString(msg.input);
+			output = mask.hide();
+			console.log(output);
+			ports[port.sender.tab.id].postMessage({out:output});
 
-	setInString(input){
+		}
+	}
+}
+
+browser.pageAction.onClicked.addListener(function() {
+	browser.tabs.query({active:true}).then((tabs) => {
+			console.log(tabs[0]);
+			ports[tabs[0].id].postMessage({getpage:"getPage"});
+
+	});
+});
+
+function updateCount(tabId, isOnRemoved) {
+browser.tabs.query({}).then((tabs) => {
+    let length = tabs.length;
+    for(let tab of tabs){
+    	browser.pageAction.show(tab.id);
+    }
+
+    if (isOnRemoved && tabId && tabs.map((t) => { return t.id; }).includes(tabId)) {
+      length--;
+    }
+
+    browser.browserAction.setBadgeText({text: length.toString()});
+    if (length > 2) {
+      browser.browserAction.setBadgeBackgroundColor({'color': 'green'});
+    } else {
+      browser.browserAction.setBadgeBackgroundColor({'color': 'red'});
+    }
+  });
+}
+
+browser.tabs.onRemoved.addListener(
+  (tabId) => { updateCount(tabId, true);
+});
+browser.tabs.onCreated.addListener(
+  (tabId) => { updateCount(tabId, false);
+});
+updateCount();
+
+var mask = {
+
+	setInString: function(input){
 		if(input&&(typeof "string"==typeof input)){
 			this.inString=input;
 		} else {
 			console.log("setInString Failed!  No input detected!");
 		}
-	}
+	},
 
-	setRuleString(rules){
+	setRuleString: function(rules){
 		if(rules){
 			if(typeof rules == typeof "dog"){
 				this.ruleString=rules;
+				console.log("setRuleString Succeeded!");
 			} else {
 				console.log("setRuleString Failed!  Input is not a string!");
 			}
 		} else {
 			console.log("setRuleString Failed!  No input detected!");
 		}
-	}
+	},
 
-	get checkRules() {
+	checkRules: function() {
 		if(this.ruleString){
 			if(this.parseRules(this.ruleString)){
 				this.rulesValid = true;
@@ -125,9 +107,9 @@ class Mask {
 		} else {
 			return false;
 		}
-	}
+	},
 
-	get hide() {
+	hide: function() {
 		if(this.inString){
 			if(this.ruleString){
 				if(this.parseRules(this.ruleString)){
@@ -146,9 +128,9 @@ class Mask {
 		} else {
 			return "Hide Failed!  There is nothing to hide!";
 		}
-	}
+	},
 
-	get unhide() {
+	unhide: function() {
 		if(this.inString){
 			if(this.ruleString){
 				if(this.parseRules(this.ruleString)){
@@ -167,9 +149,9 @@ class Mask {
 		} else {
 			return "Unhide Failed!  There is nothing to unhide!";
 		}
-	}
+	},
 
-	hider(inputText) {
+	hider: function(inputText) {
 		if(this.rulesValid){
 			var output = "";
 			output+=this.rPrefix;
@@ -634,9 +616,9 @@ class Mask {
 			alert(out)
 			return out;
 		}
-	}
+	},
 
-	unhider(inputText) {
+	unhider: function(inputText) {
 		if(this.rulesValid){
 			var output = "";
 			var inputLength = inputText.length;
@@ -1051,9 +1033,9 @@ class Mask {
 			alert(out)
 			return out;
 		}
-	}
+	},
 
-	testNumeric(index,test){
+	testNumeric:function(index,test){
 		var answer = false;
 		if(index<test.length){
 			if(index>=0){
@@ -1081,9 +1063,9 @@ class Mask {
 			}
 		}
 		return answer;
-	}
+	},
 
-	testHex(index,test){
+	testHex:function(index,test){
 			var answer = false;
 			if(index<test.length){
 				if(index>=0){
@@ -1123,9 +1105,9 @@ class Mask {
 				}
 			}
 			return answer;
-		}
+		},
 
-	getIntFromHexString(hex){
+	getIntFromHexString:function(hex){
 		var length = hex.length;
 		var number = 0;
 		var product = 1;
@@ -1154,9 +1136,9 @@ class Mask {
 			product = product*16;
 		}
 		return number;
-	}
+	},
 
-	parseRules(ruleText){
+	parseRules:function(ruleText){
 		this.rulesValid=false;
 		this.rPrefix = "";
 		this.rPostfix = "";
@@ -1813,9 +1795,4 @@ class Mask {
 		}
 		return false;
 	}
-
-
-
-
-
-}
+};

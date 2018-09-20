@@ -1,0 +1,14 @@
+{
+  "description": "Allows the user to select a rule file and attempt to decode the current page using plain_sight.",
+  "manifest_version": 2,
+  "name": "UncommonSight",
+  "version": "1.0",
+  "homepage_url": "https://github.com/jwhart175/plain_sight",
+  "icons": {"48": "icons/plain_sight-48.png"},
+  "permissions": ["tabs","activeTab"],
+  "background": {"scripts": ["background.js"]},
+  "content_scripts": [{"matches": ["<all_urls>"],"js": ["getPage.js"]}],
+  "page_action": {"browser_style": true,"default_icon": "icons/plain_sight-32.png"},
+  "browser_action": {"browser_style": true,"default_icon": "icons/plain_sight-32.png","default_popup": "choose_rules.html"},
+  "applications": {"gecko": {"strict_min_version": "57.0a1"}}
+}
