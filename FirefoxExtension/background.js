@@ -45,34 +45,6 @@ browser.pageAction.onClicked.addListener(function() {
 	});
 });
 
-function updateCount(tabId, isOnRemoved) {
-browser.tabs.query({}).then((tabs) => {
-    let length = tabs.length;
-    for(let tab of tabs){
-    	browser.pageAction.show(tab.id);
-    }
-
-    if (isOnRemoved && tabId && tabs.map((t) => { return t.id; }).includes(tabId)) {
-      length--;
-    }
-
-    browser.browserAction.setBadgeText({text: length.toString()});
-    if (length > 2) {
-      browser.browserAction.setBadgeBackgroundColor({'color': 'green'});
-    } else {
-      browser.browserAction.setBadgeBackgroundColor({'color': 'red'});
-    }
-  });
-}
-
-browser.tabs.onRemoved.addListener(
-  (tabId) => { updateCount(tabId, true);
-});
-browser.tabs.onCreated.addListener(
-  (tabId) => { updateCount(tabId, false);
-});
-updateCount();
-
 var mask = {
 
 	setInString: function(input){
