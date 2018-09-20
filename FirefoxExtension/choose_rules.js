@@ -1,5 +1,7 @@
+
 var handshook = false;
-var chooser = document.getElementById("rulefile");
+var fileIn = document.getElementById("rulefile");
+var rulesPort;
 setTimeout(onStartUp, 2000);
 function onStartUp() {
 	rulesPort = browser.runtime.connect({name:"rulesPort"});
@@ -10,7 +12,7 @@ function onStartUp() {
 				  handshook = true;
 			  }
 		});
-		chooser.onchange = function(event) {
+		fileIn.onchange = function(event) {
 			var input = event.target;
 			var rulefile = "";
 			inReader = new FileReader();
@@ -19,9 +21,10 @@ function onStartUp() {
 				rulefile = inReader.result;
 				if(handshook){
 					rulesPort.postMessage({rules:rulefile});
-					alert(rulefile);
 				}
 			};
+
+
 		}
 
 	}

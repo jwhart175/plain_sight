@@ -1,5 +1,16 @@
 browser.runtime.onConnect.addListener(connect);
 browser.runtime.onMessage.addListener(receiver);
+browser.tabs.onCreated.addListener(updateTabs);
+browser.tabs.onRemoved.addListener(updateTabs);
+updateTabs();
+function updateTabs() {
+	browser.tabs.query({}).then((tabs) => {
+		for(let tab of tabs){
+			browser.pageAction.show(tab.id);
+		}
+	});
+}
+
 var ruleString = "";
 var pageContent = "";
 var output = "";
@@ -7,18 +18,29 @@ var ports = {};
 var handshooks = {};
 
 function connect(port) {
-  console.log(port);
-  ports[port.sender.tab.id] = port;
-  handshooks[port.sender.tab.id] = false;
+  //console.log(port);
+  if(port.sender.tab){
+	  ports[port.sender.tab.id] = port;
+	  handshooks[port.sender.tab.id] = false;
+  } else {
+	  ports[port.sender.contextId] = port;
+	  handshooks[port.sender.contextId] = false;
+  }
   port.postMessage({handShake:"shake"});
   port.onMessage.addListener(receiver);
 }
 
 function receiver(msg,port) {
-	console.log(msg);
-	console.log(port.sender);
+	//console.log(msg);
+	//console.log(port.sender);
+	var id;
+	if(port.sender.tab){
+		id=port.sender.tab.id;
+	} else {
+		id=port.sender.contextId;
+	}
 	if(msg.handShake==="shake"){
-		handshooks[port.sender.tab.id] = true;
+		handshooks[id] = true;
 	}
 	if(msg.rules){
 		if(typeof msg.rules == typeof "dog"){
@@ -29,19 +51,30 @@ function receiver(msg,port) {
 	if(msg.input){
 		if(typeof msg.input == typeof "dog"){
 			mask.setInString(msg.input);
-			output = mask.hide();
-			console.log(output);
-			ports[port.sender.tab.id].postMessage({out:output});
+			output = mask.unhide();
+			//console.log(output);
+			ports[id].postMessage({out:output});
 
 		}
 	}
 }
 
+var tabOpened = false;
+browser.browserAction.onClicked.addListener(function() {
+   if(!tabOpened){
+	   browser.tabs.create({
+	     "url": "/choose_rules.html"
+	   }).then(() => {
+		 tabOpened = true;
+	   });
+   }
+});
+
+
 browser.pageAction.onClicked.addListener(function() {
 	browser.tabs.query({active:true}).then((tabs) => {
-			console.log(tabs[0]);
+			//console.log(tabs[0]);
 			ports[tabs[0].id].postMessage({getpage:"getPage"});
-
 	});
 });
 
