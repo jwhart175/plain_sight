@@ -10,10 +10,10 @@ function onStartUp() {
 				  handshook = true;
 			  }
 			  if(msg.getpage=="getPage"){
-				  pagePort.postMessage({input:document.documentElement.innerHTML});
+				  pagePort.postMessage({input:document.documentElement.outerHTML});
 			  }
 			  if(msg.out){
-				  if(typeof msg.out==typeof "dog"){
+				  if(typeof msg.out==typeof "test"){
 					  document.documentElement.innerHTML = msg.out;
 				  }
 			  }
