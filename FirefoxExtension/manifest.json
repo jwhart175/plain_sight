@@ -8,7 +8,6 @@
   "permissions": ["tabs","activeTab"],
   "background": {"scripts": ["background.js"]},
   "content_scripts": [{"matches": ["<all_urls>"],"js": ["getPage.js"]}],
-  "page_action": {"browser_style": true,"default_icon": "icons/plain_sight-32.png"},
   "browser_action": {"browser_style": true,"default_icon": "icons/plain_sight-32.png"},
   "applications": {"gecko": {"strict_min_version": "57.0a1"}}
 }

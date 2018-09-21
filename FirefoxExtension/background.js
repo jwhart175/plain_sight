@@ -1,15 +1,7 @@
 browser.runtime.onConnect.addListener(connect);
 browser.runtime.onMessage.addListener(receiver);
-browser.tabs.onCreated.addListener(updateTabs);
-browser.tabs.onRemoved.addListener(updateTabs);
-updateTabs();
-function updateTabs() {
-	browser.tabs.query({}).then((tabs) => {
-		for(let tab of tabs){
-			browser.pageAction.show(tab.id);
-		}
-	});
-}
+browser.browserAction.setBadgeText({text: "cfg"});
+browser.browserAction.setBadgeBackgroundColor({'color': 'red'});
 
 var ruleString = "";
 var pageContent = "";
@@ -46,6 +38,13 @@ function receiver(msg,port) {
 		if(typeof msg.rules == typeof "dog"){
 			ruleString = msg.rules;
 			mask.setRuleString(ruleString);
+			if(mask.checkRules()){
+			    browser.browserAction.setBadgeText({text: "see"});
+			    browser.browserAction.setBadgeBackgroundColor({'color': 'blue'});
+			} else {
+				browser.browserAction.setBadgeText({text: "cfg"});
+			    browser.browserAction.setBadgeBackgroundColor({'color': 'red'});
+			}
 		}
 	}
 	if(msg.input){
@@ -59,23 +58,17 @@ function receiver(msg,port) {
 	}
 }
 
-var tabOpened = false;
 browser.browserAction.onClicked.addListener(function() {
-   if(!tabOpened){
-	   browser.tabs.create({
-	     "url": "/choose_rules.html"
-	   }).then(() => {
-		 tabOpened = true;
-	   });
-   }
-});
-
-
-browser.pageAction.onClicked.addListener(function() {
-	browser.tabs.query({active:true}).then((tabs) => {
+   if(mask.checkRules()){
+	   browser.tabs.query({active:true}).then((tabs) => {
 			//console.log(tabs[0]);
 			ports[tabs[0].id].postMessage({getpage:"getPage"});
-	});
+	   });
+   } else {
+	   browser.tabs.create({
+	     "url": "/choose_rules.html"
+	   });
+   }
 });
 
 var mask = {
