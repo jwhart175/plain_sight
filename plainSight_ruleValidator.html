@@ -5,6 +5,7 @@
 </head>
 <!--
 MIT License
+
 Copyright (c) 2018 Jonathan Hart
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -13,6 +14,7 @@ in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
@@ -23,43 +25,32 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
 -->
 
 <body>
-<div><h1>Plain_Sight HTML/JS</h1></div>
+<div><h1>Plain_Sight Rule File Validator</h1></div>
 <div><p></p><p></p><span>Directions:</span></div>
-<div><span>1. In "Text to Process" select or enter a text message file to hide or an already masked file to unhide.</span></div>
-<div><span>2. In "Rule file" select or enter a valid plain_sight rule file to use for processing the input.</span></div>
-<div><span>3. Hit hide to generate new masked text in the output box, or unhide to attempt to generate the original text from a hidden file in the output box.</span><p></p></div>
-<div><span>Text to Process:</span></div>
-<div><input type="file" id="filein" accept="text/*" multiple=false></input></div>
-<div><textarea id="fileintext" rows="8" cols="150"></textarea></div>
+<div><span>1. This form allows you to validate a custom rule file.</span></div>
+<div><span>2. In "Rule file" select or enter a candidate plain_sight rule file.</span></div>
+<div><span>3. Hit Validate to have the file tested and receive feedback.</span><p></p></div>
 <div><span>Rule file:</span></div>
 <div><input type="file" id="rulefile" accept="text/*" multiple=false></input></div>
 <div><textarea id="rulefiletext" rows="8" cols="150"></textarea></div>
-<div><button id="hideButton">HIDE</button><button id="unhideButton">UNHIDE</button></div>
-<div><span>Output:</span></div>
-<div><textarea id="fileout" row="8" cols="150" readonly=true></textarea></div>
+<div><button id="validateButton">VALIDATE</button></div>
+<div><span>Feedback:</span></div>
+<div><textarea id="feedback" row="8" cols="150" readonly=true></textarea></div>
 </body>
-
 <script src="/home/user/git/plain_sight/src/plain_sight/plain_sight.js"></script>
 <script>
-var hideButton = document.getElementById("hideButton");
-var unhideButton = document.getElementById("unhideButton");
-var filein = document.getElementById("filein");
-var fileintext = document.getElementById("fileintext");
+
+var validateButton = document.getElementById("validateButton");
 var rulefile = document.getElementById("rulefile");
 var rulefiletext = document.getElementById("rulefiletext");
-var fileout = document.getElementById("fileout");
+var feedback = document.getElementById("feedback");
 var mask = new Mask();
-filein.onchange = function(event) {
-	var input = event.target;
-	inReader = new FileReader();
-	inReader.readAsText(input.files[0]);
-	inReader.onload = function() {
-		fileintext.value = inReader.result;
-	};
-}
+var testString = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOP!@#$%^&*()_+=-<>?/.,{}|\][;:0001a11a08:52:1211:32:21 \n testing 1 2 3";
+
 rulefile.onchange = function(event) {
 	var input = event.target;
 	inReader = new FileReader();
@@ -68,20 +59,20 @@ rulefile.onchange = function(event) {
 		rulefiletext.value = inReader.result;
 	};
 }
-hideButton.onclick = function() {
-		var inputText = fileintext.value;
-		var ruleText = rulefiletext.value;
-		mask.setInString(inputText);
-		mask.setRuleString(ruleText);
-		var output = mask.hide;
-		fileout.value = output;
-}
-unhideButton.onclick = function() {
-		var inputText = fileintext.value
+
+validateButton.onclick = function() {
 		var ruleText = rulefiletext.value
-		mask.setInString(inputText);
+		mask.setInString(testString);
 		mask.setRuleString(ruleText);
-		var output = mask.unhide;
-		fileout.value = output;
+		var processText = mask.hide;
+		mask.setInString(processText);
+		processText = mask.unhide;
+		var feedbackString = "";
+		if(processText===testString){
+			feedbackString = "Rule file is Valid!  Test data was successfully hidden and then unhidden with 100% accuracy."
+		} else {
+			feedbackString = "Rule file is Invalid!  Test data was not successfully recovered!." + "\n" + "testString = " + testString + "\n" + "ProcessedTestString = " + processText + "\n";
+		}
+		feedback.value = feedbackString;
 }
 </script>
