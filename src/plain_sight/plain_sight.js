@@ -3,6 +3,7 @@ class Mask {
 		var count = 0;
 		this.inString="";
 		this.ruleString="";
+		this.logString="";
 		if(rules){
 			if(rules.rPrefix){
 				this.rPrefix=rules.rPrefix;
@@ -125,6 +126,698 @@ class Mask {
 		} else {
 			return false;
 		}
+	}
+
+	get debugRules() {
+		var ruleLine = "";
+		var lines = this.ruleString.split("\n");
+		var foundStartPrefix = false;
+		var foundEndPrefix = false;
+		var foundNumDataLineTypes = false;
+		var foundNextDataLine = false;
+		var foundNextStartLinePrefix = false;
+		var foundNextEndLinePrefix = false;
+		var foundNextNumDataCharsPerLine = false;
+		var foundNextDataCharType = false;
+		var foundNextStartLineDelimiter = false;
+		var foundNextEndLineDelimiter = false;
+		var foundStartDataLineOrder = false;
+		var foundEndDataLineOrder = false;
+		var foundStartPostFix = false;
+		var foundEndPostFix = false;
+		var switcher = false;
+		var splits = "";
+		for(var x = 0; x < lines.length; x++){
+			ruleLine = lines[x];
+			splits = ruleLine.split(" ");
+			if (ruleLine.length>=1){
+				if (ruleLine.substring(0,1)=="#"){
+					this.logString += "Rule File Line " + x + " Is A Comment => Skipping\n";
+					continue;
+				} else if (ruleLine.substring(0,1)==" "){
+					this.logString += "Rule File Line " + x + " Is A Comment => Skipping\n";
+					continue;
+				}
+			}
+			if (ruleLine.length>=2){
+				if(ruleLine.substring(0,2)=="//"){
+					this.logString += "Rule File Line " + x + " Is A Comment => Skipping\n";
+					continue;
+				}
+			}
+			if (ruleLine=="\n"){
+				this.logString += "Rule File Line " + x + " Is A Carriage Return => Skipping\n";
+				continue;
+			}
+			if (foundStartPrefix) {
+				if (foundEndPrefix) {
+					if (foundNumDataLineTypes) {
+						if (foundNextDataLine) {
+							if (foundNextStartLinePrefix) {
+								if (foundNextEndLinePrefix) {
+									if (foundNextNumDataCharsPerLine) {
+										if (foundNextDataCharType) {
+											if (foundNextStartLineDelimiter) {
+												if (foundNextEndLineDelimiter) {
+													if (foundStartDataLineOrder) {
+														if (foundEndDataLineOrder) {
+															if (foundStartPostFix) {
+																if(switcher){
+																	console.log("Rule File Parsing: Found <FilePostfix> on ruleLine " + (x+1) + "\n");
+																	switcher = false;
+																}
+																if (foundEndPostFix) {
+																	break;
+																} else {
+																	for(var y = 14; y <= ruleLine.length; y++) {
+																		if(ruleLine.substring(y-14,y)=="</FilePostfix>"){
+																			this.rPostfix = this.rPostfix.concat(ruleLine.substring(0,y-14));
+																			foundEndPostFix = true;
+																			switcher = true;
+																			this.logString += "Found </FilePostfix> On Rule File Line " + x + "\n";
+																		}
+																	}
+																	for(var y = 20; (y <= ruleLine.length)&&!switcher; y++) {
+																		if(ruleLine.substring(y-20,y)=="&lt;/FilePostfix&gt;"){
+																			this.rPostfix = this.rPostfix.concat(ruleLine.substring(0,y-20));
+																			foundEndPostFix = true;
+																			switcher = true;
+																			this.logString += "Found </FilePostfix> On Rule File Line " + x + "\n";
+																		}
+																	}
+																	if(!foundEndPostFix){
+																		this.rPostfix = this.rPostfix.concat(ruleLine+"\n");
+																	}
+																}
+															} else {
+																if (ruleLine.length>=13){
+																	if (ruleLine.substring(0,13)=="<FilePostfix>"){
+																		switcher = true;
+																		foundStartPostFix = true;
+																		this.logString += "Found <FilePostfix> On Rule File Line " + x + "\n";
+																		this.rPostfix = ruleLine.substring(13,ruleLine.length)+"\n";
+																		if(this.rPostfix.length >= 14){
+																			for(var y = 14; y <= ruleLine.length; y++) {
+																				if(ruleLine.substring(y-14,y)=="</FilePostfix>"){
+																					this.rPostfix = ruleLine.substring(13,y-14);
+																					foundEndPostFix = true;
+																					this.logString += "Found <FilePostfix> and </FilePostfix> On Rule File Line " + x + "\n";
+																					break;
+																				}
+																			}
+
+																		}
+																	}
+																	if (ruleLine.length>=19 && !switcher){
+																		if (ruleLine.substring(0,19)=="&lt;FilePostfix&gt;"){
+																			switcher = true;
+																			foundStartPostFix = true;
+																			this.logString += "Found <FilePostfix> On Rule File Line " + x + "\n";
+																			this.rPostfix = ruleLine.substring(19,ruleLine.length)+"\n";
+																			if(this.rPostfix.length >= 20){
+																				for(var y = 20; y <= ruleLine.length; y++) {
+																					if(ruleLine.substring(y-20,y)=="&lt;/FilePostfix&gt;"){
+																						this.rPostfix = ruleLine.substring(19,y-20);
+																						foundEndPostFix = true;
+																						this.logString += "Found <FilePostfix> and </FilePostfix> On Rule File Line " + x + "\n";
+																						break;
+																					}
+																				}
+
+																			}
+																		}
+																	}
+																}
+															}
+														} else {
+
+															for(var y = 16; y <= ruleLine.length; y++) {
+																if(ruleLine.substring(y-16,y)=="</DataLineOrder>"){
+																	this.rLineOrder = this.rLineOrder.concat(ruleLine.substring(0,y-16));
+																	foundEndDataLineOrder = true;
+																	switcher = true;
+																	this.logString += "Found </DataLineOrder> On Rule File Line " + x + "\n";
+																	break;
+																}
+															}
+															for(var y = 22; (y<=ruleLine.length && !switcher); y++) {
+																if(ruleLine.substring(y-22,y)=="&lt;/DataLineOrder&gt;"){
+																	this.rLineOrder = this.rLineOrder.concat(ruleLine.substring(0,y-22));
+																	foundEndDataLineOrder = true;
+																	switcher = true;
+																	this.logString += "Found </DataLineOrder> On Rule File Line " + x + "\n";
+																	break;
+																}
+															}
+															if(!foundEndDataLineOrder){
+																this.rLineOrder+=(ruleLine+"\n");
+															}
+														}
+														if(switcher){
+															console.log("Rule File Parsing: Found </DataLineOrder> on ruleLine " + (x+1) + "\n");
+															switcher = false;
+														}
+													} else {
+														if (ruleLine.length>=15){
+															if (ruleLine.substring(0,15)=="<DataLineOrder>"){
+																foundStartDataLineOrder = true;
+																switcher = true;
+																this.rLineOrder = ruleLine.substring(15,ruleLine.length)+"\n";
+																this.logString += "Found <DataLineOrder> On Rule File Line " + x + "\n";
+																if(this.rLineOrder.length >= 16){
+																	for(var y = 16; y <= ruleLine.length; y++) {
+																		if(ruleLine.substring(y-16,y)=="</DataLineOrder>"){
+																			this.rLineOrder = ruleLine.substring(15,y-16);
+																			foundEndDataLineOrder = true;
+																			this.logString += "Found <DataLineOrder> and </DataLineOrder> On Rule File Line " + x + "\n";
+																			break;
+																		}
+																	}
+
+																}
+															}
+															if (ruleLine.length>=21&&!switcher){
+																if (ruleLine.substring(0,21)=="&lt;DataLineOrder&gt;"){
+																	foundStartDataLineOrder = true;
+																	switcher = true;
+																	this.rLineOrder = ruleLine.substring(21,ruleLine.length)+"\n";
+																	this.logString += "Found <DataLineOrder> On Rule File Line " + x + "\n";
+																	if(this.rLineOrder.length >= 22){
+																		for(var y = 22; y <= ruleLine.length; y++) {
+																			if(ruleLine.substring(y-22,y)=="&lt;/DataLineOrder&gt;"){
+																				this.rLineOrder = ruleLine.substring(21,y-22);
+																				foundEndDataLineOrder = true;
+																				this.logString += "Found <DataLineOrder> and </DataLineOrder> On Rule File Line " + x + "\n";
+																				break;
+																			}
+																		}
+
+																	}
+																}
+															}
+														}
+													}
+													if(switcher){
+														console.log("Rule File Parsing: Found <DataLineOrder> on ruleLine " + (x+1) + "\n");
+														switcher = false;
+													}
+												} else {
+													var hit = false;
+													for(var y = 16; y <= ruleLine.length; y++) {
+														if(ruleLine.substring(y-16,y)=="</LineDelimiter>"){
+															this.rLineDelimiters[this.rLineNum] = this.rLineDelimiters[this.rLineNum].concat(ruleLine.substring(0,y-16));
+															hit=true;
+															if((this.rLineNum+1)==this.rNumLineTypes) {
+																switcher = true;
+																foundNextEndLineDelimiter = true;
+																this.logString += "Found </LineDelimiter> On Rule File Line " + x + "\n";
+																break;
+															} else {
+																this.rLineNum++;
+																foundNextEndLineDelimiter = false;
+																foundNextStartLineDelimiter = false;
+																foundNextDataLine = false;
+																foundNextStartLinePrefix = false;
+																foundNextEndLinePrefix = false;
+																foundNextNumDataCharsPerLine = false;
+																foundNextDataCharType = false;
+																break;
+															}
+														}
+													}
+													for(var y = 22; (y <= ruleLine.length)&&!switcher; y++) {
+														if(ruleLine.substring(y-22,y)=="&lt;/LineDelimiter&gt;"){
+															this.rLineDelimiters[this.rLineNum] = this.rLineDelimiters[this.rLineNum].concat(ruleLine.substring(0,y-22));
+															hit=true;
+															if((this.rLineNum+1)==this.rNumLineTypes) {
+																switcher = true;
+																foundNextEndLineDelimiter = true;
+																this.logString += "Found </LineDelimiter> On Rule File Line " + x + "\n";
+																break;
+															} else {
+																this.rLineNum++;
+																foundNextEndLineDelimiter = false;
+																foundNextStartLineDelimiter = false;
+																foundNextDataLine = false;
+																foundNextStartLinePrefix = false;
+																foundNextEndLinePrefix = false;
+																foundNextNumDataCharsPerLine = false;
+																foundNextDataCharType = false;
+																break;
+															}
+														}
+													}
+													if(!hit){
+														this.rLineDelimiters[this.rLineNum] = this.rLineDelimiters[this.rLineNum].concat(ruleLine+"\n");
+													}
+												}
+												if(switcher){
+													console.log("Rule File Parsing: Found </LineDelimiter> on ruleLine " + (x+1) + "\n");
+													switcher = false;
+												}
+											} else {
+												if (ruleLine.length>=15){
+													if (ruleLine.substring(0,15)=="<LineDelimiter>"){
+														switcher = true;
+														foundNextStartLineDelimiter = true;
+														this.rLineDelimiters[this.rLineNum] = ruleLine.substring(15,ruleLine.length)+"\n";
+														this.logString += "Found <LineDelimiter> On Rule File Line " + x + "\n";
+														if(this.rLineDelimiters[this.rLineNum].length >= 16){
+															for(var y = 16; y <= ruleLine.length; y++) {
+																if(ruleLine.substring(y-16,y)=="</LineDelimiter>"){
+																	this.rLineDelimiters[this.rLineNum] = ruleLine.substring(15,y-16);
+																	if((this.rLineNum+1)==this.rNumLineTypes) {
+																		foundNextEndLineDelimiter = true;
+																		this.logString += "Found <LineDelimiter> and </LineDelimiter> On Rule File Line " + x + "\n";
+																		break;
+																	} else {
+																		this.rLineNum++;
+																		foundNextEndLineDelimiter = false;
+																		foundNextStartLineDelimiter = false;
+																		foundNextDataLine = false;
+																		foundNextStartLinePrefix = false;
+																		foundNextEndLinePrefix = false;
+																		foundNextNumDataCharsPerLine = false;
+																		foundNextDataCharType = false;
+																		break;
+																	}
+																}
+															}
+
+														}
+													}
+
+													if (ruleLine.length>=21&&!switcher){
+														if (ruleLine.substring(0,21)=="&lt;LineDelimiter&gt;"){
+															switcher = true;
+															foundNextStartLineDelimiter = true;
+															this.rLineDelimiters[this.rLineNum] = ruleLine.substring(21,ruleLine.length)+"\n";
+															this.logString += "Found <LineDelimiter> On Rule File Line " + x + "\n";
+															if(this.rLineDelimiters[this.rLineNum].length >= 22){
+																for(var y = 22; y <= ruleLine.length; y++) {
+																	if(ruleLine.substring(y-22,y)=="&lt;/LineDelimiter&gt;"){
+																		this.rLineDelimiters[this.rLineNum] = ruleLine.substring(21,y-22);
+																		if((this.rLineNum+1)==this.rNumLineTypes) {
+																			foundNextEndLineDelimiter = true;
+																			this.logString += "Found <LineDelimiter> and </LineDelimiter> On Rule File Line " + x + "\n";
+																			break;
+																		} else {
+																			this.rLineNum++;
+																			foundNextEndLineDelimiter = false;
+																			foundNextStartLineDelimiter = false;
+																			foundNextDataLine = false;
+																			foundNextStartLinePrefix = false;
+																			foundNextEndLinePrefix = false;
+																			foundNextNumDataCharsPerLine = false;
+																			foundNextDataCharType = false;
+																			break;
+																		}
+																	}
+																}
+
+															}
+														}
+													}
+												}
+											}
+											if(switcher){
+												console.log("Rule File Parsing: Found <LineDelimiter> on ruleLine " + (x+1) + "\n");
+												switcher = false;
+											}
+										} else {
+											if (ruleLine.length>=12){
+												if (splits[0]=="DataCharType"){
+													if (splits.length>1){
+														if(splits[1].length>=1){
+															switcher = true;
+															foundNextDataCharType = true;
+															this.logString += "Found DataCharType On Rule File Line " + x + "\n";
+															this.rDataCharTypes[this.rLineNum] = splits[1];
+															if (splits.length>=3){
+																if(splits[2].length>=1){
+
+																		if(this.rDataCharTypes[this.rLineNum]=="number"){
+																			this.rNumDigits[this.rLineNum] = 1*(splits[2]);
+																			if(this.rNumDigits[this.rLineNum]<3){
+																				this.rNumDigits[this.rLineNum]=3;
+																			}
+																		} else if(this.rDataCharTypes[this.rLineNum]=="time"){
+																			this.rStartTime[this.rLineNum] = 1*(splits[2]);
+																			if(this.rStartTime[this.rLineNum]<0){
+																				this.rStartTime[this.rLineNum] = 0;
+																			}
+																		} else if(this.rDataCharTypes[this.rLineNum]=="24time"){
+																			this.rStartTime[this.rLineNum] = 1*(splits[2]);
+																			if(this.rStartTime[this.rLineNum]<0){
+																				this.rStartTime[this.rLineNum] = 0;
+																			}
+																		} else if(this.rDataCharTypes[this.rLineNum]=="12time"){
+																			this.rStartTime[this.rLineNum] = 1*(splits[2]);
+																			if(this.rStartTime[this.rLineNum]<0){
+																				this.rStartTime[this.rLineNum] = 0;
+																			}
+																		} else if(this.rDataCharTypes[this.rLineNum]=="datetime"){
+																			this.rStartTime[this.rLineNum] = 0;
+																			this.rNumDigits[this.rLineNum] = 3;
+																			this.rStartYear[this.rLineNum] = 1*(splits[2]);
+																			if (splits.length>=4){
+																				this.rStartMonth[this.rLineNum] = 1*(splits[3]);
+																				if(splits.length>=5){
+																					this.rStartDay[this.rLineNum] = 1*(splits[4]);
+																					if(splits.length>=6){
+																						this.rStartHour[this.rLineNum] = 1*(splits[5]);
+																					} else {
+																						this.rStartHour[this.rLineNum] = 0;
+																					}
+																				} else {
+																					this.rStartDay[this.rLineNum] = 0;
+																					this.rStartHour[this.rLineNum] = 0;
+																				}
+																			} else {
+																				this.rStartMonth[this.rLineNum] = 0;
+																				this.rStartDay[this.rLineNum] = 0;
+																				this.rStartHour[this.rLineNum] = 0;
+																			}
+																		} else {
+																			this.rNumDigits[this.rLineNum] = 3;
+																			this.rStartTime[this.rLineNum] = 0;
+																			this.rStartYear[this.rLineNum] = 0;
+																			this.rStartMonth[this.rLineNum] = 0;
+																			this.rStartDay[this.rLineNum] = 0;
+																			this.rStartHour[this.rLineNum] = 0;
+																		}
+
+																} else {
+																	this.rStartTime[this.rLineNum] = 0;
+																	this.rNumDigits[this.rLineNum] = 3;
+																}
+															} else {
+																this.rStartTime[this.rLineNum] = 0;
+																this.rNumDigits[this.rLineNum] = 3;
+															}
+														} else {
+															console.log("Warning: No Data Character Type found in rule file after DataCharType declaration statement!");
+															this.logString += "Warning: No Data Character Type found in rule file after DataCharType declaration!\n";
+														}
+													} else {
+														console.log("Warning: No Data Character Type found in rule file after DataCharType declaration!");
+														this.logString += "Warning: No Data Character Type found in rule file after DataCharType declaration!\n";
+													}
+												}
+											}
+										}
+										if(switcher){
+											console.log("Rule File Parsing: Found DataCharType on ruleLine " + (x+1) + "\n");
+											switcher = false;
+										}
+									} else {
+										if (ruleLine.length>=19){
+											if (splits[0]=="NumDataCharsPerLine"){
+												if (splits.length>1){
+													if(splits[1].length>=1){
+														switcher = true;
+														this.logString += "Found NumDataCharsPerLine On Rule File Line " + x + "\n";
+														foundNextNumDataCharsPerLine = true;
+														this.rNumCharsPerLine[this.rLineNum] = 1*(splits[1]);
+													} else {
+														console.log("Warning: No Number of Characters Per Line found in rule file after NumDataCharsPerLine declaration statement!");
+													}
+												} else {
+													console.log("Warning: No Number of Characters Per Line found in rule file after NumDataCharsPerLine declaration!");
+												}
+
+											}
+										}
+									}
+									if(switcher){
+										console.log("Rule File Parsing: Found NumDataCharsPerLine on ruleLine " + (x+1) + "\n");
+										switcher = false;
+									}
+								} else {
+									for(var y = 13; y <= ruleLine.length; y++) {
+										if(ruleLine.substring(y-13,y)=="</LinePrefix>"){
+											this.rLinePrefixes[this.rLineNum] = this.rLinePrefixes[this.rLineNum].concat(ruleLine.substring(0,y-13));
+											switcher = true;
+											foundNextEndLinePrefix = true;
+											this.logString += "Found </LinePrefix> On Rule File Line " + x + "\n";
+											break;
+										}
+									}
+									for(var y = 19; (!switcher&&(y <= ruleLine.length)); y++) {
+										if(ruleLine.substring(y-19,y)=="&lt;/LinePrefix&gt;"){
+											this.rLinePrefixes[this.rLineNum] = this.rLinePrefixes[this.rLineNum].concat(ruleLine.substring(0,y-19));
+											switcher = true;
+											foundNextEndLinePrefix = true;
+											this.logString += "Found </LinePrefix> On Rule File Line " + x + "\n";
+											break;
+										}
+									}
+									if(!foundNextEndLinePrefix){
+										this.rLinePrefixes[this.rLineNum] = this.rLinePrefixes[this.rLineNum].concat(ruleLine+"\n");
+									}
+								}
+								if(switcher){
+									console.log("Rule File Parsing: Found </LinePrefix> on ruleLine " + (x+1) + "\n");
+									switcher = false;
+								}
+							} else {
+								if (ruleLine.length>=12){
+									if (ruleLine.substring(0,12)=="<LinePrefix>"){
+										switcher = true;
+										foundNextStartLinePrefix = true;
+										this.logString += "Found <LinePrefix> On Rule File Line " + x + "\n";
+										this.rLinePrefixes[this.rLineNum] = ruleLine.substring(12,ruleLine.length)+"\n";
+										if(this.rLinePrefixes[this.rLineNum].length >= 13){
+											for(var y = 13; y <= ruleLine.length; y++) {
+												if(ruleLine.substring(y-13,y)=="</LinePrefix>"){
+													this.rLinePrefixes[this.rLineNum] = ruleLine.substring(12,y-13);
+													foundNextEndLinePrefix = true;
+													this.logString += "Found <LinePrefix> and </LinePrefix> On Rule File Line " + x + "\n";
+													break;
+												}
+											}
+
+										}
+									}
+									if (ruleLine.length>=18&&!switcher){
+										if (ruleLine.substring(0,18)=="&lt;LinePrefix&gt;"){
+											switcher = true;
+											foundNextStartLinePrefix = true;
+											this.logString += "Found <LinePrefix> On Rule File Line " + x + "\n";
+											this.rLinePrefixes[this.rLineNum] = ruleLine.substring(18,ruleLine.length)+"\n";
+											if(this.rLinePrefixes[this.rLineNum].length >= 19){
+												for(var y = 19; y <= ruleLine.length; y++) {
+													if(ruleLine.substring(y-19,y)=="&lt;/LinePrefix&gt;"){
+														this.rLinePrefixes[this.rLineNum] = ruleLine.substring(18,y-19);
+														foundNextEndLinePrefix = true;
+														this.logString += "Found <LinePrefix> and </LinePrefix> On Rule File Line " + x + "\n";
+														break;
+													}
+												}
+
+											}
+										}
+
+									}
+								}
+							}
+							if(switcher){
+								console.log("Rule File Parsing: Found <LinePrefix> on ruleLine " + (x+1) + "\n");
+								switcher = false;
+							}
+						} else {
+							if (ruleLine.length>=8){
+								if (splits[0]=="DataLine"){
+									if (splits.length>1){
+										if(splits[1].length>=1){
+											if(1*(splits[1])==(this.rLineNum+1)){
+												switcher = true;
+												foundNextDataLine = true;
+												this.logString += "Found DataLine On Rule File Line " + x + "\n";
+											} else {
+												console.log("Warning: The DataLine identification numbers found in the rule file are out of order!");
+												this.logString += "Warning: The DataLine identification numbers found in the rule file are out of order!\n";
+											}
+										} else {
+											console.log("Warning: No DataLine Identification number found in rule file after DataLine declaration statement!");
+											this.logString += "Warning: No DataLine Identification number found in rule file after DataLine declaration statement!\n";
+										}
+									} else {
+										console.log("Warning: No DataLine Identification number found in rule file after DataLine declaration!");
+										this.logString += "Warning: No DataLine Identification number found in rule file after DataLine declaration statement!\n";
+									}
+
+								}
+							}
+						}
+						if(switcher){
+							console.log("Rule File Parsing: Found DataLine on ruleLine " + (x+1) + "\n");
+							switcher = false;
+						}
+					} else {
+						if (ruleLine.length>=16){
+							if (splits[0]=="NumDataLineTypes"){
+								if (splits.length>1){
+									if(splits[1].length>=1){
+										if(1*(splits[1])<10){
+											switcher = true;
+											this.logString += "Found NumDataLineTypes On Rule File Line " + x + "\n";
+											foundNumDataLineTypes = true;
+											this.rNumLineTypes = 1*(splits[1]);
+											this.rLinePrefixes = [""];
+											this.rNumCharsPerLine = [0];
+											this.rDataCharTypes = [""];
+											this.rLineDelimiters = [""];
+											this.rNumDigits = [0];
+											this.rLineNum = 0;
+											this.rStartTime = [0];
+											this.rStartYear = [0];
+											this.rStartMonth = [0];
+											this.rStartDay = [0];
+											this.rStartHour = [0];
+											for(var t = 1; t<this.rNumLineTypes; t++){
+												this.rLinePrefixes.push("");
+												this.rNumCharsPerLine.push(0);
+												this.rDataCharTypes.push("");
+												this.rLineDelimiters.push("");
+												this.rNumDigits.push(0);
+												this.rStartTime.push(0);
+												this.rStartYear.push(0);
+												this.rStartMonth.push(0);
+												this.rStartDay.push(0);
+												this.rStartHour.push(0);
+											}
+										} else {
+											this.logString += "Warning: Number of Data Lines should not exceed nine!\n";
+										}
+
+									} else {
+										this.logString += "Warning: No Number of Data Lines found in rule file after NumDataLineTypes declaration statement!\n";
+									}
+								} else {
+									this.logString += "Warning: No Number of Data Lines found in rule file after NumDataLineTypes declaration!\n";
+								}
+
+							}
+						}
+					}
+					if(switcher){
+						console.log("Rule File Parsing: Found NumDataLineTypes on ruleLine " + (x+1) + "\n");
+						switcher = false;
+					}
+				} else {
+					for(var y = 13; y <= ruleLine.length; y++) {
+						if(ruleLine.substring(y-13,y)=="</FilePrefix>"){
+							this.rPrefix = this.rPrefix.concat(ruleLine.substring(0,y-13));
+							switcher = true;
+							foundEndPrefix = true;
+							this.logString += "Found </FilePrefix> On Rule File Line " + x + "\n";
+							break;
+						}
+					}
+					for(var y = 19; (!switcher&&(y <= ruleLine.length)); y++) {
+						if(ruleLine.substring(y-19,y)=="&lt;/FilePrefix&gt;"){
+							this.rPrefix = this.rPrefix.concat(ruleLine.substring(0,y-19));
+							switcher = true;
+							foundEndPrefix = true;
+							this.logString += "Found </FilePrefix> On Rule File Line " + x + "\n";
+							break;
+						}
+					}
+					if(!foundEndPrefix){
+						this.rPrefix = this.rPrefix.concat(ruleLine+"\n");
+					}
+				}
+				if(switcher){
+					console.log("Rule File Parsing: Found </FilePrefix> on ruleLine " + (x+1) + "\n");
+					switcher = false;
+				}
+			} else {
+				if (ruleLine.length>=12&&!switcher){
+					if (ruleLine.substring(0,12)=="<FilePrefix>"){
+						switcher = true;
+						foundStartPrefix = true;
+						this.rPrefix = ruleLine.substring(12,ruleLine.length)+"\n";
+						this.logString += "Found <FilePrefix> On Rule File Line " + x + "\n";
+						if(this.rPrefix.length >= 13){
+							for(var y = 13; y <= ruleLine.length; y++) {
+								if((ruleLine.substring(y-13,y)=="</FilePrefix>")){
+									this.rPrefix = ruleLine.substring(12,y-13);
+									foundEndPrefix = true;
+									this.logString += "Found <FilePrefix> and </FilePrefix> On Rule File Line " + x + "\n";
+									break;
+								}
+							}
+						}
+					}
+					if (ruleLine.length>=18&&!switcher){
+						if (ruleLine.substring(0,18)=="&lt;FilePrefix&gt;"){
+							switcher = true;
+							foundStartPrefix = true;
+							this.rPrefix = ruleLine.substring(18,ruleLine.length)+"\n";
+							this.logString += "Found <FilePrefix> On Rule File Line " + x + "\n";
+							if(this.rPrefix.length >= 19){
+								for(var y = 19; y <= ruleLine.length; y++) {
+									if((ruleLine.substring(y-19,y)=="&lt;/FilePrefix&gt;")){
+										this.rPrefix = ruleLine.substring(18,y-19);
+										foundEndPrefix = true;
+										this.logString += "Found <FilePrefix> and </FilePrefix> On Rule File Line " + x + "\n";
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			if(switcher){
+				console.log("Rule File Parsing: Found <FilePrefix> on ruleLine " + (x+1) + "\n");
+				switcher = false;
+			}
+		}
+		if(!foundStartPrefix) {
+			this.logString += "Never Found <FilePrefix>!\n";
+		}
+		if(!foundEndPrefix) {
+			this.logString += "Never Found </FilePrefix>!\n";
+		}
+		if(!foundNumDataLineTypes) {
+			this.logString += "Never Found NumDataLineTypes!\n";
+		}
+		if(!foundNextDataLine) {
+			this.logString += "Never Found Next DataLine!\n";
+		}
+		if(!foundNextStartLinePrefix) {
+			this.logString += "Never Found Next <LinePrefix>!\n";
+		}
+		if(!foundNextEndLinePrefix) {
+			this.logString += "Never Found Next </LinePrefix>!\n";
+		}
+		if(!foundNextNumDataCharsPerLine) {
+			this.logString += "Never Found Next NumDataCharsPerLine!\n";
+		}
+		if(!foundNextDataCharType) {
+			this.logString += "Never Found Next NextDataCharType!\n";
+		}
+		if(!foundNextStartLineDelimiter) {
+			this.logString += "Never Found Next <LineDelimiter>!\n";
+		}
+		if(!foundNextEndLineDelimiter) {
+			this.logString += "Never Found Next </LineDelimiter>!\n";
+		}
+		if(!foundStartDataLineOrder) {
+			this.logString += "Never Found <DataLineOrder>!\n";
+		}
+		if(!foundEndDataLineOrder) {
+			this.logString += "Never Found </DataLineOrder>!\n";
+		}
+		if(!foundStartPostFix) {
+			this.logString += "Never Found <FilePostfix>!\n";
+		}
+		if(!foundEndPostFix) {
+			this.logString += "Never Found </FilePostfix>!\n";
+		}
+		return this.logString;
 	}
 
 	get hide() {

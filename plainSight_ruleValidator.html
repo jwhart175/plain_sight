@@ -73,6 +73,6 @@ validateButton.onclick = function() {
 		} else {
 			feedbackString = "Rule file is Invalid!  Test data was not successfully recovered!." + "\n" + "testString = " + testString + "\n" + "ProcessedTestString = " + processText + "\n";
 		}
-		feedback.value = feedbackString;
+		feedback.value = feedbackString + "\n" + mask.debugRules;
 }
 </script>
