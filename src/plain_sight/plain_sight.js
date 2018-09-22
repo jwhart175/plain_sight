@@ -129,6 +129,7 @@ class Mask {
 	}
 
 	get debugRules() {
+		this.logString="";
 		this.rulesValid=false;
 		this.rPrefix = "";
 		this.rPostfix = "";
