@@ -37,7 +37,7 @@ SOFTWARE.
 <div><span>Rule file:</span></div>
 <div><input type="file" id="rulefile" accept="text/*" multiple=false></input></div>
 <div><textarea id="rulefiletext" rows="8" cols="150"></textarea></div>
-<div><button id="hideButton">HIDE</button><button id="unhideButton">UNHIDE</button></div>
+<div><button id="hideButton">HIDE</button><button id="unhideButton">UNHIDE</button><input type="checkbox" defaultChecked="false" id="passCheck">Encrypt? Pass:</input><input type="password" id="password" disabled=true></input></div>
 <div><span>Output:</span></div>
 <div><textarea id="fileout" row="8" cols="150" readonly=true></textarea></div>
 </body>
@@ -51,7 +51,16 @@ var fileintext = document.getElementById("fileintext");
 var rulefile = document.getElementById("rulefile");
 var rulefiletext = document.getElementById("rulefiletext");
 var fileout = document.getElementById("fileout");
+var passCheck = document.getElementById("passCheck");
+var password = document.getElementById("password");
 var mask = new Mask();
+passCheck.onchange = function() {
+	if(passCheck.checked){
+		password.disabled = false;
+	} else {
+		password.disabled = true;
+	}
+}
 filein.onchange = function(event) {
 	var input = event.target;
 	inReader = new FileReader();
@@ -71,7 +80,13 @@ rulefile.onchange = function(event) {
 hideButton.onclick = function() {
 		var inputText = fileintext.value;
 		var ruleText = rulefiletext.value;
-		mask.setInString(inputText);
+		if(passCheck.checked){
+			mask.setInString(inputText);
+			mask.setKey(password.value);
+			mask.setInString(mask.encrypt);
+		} else {
+			mask.setInString(inputText);
+		}
 		mask.setRuleString(ruleText);
 		var output = mask.hide;
 		fileout.value = output;
@@ -82,6 +97,11 @@ unhideButton.onclick = function() {
 		mask.setInString(inputText);
 		mask.setRuleString(ruleText);
 		var output = mask.unhide;
+		if(passCheck.checked){
+			mask.setInString(output);
+			mask.setKey(password.value);
+			output = mask.decrypt;
+		}
 		fileout.value = output;
 }
 </script>

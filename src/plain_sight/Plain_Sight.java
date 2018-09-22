@@ -734,7 +734,6 @@ public class Plain_Sight extends JFrame{
 		int length = hex.length();
 		int number = prsfIntZero;
 		int product = prsfIntOne;
-
 		for (int x = prsfIntZero; x < length; x++) {
 			if(pvTestHex(x,hex)){
 				if(hex.substring(length-x-prsfIntOne,length-x).compareTo("a")==prsfIntZero){
@@ -805,7 +804,6 @@ public class Plain_Sight extends JFrame{
 				if(pvTestNumeric(lineOrderCursor,pvLineOrder)){
 					typeNum = Integer.valueOf(pvLineOrder.substring(lineOrderCursor,lineOrderCursor+prsfIntOne)).intValue();
 					if (((typeNum)<=pvNumLineTypes)&((typeNum)>prsfIntZero)){
-						output.append(pvLineOrder.substring(lastLineOrderCursor,lineOrderCursor));
 						output.append(pvLinePrefixes[typeNum-prsfIntOne]);
 						for(int x = prsfIntZero; x < pvNumCharsPerLine[typeNum-prsfIntOne]; x++){
 							if (pvDataCharTypes[typeNum-prsfIntOne].compareTo("number")==prsfIntZero){
@@ -1243,6 +1241,7 @@ public class Plain_Sight extends JFrame{
 					}
 					lineOrderCursor++;
 				} else {
+					output.append(pvLineOrder.substring(lineOrderCursor,lineOrderCursor+prsfIntOne));
 					lineOrderCursor++;
 				}
 			}

@@ -4,6 +4,7 @@ class Mask {
 		this.inString="";
 		this.ruleString="";
 		this.logString="";
+		this.keyString="";
 		if(rules){
 			if(rules.rPrefix){
 				this.rPrefix=rules.rPrefix;
@@ -105,13 +106,25 @@ class Mask {
 
 	setRuleString(rules){
 		if(rules){
-			if(typeof rules == typeof "dog"){
+			if(typeof rules == typeof "test"){
 				this.ruleString=rules;
 			} else {
 				console.log("setRuleString Failed!  Input is not a string!");
 			}
 		} else {
 			console.log("setRuleString Failed!  No input detected!");
+		}
+	}
+
+	setKey(key){
+		if(key){
+			if(typeof key == typeof "test"){
+				this.keyString=key;
+			} else {
+				console.log("setKey Failed! Input is not a string!");
+			}
+		} else {
+			console.log("setKey Failed! No input detected!");
 		}
 	}
 
@@ -126,6 +139,249 @@ class Mask {
 		} else {
 			return false;
 		}
+	}
+
+	get encrypt(){
+		var output = "";
+		if(this.inString&&this.keyString){
+			if(typeof this.inString == typeof "test" && typeof this.keyString == typeof "test"){
+				var keyLength = this.keyString.length;
+				var keyShift = [0,0,0,0,0];
+				var y = 0;
+				for(var x = 0;x < keyLength; x++){
+					keyShift[y] += this.keyString.codePointAt(x);
+					keyShift[0] += Math.round(this.keyString.codePointAt(x)/13);
+					keyShift[1] += Math.round(this.keyString.codePointAt(x)/11);
+					keyShift[2] += Math.round(this.keyString.codePointAt(x)/7);
+					keyShift[3] += Math.round(this.keyString.codePointAt(x)/5);
+					keyShift[4] += Math.round(this.keyString.codePointAt(x)/19);
+					switch(y) {
+						case 0:
+							keyShift[0] += 11;
+							keyShift[1] += 13;
+							keyShift[2] += 17;
+							keyShift[3] += 23;
+							keyShift[4] += 29;
+							y++;
+							break;
+						case 1:
+							keyShift[0] += 1;
+							keyShift[1] += 2;
+							keyShift[2] += 43;
+							keyShift[3] += 5;
+							keyShift[4] += 7;
+							y++;
+							break;
+						case 2:
+							keyShift[0] += 29;
+							keyShift[1] += 23;
+							keyShift[2] += 7;
+							keyShift[3] += 13;
+							keyShift[4] += 11;
+							y++;
+							break;
+						case 3:
+							keyShift[0] += 7;
+							keyShift[1] += 5;
+							keyShift[2] += 29;
+							keyShift[3] += 2;
+							keyShift[4] += 1;
+							y++;
+							break;
+						case 4:
+							keyShift[0] += 2;
+							keyShift[1] += 29;
+							keyShift[2] += 1;
+							keyShift[3] += 3;
+							keyShift[4] += 13;
+							y=0;
+							break;
+						default:
+							y=0;
+					}
+				}
+				var inputLength = this.inString.length;
+				var input = this.inString[inputLength-1] + this.inString[inputLength-1] + this.inString + this.inString[0] + this.inString[0];
+				var outShift = [];
+				var z = 0;
+				for(var x = 0;x < inputLength;x++){
+					outShift = [];
+					outShift.push(keyShift[0]);
+					outShift.push(keyShift[1]);
+					outShift.push(keyShift[2]);
+					outShift.push(keyShift[3]);
+					outShift.push(keyShift[4]);
+					//console.log(keyShift);
+					outShift[0] += input.codePointAt(x+4)+input.codePointAt(x)+x;
+					outShift[1] += input.codePointAt(x+1)+input.codePointAt(x+2)+x;
+					if(input.codePointAt(x+2)==10){
+						outShift[2] += 31;
+					} else {
+						outShift[2] += input.codePointAt(x+2);
+					}
+					outShift[3] += input.codePointAt(x)+input.codePointAt(x+1)+x;
+					outShift[4] += input.codePointAt(x+3)+input.codePointAt(x+4)+x;
+					switch(z) {
+						case 0:
+							outShift[2] += keyShift[0];
+							z++;
+							break;
+						case 1:
+							outShift[2] += keyShift[1];
+							z++;
+							break;
+						case 2:
+							outShift[2] += keyShift[3];
+							z++;
+							break;
+						case 3:
+							outShift[2] += keyShift[4];
+							z++;
+							break;
+						case 4:
+							outShift[2] += x;
+							z = 0;
+							break;
+						default:
+							z = 0;
+					}
+					//console.log(outShift);
+					for(var y = 0;y < 5;y++){
+						if(outShift[y]>125){
+							while(outShift[y]>125){
+								outShift[y] = outShift[y] - 126 + 31;
+								if(outShift[y]>1260){
+									outShift[y] = outShift[y] - 1260 + 310;
+								}
+							}
+						}
+						if(outShift[y]==31){
+							output += String.fromCharCode(10);
+						} else {
+							output += String.fromCharCode(outShift[y]);
+						}
+					}
+				}
+				return output;
+			}
+		}
+		return false;
+	}
+
+	get decrypt(){
+		var output = "";
+		if(this.inString&&this.keyString){
+			if(typeof this.inString == typeof "test" && typeof this.keyString == typeof "test"){
+				var keyLength = this.keyString.length;
+				var keyShift = [0,0,0,0,0];
+				var y = 0;
+				for(var x = 0;x < keyLength; x++){
+					keyShift[y] += this.keyString.codePointAt(x);
+					keyShift[0] += Math.round(this.keyString.codePointAt(x)/13);
+					keyShift[1] += Math.round(this.keyString.codePointAt(x)/11);
+					keyShift[2] += Math.round(this.keyString.codePointAt(x)/7);
+					keyShift[3] += Math.round(this.keyString.codePointAt(x)/5);
+					keyShift[4] += Math.round(this.keyString.codePointAt(x)/19);
+					switch(y) {
+						case 0:
+							keyShift[0] += 11;
+							keyShift[1] += 13;
+							keyShift[2] += 17;
+							keyShift[3] += 23;
+							keyShift[4] += 29;
+							y++;
+							break;
+						case 1:
+							keyShift[0] += 1;
+							keyShift[1] += 2;
+							keyShift[2] += 3;
+							keyShift[3] += 5;
+							keyShift[4] += 7;
+							y++;
+							break;
+						case 2:
+							keyShift[0] += 29;
+							keyShift[1] += 23;
+							keyShift[2] += 7;
+							keyShift[3] += 13;
+							keyShift[4] += 11;
+							y++;
+							break;
+						case 3:
+							keyShift[0] += 7;
+							keyShift[1] += 5;
+							keyShift[2] += 29;
+							keyShift[3] += 2;
+							keyShift[4] += 1;
+							y++;
+							break;
+						case 4:
+							keyShift[0] += 2;
+							keyShift[1] += 29;
+							keyShift[2] += 1;
+							keyShift[3] += 3;
+							keyShift[4] += 13;
+							y=0;
+							break;
+						default:
+							y=0;
+					}
+				}
+				var inputLength = this.inString.length;
+				var outShift = 0;
+				var z = 0;
+				for(var x = 0;x*5 < inputLength;x++){
+					outShift = keyShift[2];
+					//console.log(keyShift);
+					switch(z) {
+						case 0:
+							outShift += keyShift[0];
+							z++;
+							break;
+						case 1:
+							outShift += keyShift[1];
+							z++;
+							break;
+						case 2:
+							outShift += keyShift[3];
+							z++;
+							break;
+						case 3:
+							outShift += keyShift[4];
+							z++;
+							break;
+						case 4:
+							outShift += x;
+							z = 0;
+							break;
+						default:
+							z = 0;
+					}
+					//console.log(outShift);
+					var j = -outShift;
+					if(this.inString.codePointAt(5*x+2)==31){
+						j+=10;
+					} else {
+						j+=this.inString.codePointAt(5*x+2);
+					}
+					if(j<31){
+						while(j<31){
+							j = j + 126 - 31;
+							if(j<(31-(126-31)*10)){
+								j = j + 1260 - 310;
+							}
+						}
+					}
+					if(j==31){
+						output += String.fromCharCode(10);
+					} else {
+						output += String.fromCharCode(j);
+					}
+				}
+				return output;
+			}
+		}
+		return false;
 	}
 
 	get debugRules() {
@@ -905,7 +1161,7 @@ class Mask {
 					if(this.testNumeric(lineOrderCursor,this.rLineOrder)){
 						typeNum = 1*this.rLineOrder.substring(lineOrderCursor,lineOrderCursor+1);
 						if (((typeNum)<=this.rNumLineTypes)&((typeNum)>0)){
-							output += this.rLineOrder.substring(lastLineOrderCursor,lineOrderCursor);
+
 							output += this.rLinePrefixes[typeNum-1];
 							for(var x = 0; x < this.rNumCharsPerLine[typeNum-1]; x++){
 								if (this.rDataCharTypes[typeNum-1]=="number"){
@@ -1325,15 +1581,16 @@ class Mask {
 										output+=this.rLineDelimiters[typeNum-1];
 									}
 								} else {
-									console.log("(this.rHide) Warning: Data type " + this.rDataCharTypes[typeNum-1] + " unrecognized for Data Line " + typeNum);
+									console.log("(hider) Warning: Data type " + this.rDataCharTypes[typeNum-1] + " unrecognized for Data Line " + typeNum);
 								}
 							}
 							lastLineOrderCursor = lineOrderCursor + 1;
 						} else {
-							console.log("(this.rHide) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!");
+							console.log("(hider) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!");
 						}
 						lineOrderCursor++;
 					} else {
+						output += this.rLineOrder.substring(lineOrderCursor,lineOrderCursor+1);
 						lineOrderCursor++;
 					}
 				}
