@@ -30,7 +30,8 @@ SOFTWARE.
 <div><p></p><p></p><span>Directions:</span></div>
 <div><span>1. In "Text to Process" select or enter a text message file to hide or an already masked file to unhide.</span></div>
 <div><span>2. In "Rule file" select or enter a valid plain_sight rule file to use for processing the input.</span></div>
-<div><span>3. Hit hide to generate new masked text in the output box, or unhide to attempt to generate the original text from a hidden file in the output box.</span><p></p></div>
+<div><span>3. To encrypt the file as well as mask it, click the Encrypt? checkbox and enter a password.  Longer passwords are better, all special characters can be used, passwords are case sensitive.</span></div>
+<div><span>4. Hit hide to generate new masked text in the output box, or unhide to attempt to generate the original text from a hidden file in the output box.</span><p></p></div>
 <div><span>Text to Process:</span></div>
 <div><input type="file" id="filein" accept="text/*" multiple=false></input></div>
 <div><textarea id="fileintext" rows="8" cols="150"></textarea></div>
@@ -82,7 +83,11 @@ hideButton.onclick = function() {
 		var ruleText = rulefiletext.value;
 		if(passCheck.checked){
 			mask.setInString(inputText);
-			mask.setKey(password.value);
+			if(password.value) {
+				mask.setKey(password.value);
+			} else {
+				mask.setKey("password");
+			}
 			mask.setInString(mask.encrypt);
 		} else {
 			mask.setInString(inputText);
@@ -99,7 +104,11 @@ unhideButton.onclick = function() {
 		var output = mask.unhide;
 		if(passCheck.checked){
 			mask.setInString(output);
-			mask.setKey(password.value);
+			if(password.value) {
+				mask.setKey(password.value);
+			} else {
+				mask.setKey("password");
+			}
 			output = mask.decrypt;
 		}
 		fileout.value = output;
