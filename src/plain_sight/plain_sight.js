@@ -149,28 +149,28 @@ class Mask {
 				var keyShift = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 				var y = 0;
 				for(var x = 0;x < keyLength; x++){
-					keyShift[y] += this.keyString.codePointAt(x);
+					keyShift[y] += this.keyString.codePointAt(x)+1;
 					keyShift[19-y] += this.keyString.codePointAt(x)+y;
-					keyShift[0] += Math.floor(this.keyString.codePointAt(x)*5/(13+y));
-					keyShift[1] += Math.floor(this.keyString.codePointAt(x)*5/(11+y));
-					keyShift[2] += Math.floor(this.keyString.codePointAt(x)*2/(7+y));
-					keyShift[3] += Math.floor(this.keyString.codePointAt(x)*2/(1+y));
-					keyShift[4] += Math.floor(this.keyString.codePointAt(x)*2/(2+y));
-					keyShift[5] += Math.floor(this.keyString.codePointAt(x)*2/(5+y));
-					keyShift[6] += Math.floor(this.keyString.codePointAt(x)*5/(13+y));
-					keyShift[7] += Math.floor(this.keyString.codePointAt(x)*5/(11+y));
-					keyShift[8] += Math.floor(this.keyString.codePointAt(x)*3/(7+y));
-					keyShift[9] += Math.floor(this.keyString.codePointAt(x)*2/(1+y));
-					keyShift[10] += Math.floor(this.keyString.codePointAt(x)*4/(13+y));
-					keyShift[11] += Math.floor(this.keyString.codePointAt(x)*4/(11+y));
-					keyShift[12] += Math.floor(this.keyString.codePointAt(x)*5/(7+y));
-					keyShift[13] += Math.floor(this.keyString.codePointAt(x)*2/(1+y));
-					keyShift[14] += Math.floor(this.keyString.codePointAt(x)*2/(2+y));
-					keyShift[15] += Math.floor(this.keyString.codePointAt(x)*2/(5+y));
-					keyShift[16] += Math.floor(this.keyString.codePointAt(x)*5/(13+y));
-					keyShift[17] += Math.floor(this.keyString.codePointAt(x)*5/(11+y));
-					keyShift[18] += Math.floor(this.keyString.codePointAt(x)*4/(7+y));
-					keyShift[19] += Math.floor(this.keyString.codePointAt(x)*2/(1+y));
+					keyShift[0] += Math.floor(this.keyString.codePointAt(x)*15/(13+y));
+					keyShift[1] += Math.floor(this.keyString.codePointAt(x)*5/(11+y))+215;
+					keyShift[2] += Math.floor(this.keyString.codePointAt(x)*11/(7+y));
+					keyShift[3] += Math.floor(this.keyString.codePointAt(x)*2/(1+y))+184;
+					keyShift[4] += Math.floor(this.keyString.codePointAt(x)*13/(2+y));
+					keyShift[5] += Math.floor(this.keyString.codePointAt(x)*2/(5+y))+201;
+					keyShift[6] += Math.floor(this.keyString.codePointAt(x)*15/(13+y));
+					keyShift[7] += Math.floor(this.keyString.codePointAt(x)*5/(11+y))+243;
+					keyShift[8] += Math.floor(this.keyString.codePointAt(x)*16/(7+y));
+					keyShift[9] += Math.floor(this.keyString.codePointAt(x)*2/(1+y))+211;
+					keyShift[10] += Math.floor(this.keyString.codePointAt(x)*14/(13+y));
+					keyShift[11] += Math.floor(this.keyString.codePointAt(x)*4/(11+y))+191;
+					keyShift[12] += Math.floor(this.keyString.codePointAt(x)*18/(7+y));
+					keyShift[13] += Math.floor(this.keyString.codePointAt(x)*2/(1+y))+188;
+					keyShift[14] += Math.floor(this.keyString.codePointAt(x)*13/(2+y));
+					keyShift[15] += Math.floor(this.keyString.codePointAt(x)*2/(5+y))+209;
+					keyShift[16] += Math.floor(this.keyString.codePointAt(x)*15/(13+y));
+					keyShift[17] += Math.floor(this.keyString.codePointAt(x)*5/(11+y))+194;
+					keyShift[18] += Math.floor(this.keyString.codePointAt(x)*24/(7+y));
+					keyShift[19] += Math.floor(this.keyString.codePointAt(x)*2/(1+y))+280;
 					switch(y) {
 						case 0:
 							keyShift[0] += keyShift[2]+Math.floor(this.keyString.codePointAt(x)*5/(13+y));
@@ -636,11 +636,11 @@ class Mask {
 							y=0;
 					}
 				}
-				console.log(keyShift);
 				var inputLength = this.inString.length;
 				var input = this.inString[inputLength-1] + this.inString[inputLength-1] + this.inString + this.inString[0] + this.inString[0];
 				var outShift = [];
 				var z = 0;
+				console.log(keyShift);
 				for(var x = 0;x < inputLength;x++){
 					outShift = [];
 					outShift.push(Number.parseInt(keyShift[0]));
@@ -648,7 +648,6 @@ class Mask {
 					outShift.push(Number.parseInt(keyShift[2]));
 					outShift.push(Number.parseInt(keyShift[3]));
 					outShift.push(Number.parseInt(keyShift[4]));
-					//console.log(keyShift);
 					outShift[0] += input.codePointAt(x+4)+input.codePointAt(x)+x;
 					outShift[1] += input.codePointAt(x+1)+input.codePointAt(x+2)+x;
 					if(input.codePointAt(x+2)==10){
@@ -660,29 +659,116 @@ class Mask {
 					outShift[4] += input.codePointAt(x+3)+input.codePointAt(x+4)+x;
 					switch(z) {
 						case 0:
-							outShift[2] += keyShift[5]+keyShift[6]+keyShift[7]+keyShift[11]+keyShift[8]+keyShift[9];
+							outShift[2] += keyShift[5]+keyShift[6]+keyShift[7]+keyShift[11]+keyShift[8]+keyShift[9]+x;
 							z++;
 							break;
 						case 1:
-							outShift[2] += keyShift[4]+keyShift[2]+keyShift[7]+keyShift[3]+keyShift[13]+keyShift[0];
+							outShift[2] += keyShift[4]+keyShift[2]+keyShift[7]+keyShift[3]+keyShift[13]+keyShift[0]+Math.floor(x/8);
 							z++;
 							break;
 						case 2:
-							outShift[2] += keyShift[10]+keyShift[11]+keyShift[1]+keyShift[12]+keyShift[13]+keyShift[14];
+							outShift[2] += keyShift[10]+keyShift[11]+keyShift[1]+keyShift[12]+keyShift[13]+keyShift[14]+Math.floor(x/2);
 							z++;
 							break;
 						case 3:
-							outShift[2] += keyShift[15]+keyShift[16]+keyShift[4]+keyShift[17]+keyShift[18]+keyShift[19];
+							outShift[2] += keyShift[15]+keyShift[16]+keyShift[4]+keyShift[17]+keyShift[18]+keyShift[19]+Math.floor(x/3);
 							z++;
 							break;
 						case 4:
-							outShift[2] += keyShift[3]+keyShift[8]+keyShift[17]+keyShift[2]+keyShift[5]+keyShift[1];
+							outShift[2] += keyShift[6]+keyShift[7]+keyShift[8]+keyShift[12]+keyShift[9]+keyShift[10]+x;
+							z++;
+							break;
+						case 5:
+							outShift[2] += keyShift[5]+keyShift[3]+keyShift[8]+keyShift[4]+keyShift[14]+keyShift[1]+Math.floor(x/8);
+							z++;
+							break;
+						case 6:
+							outShift[2] += keyShift[11]+keyShift[12]+keyShift[2]+keyShift[13]+keyShift[14]+keyShift[15]+Math.floor(x/2);
+							z++;
+							break;
+						case 7:
+							outShift[2] += keyShift[16]+keyShift[17]+keyShift[5]+keyShift[18]+keyShift[19]+keyShift[0]+Math.floor(x/3);
+							z++;
+							break;
+						case 8:
+							outShift[2] += keyShift[5]+keyShift[10]+keyShift[19]+keyShift[4]+keyShift[7]+keyShift[3]+Math.floor(x/4);
+							z++;
+							break;
+						case 9:
+							outShift[2] += keyShift[7]+keyShift[8]+keyShift[9]+keyShift[13]+keyShift[10]+keyShift[11]+x;
+							z++;
+							break;
+						case 10:
+							outShift[2] += keyShift[6]+keyShift[4]+keyShift[9]+keyShift[5]+keyShift[15]+keyShift[2]+Math.floor(x/8);
+							z++;
+							break;
+						case 11:
+							outShift[2] += keyShift[12]+keyShift[13]+keyShift[3]+keyShift[14]+keyShift[15]+keyShift[16]+Math.floor(x/2);
+							z++;
+							break;
+						case 12:
+							outShift[2] += keyShift[17]+keyShift[18]+keyShift[6]+keyShift[19]+keyShift[0]+keyShift[1]+Math.floor(x/3);
+							z++;
+							break;
+						case 13:
+							outShift[2] += keyShift[5]+keyShift[6]+keyShift[7]+keyShift[12]+keyShift[8]+keyShift[9]+x;
+							z++;
+							break;
+						case 14:
+							outShift[2] += keyShift[4]+keyShift[2]+keyShift[7]+keyShift[3]+keyShift[14]+keyShift[0]+Math.floor(x/8);
+							z++;
+							break;
+						case 15:
+							outShift[2] += keyShift[5]+keyShift[11]+keyShift[1]+keyShift[12]+keyShift[13]+keyShift[14]+Math.floor(x/2);
+							z++;
+							break;
+						case 16:
+							outShift[2] += keyShift[15]+keyShift[16]+keyShift[4]+keyShift[17]+keyShift[18]+keyShift[7]+Math.floor(x/3);
+							z++;
+							break;
+						case 17:
+							outShift[2] += keyShift[6]+keyShift[0]+keyShift[8]+keyShift[12]+keyShift[9]+keyShift[10]+x;
+							z++;
+							break;
+						case 18:
+							outShift[2] += keyShift[5]+keyShift[3]+keyShift[8]+keyShift[4]+keyShift[14]+keyShift[2]+Math.floor(x/8);
+							z++;
+							break;
+						case 19:
+							outShift[2] += keyShift[11]+keyShift[12]+keyShift[2]+keyShift[13]+keyShift[14]+keyShift[16]+Math.floor(x/2);
+							z++;
+							break;
+						case 20:
+							outShift[2] += keyShift[16]+keyShift[17]+keyShift[5]+keyShift[18]+keyShift[9]+keyShift[0]+Math.floor(x/3);
+							z++;
+							break;
+						case 21:
+							outShift[2] += keyShift[5]+keyShift[10]+keyShift[18]+keyShift[4]+keyShift[7]+keyShift[3]+Math.floor(x/4);
+							z++;
+							break;
+						case 22:
+							outShift[2] += keyShift[7]+keyShift[8]+keyShift[9]+keyShift[3]+keyShift[10]+keyShift[11]+x;
+							z++;
+							break;
+						case 23:
+							outShift[2] += keyShift[6]+keyShift[4]+keyShift[9]+keyShift[5]+keyShift[16]+keyShift[2]+Math.floor(x/8);
+							z++;
+							break;
+						case 24:
+							outShift[2] += keyShift[12]+keyShift[13]+keyShift[3]+keyShift[8]+keyShift[15]+keyShift[16]+Math.floor(x/2);
+							z++;
+							break;
+						case 25:
+							outShift[2] += keyShift[10]+keyShift[18]+keyShift[6]+keyShift[19]+keyShift[0]+keyShift[1]+Math.floor(x/3);
+							z++;
+							break;
+						case 26:
+							outShift[2] += keyShift[5]+keyShift[10]+keyShift[11]+keyShift[4]+keyShift[7]+keyShift[3]+Math.floor(x/4);
 							z = 0;
 							break;
 						default:
 							z = 0;
 					}
-					console.log(outShift[2]);
 					for(var y = 0;y < 5;y++){
 						if(outShift[y]>125){
 							while(outShift[y]>125){
@@ -698,7 +784,6 @@ class Mask {
 							output += String.fromCharCode(outShift[y]);
 						}
 					}
-					console.log(outShift[2]);
 				}
 				return output;
 			}
@@ -714,28 +799,28 @@ class Mask {
 				var keyShift = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 				var y = 0;
 				for(var x = 0;x < keyLength; x++){
-					keyShift[y] += this.keyString.codePointAt(x);
+					keyShift[y] += this.keyString.codePointAt(x)+1;
 					keyShift[19-y] += this.keyString.codePointAt(x)+y;
-					keyShift[0] += Math.floor(this.keyString.codePointAt(x)*5/(13+y));
-					keyShift[1] += Math.floor(this.keyString.codePointAt(x)*5/(11+y));
-					keyShift[2] += Math.floor(this.keyString.codePointAt(x)*2/(7+y));
-					keyShift[3] += Math.floor(this.keyString.codePointAt(x)*2/(1+y));
-					keyShift[4] += Math.floor(this.keyString.codePointAt(x)*2/(2+y));
-					keyShift[5] += Math.floor(this.keyString.codePointAt(x)*2/(5+y));
-					keyShift[6] += Math.floor(this.keyString.codePointAt(x)*5/(13+y));
-					keyShift[7] += Math.floor(this.keyString.codePointAt(x)*5/(11+y));
-					keyShift[8] += Math.floor(this.keyString.codePointAt(x)*3/(7+y));
-					keyShift[9] += Math.floor(this.keyString.codePointAt(x)*2/(1+y));
-					keyShift[10] += Math.floor(this.keyString.codePointAt(x)*4/(13+y));
-					keyShift[11] += Math.floor(this.keyString.codePointAt(x)*4/(11+y));
-					keyShift[12] += Math.floor(this.keyString.codePointAt(x)*5/(7+y));
-					keyShift[13] += Math.floor(this.keyString.codePointAt(x)*2/(1+y));
-					keyShift[14] += Math.floor(this.keyString.codePointAt(x)*2/(2+y));
-					keyShift[15] += Math.floor(this.keyString.codePointAt(x)*2/(5+y));
-					keyShift[16] += Math.floor(this.keyString.codePointAt(x)*5/(13+y));
-					keyShift[17] += Math.floor(this.keyString.codePointAt(x)*5/(11+y));
-					keyShift[18] += Math.floor(this.keyString.codePointAt(x)*4/(7+y));
-					keyShift[19] += Math.floor(this.keyString.codePointAt(x)*2/(1+y));
+					keyShift[0] += Math.floor(this.keyString.codePointAt(x)*15/(13+y));
+					keyShift[1] += Math.floor(this.keyString.codePointAt(x)*5/(11+y))+215;
+					keyShift[2] += Math.floor(this.keyString.codePointAt(x)*11/(7+y));
+					keyShift[3] += Math.floor(this.keyString.codePointAt(x)*2/(1+y))+184;
+					keyShift[4] += Math.floor(this.keyString.codePointAt(x)*13/(2+y));
+					keyShift[5] += Math.floor(this.keyString.codePointAt(x)*2/(5+y))+201;
+					keyShift[6] += Math.floor(this.keyString.codePointAt(x)*15/(13+y));
+					keyShift[7] += Math.floor(this.keyString.codePointAt(x)*5/(11+y))+243;
+					keyShift[8] += Math.floor(this.keyString.codePointAt(x)*16/(7+y));
+					keyShift[9] += Math.floor(this.keyString.codePointAt(x)*2/(1+y))+211;
+					keyShift[10] += Math.floor(this.keyString.codePointAt(x)*14/(13+y));
+					keyShift[11] += Math.floor(this.keyString.codePointAt(x)*4/(11+y))+191;
+					keyShift[12] += Math.floor(this.keyString.codePointAt(x)*18/(7+y));
+					keyShift[13] += Math.floor(this.keyString.codePointAt(x)*2/(1+y))+188;
+					keyShift[14] += Math.floor(this.keyString.codePointAt(x)*13/(2+y));
+					keyShift[15] += Math.floor(this.keyString.codePointAt(x)*2/(5+y))+209;
+					keyShift[16] += Math.floor(this.keyString.codePointAt(x)*15/(13+y));
+					keyShift[17] += Math.floor(this.keyString.codePointAt(x)*5/(11+y))+194;
+					keyShift[18] += Math.floor(this.keyString.codePointAt(x)*24/(7+y));
+					keyShift[19] += Math.floor(this.keyString.codePointAt(x)*2/(1+y))+280;
 					switch(y) {
 						case 0:
 							keyShift[0] += keyShift[2]+Math.floor(this.keyString.codePointAt(x)*5/(13+y));
@@ -1201,38 +1286,123 @@ class Mask {
 							y=0;
 					}
 				}
-				console.log(keyShift);
 				var inputLength = this.inString.length;
 				var outShift = 0;
 				var z = 0;
 				for(var x = 0;x*5 < inputLength;x++){
 					outShift = Number.parseInt(keyShift[2]);
-					//console.log(keyShift);
 					switch(z) {
-						case 0:
-							outShift += keyShift[5]+keyShift[6]+keyShift[7]+keyShift[11]+keyShift[8]+keyShift[9];
-							z++;
-							break;
-						case 1:
-							outShift += keyShift[4]+keyShift[2]+keyShift[7]+keyShift[3]+keyShift[13]+keyShift[0];
-							z++;
-							break;
-						case 2:
-							outShift += keyShift[10]+keyShift[11]+keyShift[1]+keyShift[12]+keyShift[13]+keyShift[14];
-							z++;
-							break;
-						case 3:
-							outShift += keyShift[15]+keyShift[16]+keyShift[4]+keyShift[17]+keyShift[18]+keyShift[19];
-							z++;
-							break;
-						case 4:
-							outShift += keyShift[3]+keyShift[8]+keyShift[17]+keyShift[2]+keyShift[5]+keyShift[1];
-							z = 0;
-							break;
-						default:
-							z = 0;
-					}
-					console.log(outShift);
+					case 0:
+						outShift += keyShift[5]+keyShift[6]+keyShift[7]+keyShift[11]+keyShift[8]+keyShift[9]+x;
+						z++;
+						break;
+					case 1:
+						outShift += keyShift[4]+keyShift[2]+keyShift[7]+keyShift[3]+keyShift[13]+keyShift[0]+Math.floor(x/8);
+						z++;
+						break;
+					case 2:
+						outShift += keyShift[10]+keyShift[11]+keyShift[1]+keyShift[12]+keyShift[13]+keyShift[14]+Math.floor(x/2);
+						z++;
+						break;
+					case 3:
+						outShift += keyShift[15]+keyShift[16]+keyShift[4]+keyShift[17]+keyShift[18]+keyShift[19]+Math.floor(x/3);
+						z++;
+						break;
+					case 4:
+						outShift += keyShift[6]+keyShift[7]+keyShift[8]+keyShift[12]+keyShift[9]+keyShift[10]+x;
+						z++;
+						break;
+					case 5:
+						outShift += keyShift[5]+keyShift[3]+keyShift[8]+keyShift[4]+keyShift[14]+keyShift[1]+Math.floor(x/8);
+						z++;
+						break;
+					case 6:
+						outShift += keyShift[11]+keyShift[12]+keyShift[2]+keyShift[13]+keyShift[14]+keyShift[15]+Math.floor(x/2);
+						z++;
+						break;
+					case 7:
+						outShift += keyShift[16]+keyShift[17]+keyShift[5]+keyShift[18]+keyShift[19]+keyShift[0]+Math.floor(x/3);
+						z++;
+						break;
+					case 8:
+						outShift += keyShift[5]+keyShift[10]+keyShift[19]+keyShift[4]+keyShift[7]+keyShift[3]+Math.floor(x/4);
+						z++;
+						break;
+					case 9:
+						outShift += keyShift[7]+keyShift[8]+keyShift[9]+keyShift[13]+keyShift[10]+keyShift[11]+x;
+						z++;
+						break;
+					case 10:
+						outShift += keyShift[6]+keyShift[4]+keyShift[9]+keyShift[5]+keyShift[15]+keyShift[2]+Math.floor(x/8);
+						z++;
+						break;
+					case 11:
+						outShift += keyShift[12]+keyShift[13]+keyShift[3]+keyShift[14]+keyShift[15]+keyShift[16]+Math.floor(x/2);
+						z++;
+						break;
+					case 12:
+						outShift += keyShift[17]+keyShift[18]+keyShift[6]+keyShift[19]+keyShift[0]+keyShift[1]+Math.floor(x/3);
+						z++;
+						break;
+					case 13:
+						outShift += keyShift[5]+keyShift[6]+keyShift[7]+keyShift[12]+keyShift[8]+keyShift[9]+x;
+						z++;
+						break;
+					case 14:
+						outShift += keyShift[4]+keyShift[2]+keyShift[7]+keyShift[3]+keyShift[14]+keyShift[0]+Math.floor(x/8);
+						z++;
+						break;
+					case 15:
+						outShift += keyShift[5]+keyShift[11]+keyShift[1]+keyShift[12]+keyShift[13]+keyShift[14]+Math.floor(x/2);
+						z++;
+						break;
+					case 16:
+						outShift += keyShift[15]+keyShift[16]+keyShift[4]+keyShift[17]+keyShift[18]+keyShift[7]+Math.floor(x/3);
+						z++;
+						break;
+					case 17:
+						outShift += keyShift[6]+keyShift[0]+keyShift[8]+keyShift[12]+keyShift[9]+keyShift[10]+x;
+						z++;
+						break;
+					case 18:
+						outShift += keyShift[5]+keyShift[3]+keyShift[8]+keyShift[4]+keyShift[14]+keyShift[2]+Math.floor(x/8);
+						z++;
+						break;
+					case 19:
+						outShift += keyShift[11]+keyShift[12]+keyShift[2]+keyShift[13]+keyShift[14]+keyShift[16]+Math.floor(x/2);
+						z++;
+						break;
+					case 20:
+						outShift += keyShift[16]+keyShift[17]+keyShift[5]+keyShift[18]+keyShift[9]+keyShift[0]+Math.floor(x/3);
+						z++;
+						break;
+					case 21:
+						outShift += keyShift[5]+keyShift[10]+keyShift[18]+keyShift[4]+keyShift[7]+keyShift[3]+Math.floor(x/4);
+						z++;
+						break;
+					case 22:
+						outShift += keyShift[7]+keyShift[8]+keyShift[9]+keyShift[3]+keyShift[10]+keyShift[11]+x;
+						z++;
+						break;
+					case 23:
+						outShift += keyShift[6]+keyShift[4]+keyShift[9]+keyShift[5]+keyShift[16]+keyShift[2]+Math.floor(x/8);
+						z++;
+						break;
+					case 24:
+						outShift += keyShift[12]+keyShift[13]+keyShift[3]+keyShift[8]+keyShift[15]+keyShift[16]+Math.floor(x/2);
+						z++;
+						break;
+					case 25:
+						outShift += keyShift[10]+keyShift[18]+keyShift[6]+keyShift[19]+keyShift[0]+keyShift[1]+Math.floor(x/3);
+						z++;
+						break;
+					case 26:
+						outShift += keyShift[5]+keyShift[10]+keyShift[11]+keyShift[4]+keyShift[7]+keyShift[3]+Math.floor(x/4);
+						z = 0;
+						break;
+					default:
+						z = 0;
+				}
 					var j = -outShift;
 					if(this.inString.codePointAt(5*x+2)==10){
 						j+=31;
@@ -1252,7 +1422,6 @@ class Mask {
 					} else {
 						output += String.fromCharCode(j);
 					}
-					console.log(j);
 				}
 				return output;
 			}
