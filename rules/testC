@@ -46,15 +46,15 @@ DataLine 7
 NumDataCharsPerLine 3
 DataCharType 24time 99999999
 <LineDelimiter>04:43:12</LineDelimiter>
-#<DataLineOrder> Arrangement of integers </DataLineOrder> Defines how the DataLines will be arranged in the file.  
+#<DataLineOrder> Arrangement of integers </DataLineOrder> Defines how the DataLines will be arranged in the file.
 #DataLines will be repeated until all of the data has been written
-<DataLineOrder>1
-2
-3
-4
-5
-6
-7
-123</DataLineOrder>
+<DataLineOrder>^<1>^
+^<2>^
+^<3>^
+^<4>^
+^<5>^
+^<6>^
+^<7>^
+^<1>^^<2>^^<3>^</DataLineOrder>
 #<FilePostfix> text </FilePostfix> Adds "text" to the end of the output file
 <FilePostfix>21</FilePostfix>

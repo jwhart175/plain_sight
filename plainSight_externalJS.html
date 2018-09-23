@@ -84,9 +84,9 @@ hideButton.onclick = function() {
 		if(passCheck.checked){
 			mask.setInString(inputText);
 			if(password.value) {
-				mask.setKey(password.value);
+				mask.setPass(password.value);
 			} else {
-				mask.setKey("password");
+				mask.setPass("password");
 			}
 			mask.setInString(mask.encrypt);
 		} else {
@@ -105,9 +105,9 @@ unhideButton.onclick = function() {
 		if(passCheck.checked){
 			mask.setInString(output);
 			if(password.value) {
-				mask.setKey(password.value);
+				mask.setPass(password.value);
 			} else {
-				mask.setKey("password");
+				mask.setPass("password");
 			}
 			output = mask.decrypt;
 		}

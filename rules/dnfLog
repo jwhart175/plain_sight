@@ -16,7 +16,7 @@ NumDataCharsPerLine 30
 DataCharType hex
 <LineDelimiter></LineDelimiter>
 <DataLineOrder>
-1</DataLineOrder>
+^<1>^</DataLineOrder>
 <FilePostfix>
 Aug 08 10:50:02 INFO 25 files removed
 Aug 08 10:50:02 DDEBUG Cleaning up.

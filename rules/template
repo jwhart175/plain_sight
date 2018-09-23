@@ -30,19 +30,19 @@
 # DataCharType datetime year month day hour
 #  Transforms one of the characters into a date and time with the format YYYY-MM-DD HH:MM:SS starting after the user defined starting year, month, day, and hour.  The data is actually stored in a time difference, and each character
 #   of this type will be at a later time then the last such that the times printed to the output file appear to be occurring sequentially.
-#  
+#
 #<LineDelimiter> text </LineDelimiter> Adds "text" in between the data transforms
 #
-#<DataLineOrder> Arrangement of integers </DataLineOrder> Defines how the DataLines will be arranged in the file.  
+#<DataLineOrder> Arrangement of integers </DataLineOrder> Defines how the DataLines will be arranged in the file.
 #DataLines will be repeated until all of the data has been written
-#
+#DataLine numbers must be enclosed within "^<" and ">^" in order to be detected.
 #<FilePostfix> text </FilePostfix> Adds "text" to the end of the output file
 #
 #
 #Example:
-<FilePrefix> 
+<FilePrefix>
 The text which is written here
-Will be placed at the start of the output file 
+Will be placed at the start of the output file
 unedited. Until it is ended with: </FilePrefix>
 NumDataLineTypes 3
 DataLine 1
@@ -61,10 +61,10 @@ NumDataCharsPerLine 3
 DataCharType number (or hex or text)
 <LineDelimiter>, </LineDelimiter>
 <DataLineOrder>
-1
-2
-3
-1, 2, 3
+^<1>^
+^<2>^
+^<3>^
+^<1>^, ^<2>^, ^<3>^
 </DataLineOrder>
 <FilePostfix>
 This test will be placed at the end of the file. </FilePostfix>

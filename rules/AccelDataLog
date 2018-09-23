@@ -8,5 +8,5 @@ NumDataCharsPerLine 9
 DataCharType number
 <LineDelimiter>, </LineDelimiter>
 <DataLineOrder>
-1</DataLineOrder>
+^<1>^</DataLineOrder>
 <FilePostfix></FilePostfix>
