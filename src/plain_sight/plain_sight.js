@@ -637,7 +637,7 @@ class Mask {
 					}
 					for(var id = 0; id<20; id++){
 						while(keyShift[id]>1250000){
-							keyShift[id] = Math.floor(keyShift[id]/10000);
+							keyShift[id] = keyShift[id] - 1260000 + 310000;
 						}
 					}
 				}
