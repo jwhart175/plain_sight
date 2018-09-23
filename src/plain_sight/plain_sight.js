@@ -640,7 +640,6 @@ class Mask {
 				var input = this.inString[inputLength-1] + this.inString[inputLength-1] + this.inString + this.inString[0] + this.inString[0];
 				var outShift = [];
 				var z = 0;
-				console.log(keyShift);
 				for(var x = 0;x < inputLength;x++){
 					outShift = [];
 					outShift.push(Number.parseInt(keyShift[0]));
@@ -648,15 +647,13 @@ class Mask {
 					outShift.push(Number.parseInt(keyShift[2]));
 					outShift.push(Number.parseInt(keyShift[3]));
 					outShift.push(Number.parseInt(keyShift[4]));
-					outShift[0] += input.codePointAt(x+4)+input.codePointAt(x)+x;
-					outShift[1] += input.codePointAt(x+1)+input.codePointAt(x+2)+x;
+
 					if(input.codePointAt(x+2)==10){
 						outShift[2] += 31;
 					} else {
 						outShift[2] += input.codePointAt(x+2);
 					}
-					outShift[3] += input.codePointAt(x)+input.codePointAt(x+1)+x;
-					outShift[4] += input.codePointAt(x+3)+input.codePointAt(x+4)+x;
+
 					switch(z) {
 						case 0:
 							outShift[2] += keyShift[5]+keyShift[6]+keyShift[7]+keyShift[11]+keyShift[8]+keyShift[9]+x;
@@ -769,6 +766,10 @@ class Mask {
 						default:
 							z = 0;
 					}
+					outShift[0] += input.codePointAt(x+4)+input.codePointAt(x)+z+outShift[2];
+					outShift[1] += input.codePointAt(x+1)+input.codePointAt(x+2)-z+outShift[2];
+					outShift[3] += input.codePointAt(x)+input.codePointAt(x+1)+z+outShift[2];
+					outShift[4] += input.codePointAt(x+3)+input.codePointAt(x+4)-z+outShift[2];
 					for(var y = 0;y < 5;y++){
 						if(outShift[y]>125){
 							while(outShift[y]>125){
