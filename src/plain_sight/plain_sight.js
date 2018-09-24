@@ -6,6 +6,15 @@ class Mask {
 		this.logString="";
 		this.passString="";
 		this.keyArray=[];
+		this.fileExtensions = [".txt",".jpg",".gpg",".png",".gif",".mp3",".doc",".zip",".mov",".mp4",".xcf",".tar",".bak",
+		                        ".css",".wav",".dwg",".dxf",".dgn",".rtf",".ngp",".xls",".fli",".htm",".ico",".pdf",".tif",
+		                        ".pcx",".bmp",".tmp",".shf",".exe",".bat",".gfx",".3gp",".aac",".asv",".avi",".bin",".bpc",
+		                        ".cdt",".cfg",".dat",".dbf",".dir",".dll",".dos",".dxn",".edt",".env",".ext",".gc1",".geo",
+		                        ".gre",".gsd",".hdd",".hex",".htx",".hxx",".idb",".img",".inf",".ins",".jar",".jav",".jre",
+		                        ".kbd",".key",".kpl",".lib",".lic",".lnk",".log",".map",".mdl",".mid",".mob",".msg",".net",
+		                        ".obj",".ocf",".ocr",".odf",".ods",".odt",".ogg",".org",".pal",".pch",".pgp",".php",".pub",
+		                        ".raw",".rsc",".sav",".sql",".jbx",".klm"];
+
 		if(rules){
 			if(rules.rPrefix){
 				this.rPrefix=rules.rPrefix;
@@ -1795,21 +1804,37 @@ class Mask {
 						lineOrderCursor+=2;
 						typeNum="";
 						while(this.rLineOrder.substring(lineOrderCursor,lineOrderCursor+2)!=">^"){
-							console.log(this.rLineOrder.substring(lineOrderCursor,lineOrderCursor+2))
 							typeNum += this.rLineOrder.substring(lineOrderCursor,lineOrderCursor+1);
 							lineOrderCursor++;
 							if(lineOrderCursor >= lineOrderLength){
 								break;
 							}
 						}
-						console.log(typeNum);
 						lineOrderCursor+=2;
 						typeNum = 1*typeNum;
 						if (((typeNum)<=this.rNumLineTypes)&((typeNum)>0)){
-
 							output += this.rLinePrefixes[typeNum-1];
 							for(var x = 0; x < this.rNumCharsPerLine[typeNum-1]; x++){
-								if (this.rDataCharTypes[typeNum-1]=="number"){
+								if (this.rDataCharTypes[typeNum-1]=="extension"){
+									if(inputCursor >= inputLength) {
+										output+=".313";
+										inputCursor++;
+										lineOrderCursor = lineOrderLength;
+									} else {
+										var datum = inputText.charAt(inputCursor);
+										var num = datum.codePointAt(0);
+										if(num==10){
+											num = 0;
+										} else {
+											num = num - 31;
+										}
+										output+=this.fileExtensions[num];
+										inputCursor++;
+									}
+									if (x < (this.rNumCharsPerLine[typeNum-1] - 1)){
+										output+=this.rLineDelimiters[typeNum-1];
+									}
+								} else if (this.rDataCharTypes[typeNum-1]=="number"){
 									if(inputCursor >= inputLength) {
 										if(inputCursor == inputLength) {
 											output+="NaN";
@@ -2288,7 +2313,53 @@ class Mask {
 							if((inputCursor + this.rLinePrefixes[typeNum-1].length) < inputLength){
 								inputCursor = inputCursor + this.rLinePrefixes[typeNum-1].length;
 								for(var x = 0; x < this.rNumCharsPerLine[typeNum-1]; x++){
-									if (this.rDataCharTypes[typeNum-1]=="number"){
+									if (this.rDataCharTypes[typeNum-1]=="extension"){
+										if(inputCursor + 4 < inputLength){
+											var num = -1;
+											var test = inputText.substring(inputCursor,inputCursor+4);
+											for(var k = 0;k<this.fileExtensions.length;k++){
+												if(test===this.fileExtensions[k]){
+													num = k;
+													break;
+												}
+											}
+											var notFound = true;
+											while(notFound){
+												if(inputCursor==inputLength){
+													break;
+												}
+												if(num<0){
+													notFound = true;
+													inputCursor++;
+													test = inputText.substring(inputCursor,inputCursor+4);
+													for(var k = 0;k<this.fileExtensions.length;k++){
+														if(test===this.fileExtensions[k]){
+															num = k;
+															break;
+														}
+													}
+												} else {
+													notFound = false;
+												}
+											}
+											if(inputCursor==inputLength){
+												break;
+											}
+											if(num==0){
+												num+= 10;
+											} else if (num>0) {
+												num+=31;
+											}
+											var datum = String.fromCharCode(num);
+											output+=datum;
+											inputCursor+=4;
+										}
+										if((x + 1) < this.rNumCharsPerLine[typeNum-1]) {
+											if((inputCursor + this.rLineDelimiters[typeNum-1].length) < inputLength){
+												inputCursor = inputCursor + this.rLineDelimiters[typeNum-1].length;
+											}
+										}
+									} else if (this.rDataCharTypes[typeNum-1]=="number"){
 										if((inputCursor + this.rNumDigits[typeNum-1]) < inputLength){
 											var num = inputText.substring(inputCursor,inputCursor+this.rNumDigits[typeNum-1]);
 											while((inputCursor + this.rNumDigits[typeNum-1]) < inputLength){
