@@ -1,142 +1,119 @@
-class Mask {
-	constructor(rules) {
-		var count = 0;
-		this.inString="";
-		this.ruleString="";
-		this.logString="";
-		this.passString="";
-		this.keyArray=[];
-		this.fileExtensions = [".txt",".jpg",".gpg",".png",".gif",".mp3",".doc",".zip",".mov",".mp4",".xcf",".tar",".bak",
+//MIT License
+//Copyright (c) 2018 Jonathan Hart
+//
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+//The above copyright notice and this permission notice shall be included in all
+//copies or substantial portions of the Software.
+//
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//SOFTWARE.
+
+
+var mask = newMask();
+
+function plainSightEncryptHide(inString,ruleString,passString){
+	mask = newMask();
+	mask.setInString(inString);
+	mask.setRuleString(ruleString);
+	mask.setPass(passString);
+	mask.setInString(mask.encrypt);
+	return mask.hide;
+}
+
+function plainSightHide(inString,ruleString){
+	mask = newMask();
+	mask.setInString(inString);
+	mask.setRuleString(ruleString);
+	return mask.hide;
+}
+
+function plainSightEncrypt(inString,passString){
+	mask = newMask();
+	mask.setInString(inString);
+	mask.setPassString(passString);
+	return mask.encrypt;
+}
+
+function plainSightDecryptUnhide(inString,ruleString,passString){
+	mask = newMask();
+	mask.setInString(inString);
+	mask.setRuleString(ruleString);
+	mask.setInString(mask.unhide);
+	mask.setPass(passString);
+	return mask.decrypt;
+}
+
+function plainSightUnhide(inString,ruleString,passString){
+	mask = newMask();
+	mask.setInString(inString);
+	mask.setRuleString(ruleString);
+	return mask.unhide;
+}
+
+function plainSightDecrypt(inString,passString){
+	mask = newMask();
+	mask.setInString(inString);
+	mask.setPassString(passString);
+	return mask.decrypt;
+}
+
+function newMask(){
+	mask = {
+		inString:"",
+		ruleString:"",
+		logString:"",
+		passString:"",
+		keyArray:[],
+		fileExtensions:[".txt",".jpg",".gpg",".png",".gif",".mp3",".doc",".zip",".mov",".mp4",".xcf",".tar",".bak",
 		                        ".css",".wav",".dwg",".dxf",".dgn",".rtf",".ngp",".xls",".fli",".htm",".ico",".pdf",".tif",
 		                        ".pcx",".bmp",".tmp",".shf",".exe",".bat",".gfx",".3gp",".aac",".asv",".avi",".bin",".bpc",
 		                        ".cdt",".cfg",".dat",".dbf",".dir",".dll",".dos",".dxn",".edt",".env",".ext",".gc1",".geo",
 		                        ".gre",".gsd",".hdd",".hex",".htx",".hxx",".idb",".img",".inf",".ins",".jar",".jav",".jre",
 		                        ".kbd",".key",".kpl",".lib",".lic",".lnk",".log",".map",".mdl",".mid",".mob",".msg",".net",
 		                        ".obj",".ocf",".ocr",".odf",".ods",".odt",".ogg",".org",".pal",".pch",".pgp",".php",".pub",
-		                        ".raw",".rsc",".sav",".sql",".jbx",".klm"];
+		                        ".raw",".rsc",".sav",".sql",".jbx",".klm"],
 
-		if(rules){
-			if(rules.rPrefix){
-				this.rPrefix=rules.rPrefix;
-			} else {
-				this.rPrefix = "";
-			}
-			if(rules.rPostfix){
-				this.rPostfix=rules.rPostfix;
-			} else {
-				this.rPostfix = "";
-			}
-			if(rules.rNumLineTypes){
-				count++;
-				this.rNumLineTypes=rules.rNumLineTypes;
-			} else {
-				this.rNumLineTypes = 0;
-			}
-			if(rules.rLineNum){
-				count++;
-				this.rLineNum=rules.rLineNum;
-			} else {
-				this.rLineNum = 0;
-			}
-			if(rules.rLinePrefixes){
-				this.rLinePrefixes=rules.rLinePrefixes;
-			} else {
-				this.rLinePrefixes = [""];
-			}
-			if(rules.rNumCharsPerLine){
-				count++;
-				this.rNumCharsPerLine=rules.rNumCharsPerLine
-			} else {
-				this.rNumCharsPerLine = [0];
-			}
-			if(rules.rDataCharTypes){
-				count++;
-				this.rDataCharTypes=rules.rDataCharTypes;
-			} else {
-				this.rDataCharTypes = [""];
-			}
-			if(rules.rLineDelimiters){
-				this.rLineDelimiters=rules.rDataCharTypes;
-			} else {
-				this.rLineDelimiters = [""];
-			}
-			if(rules.rLineOrder){
-				count++;
-				this.rLineOrder=rules.rLineOrder;
-			} else {
-				this.rLineOrder = "";
-			}
-			if(rules.rNumDigits){
-				this.rNumDigits=rules.rNumDigits;
-			} else {
-				this.rNumDigits = [0];
-			}
-			if(rules.rStartTime){
-				this.rStartTime=rules.rStartTime;
-			} else {
-				this.rStartTime = [0];
-			}
-			if(rules.rStartYear){
-				this.rStartYear=rules.rStartYear;
-			} else {
-				this.rStartYear = [0];
-			}
-			if(rules.rStartMonth){
-				this.rStartMonth=rules.rStartMonth;
-			} else {
-				this.rStartMonth = [0];
-			}
-			if(rules.rStartDay){
-				this.rStartDay=rules.rStartDay;
-			} else {
-				this.rStartDay = [0];
-			}
-			if(rules.rStartHour){
-				this.rStartHour=rules.rStartHour;
-			} else {
-				this.rStartHour = [0];
-			}
-			if(count==5){
-				this.rulesValid = true;
-			} else {
-				this.rulesValid = false;
-			}
-		} else {
-			this.rulesValid=false;
-		}
-	}
-
-	setInString(input){
+	setInString:function(input){
 		if(input&&(typeof "string"==typeof input)){
 			this.inString=input;
 		} else {
-			console.log("setInString Failed!  No input detected!");
+			//console.log("setInString Failed!  No input detected!");
 		}
-	}
+	},
 
-	setRuleString(rules){
+	setRuleString:function(rules){
 		if(rules){
 			if(typeof rules == typeof "test"){
 				this.ruleString=rules;
 			} else {
-				console.log("setRuleString Failed!  Input is not a string!");
+				//console.log("setRuleString Failed!  Input is not a string!");
 			}
 		} else {
-			console.log("setRuleString Failed!  No input detected!");
+			//console.log("setRuleString Failed!  No input detected!");
 		}
-	}
+	},
 
-	setPass(pass){
+	setPass:function(pass){
 		if(pass){
 			if(typeof pass == typeof "test"){
 				this.passString=pass;
 			} else {
-				console.log("setPass Failed! Input is not a string!");
+				//console.log("setPass Failed! Input is not a string!");
 			}
 		} else {
-			console.log("setPass Failed! No input detected!");
+			//console.log("setPass Failed! No input detected!");
 		}
-	}
+	},
 
 	get checkRules() {
 		if(this.ruleString){
@@ -149,7 +126,7 @@ class Mask {
 		} else {
 			return false;
 		}
-	}
+	},
 
 	get key() {
 		if(this.passString){
@@ -673,7 +650,7 @@ class Mask {
 		} else {
 			return false;
 		}
-	}
+	},
 
 	get encrypt(){
 		var output = "";
@@ -856,7 +833,7 @@ class Mask {
 			}
 		}
 		return false;
-	}
+	},
 
 	get decrypt(){
 		var output = "";
@@ -1026,7 +1003,7 @@ class Mask {
 			}
 		}
 		return false;
-	}
+	},
 
 	get debugRules() {
 		this.logString="";
@@ -1102,7 +1079,7 @@ class Mask {
 														if (foundEndDataLineOrder) {
 															if (foundStartPostFix) {
 																if(switcher){
-																	console.log("Rule File Parsing: Found <FilePostfix> on ruleLine " + (x+1) + "\n");
+																	//console.log("Rule File Parsing: Found <FilePostfix> on ruleLine " + (x+1) + "\n");
 																	switcher = false;
 																}
 																if (foundEndPostFix) {
@@ -1193,7 +1170,7 @@ class Mask {
 															}
 														}
 														if(switcher){
-															console.log("Rule File Parsing: Found </DataLineOrder> on ruleLine " + (x+1) + "\n");
+															//console.log("Rule File Parsing: Found </DataLineOrder> on ruleLine " + (x+1) + "\n");
 															switcher = false;
 														}
 													} else {
@@ -1237,7 +1214,7 @@ class Mask {
 														}
 													}
 													if(switcher){
-														console.log("Rule File Parsing: Found <DataLineOrder> on ruleLine " + (x+1) + "\n");
+														//console.log("Rule File Parsing: Found <DataLineOrder> on ruleLine " + (x+1) + "\n");
 														switcher = false;
 													}
 												} else {
@@ -1291,7 +1268,7 @@ class Mask {
 													}
 												}
 												if(switcher){
-													console.log("Rule File Parsing: Found </LineDelimiter> on ruleLine " + (x+1) + "\n");
+													//console.log("Rule File Parsing: Found </LineDelimiter> on ruleLine " + (x+1) + "\n");
 													switcher = false;
 												}
 											} else {
@@ -1360,7 +1337,7 @@ class Mask {
 												}
 											}
 											if(switcher){
-												console.log("Rule File Parsing: Found <LineDelimiter> on ruleLine " + (x+1) + "\n");
+												//console.log("Rule File Parsing: Found <LineDelimiter> on ruleLine " + (x+1) + "\n");
 												switcher = false;
 											}
 										} else {
@@ -1435,18 +1412,18 @@ class Mask {
 																this.rNumDigits[this.rLineNum] = 3;
 															}
 														} else {
-															console.log("Warning: No Data Character Type found in rule file after DataCharType declaration statement!");
+															//console.log("Warning: No Data Character Type found in rule file after DataCharType declaration statement!");
 															this.logString += "Warning: No Data Character Type found in rule file after DataCharType declaration!\n";
 														}
 													} else {
-														console.log("Warning: No Data Character Type found in rule file after DataCharType declaration!");
+														//console.log("Warning: No Data Character Type found in rule file after DataCharType declaration!");
 														this.logString += "Warning: No Data Character Type found in rule file after DataCharType declaration!\n";
 													}
 												}
 											}
 										}
 										if(switcher){
-											console.log("Rule File Parsing: Found DataCharType on ruleLine " + (x+1) + "\n");
+											//console.log("Rule File Parsing: Found DataCharType on ruleLine " + (x+1) + "\n");
 											switcher = false;
 										}
 									} else {
@@ -1459,17 +1436,17 @@ class Mask {
 														foundNextNumDataCharsPerLine = true;
 														this.rNumCharsPerLine[this.rLineNum] = 1*(splits[1]);
 													} else {
-														console.log("Warning: No Number of Characters Per Line found in rule file after NumDataCharsPerLine declaration statement!");
+														//console.log("Warning: No Number of Characters Per Line found in rule file after NumDataCharsPerLine declaration statement!");
 													}
 												} else {
-													console.log("Warning: No Number of Characters Per Line found in rule file after NumDataCharsPerLine declaration!");
+													//console.log("Warning: No Number of Characters Per Line found in rule file after NumDataCharsPerLine declaration!");
 												}
 
 											}
 										}
 									}
 									if(switcher){
-										console.log("Rule File Parsing: Found NumDataCharsPerLine on ruleLine " + (x+1) + "\n");
+										//console.log("Rule File Parsing: Found NumDataCharsPerLine on ruleLine " + (x+1) + "\n");
 										switcher = false;
 									}
 								} else {
@@ -1496,7 +1473,7 @@ class Mask {
 									}
 								}
 								if(switcher){
-									console.log("Rule File Parsing: Found </LinePrefix> on ruleLine " + (x+1) + "\n");
+									//console.log("Rule File Parsing: Found </LinePrefix> on ruleLine " + (x+1) + "\n");
 									switcher = false;
 								}
 							} else {
@@ -1541,7 +1518,7 @@ class Mask {
 								}
 							}
 							if(switcher){
-								console.log("Rule File Parsing: Found <LinePrefix> on ruleLine " + (x+1) + "\n");
+								//console.log("Rule File Parsing: Found <LinePrefix> on ruleLine " + (x+1) + "\n");
 								switcher = false;
 							}
 						} else {
@@ -1554,15 +1531,15 @@ class Mask {
 												foundNextDataLine = true;
 												this.logString += "Found DataLine On Rule File Line " + x + "\n";
 											} else {
-												console.log("Warning: The DataLine identification numbers found in the rule file are out of order!");
+												//console.log("Warning: The DataLine identification numbers found in the rule file are out of order!");
 												this.logString += "Warning: The DataLine identification numbers found in the rule file are out of order!\n";
 											}
 										} else {
-											console.log("Warning: No DataLine Identification number found in rule file after DataLine declaration statement!");
+											//console.log("Warning: No DataLine Identification number found in rule file after DataLine declaration statement!");
 											this.logString += "Warning: No DataLine Identification number found in rule file after DataLine declaration statement!\n";
 										}
 									} else {
-										console.log("Warning: No DataLine Identification number found in rule file after DataLine declaration!");
+										//console.log("Warning: No DataLine Identification number found in rule file after DataLine declaration!");
 										this.logString += "Warning: No DataLine Identification number found in rule file after DataLine declaration statement!\n";
 									}
 
@@ -1570,7 +1547,7 @@ class Mask {
 							}
 						}
 						if(switcher){
-							console.log("Rule File Parsing: Found DataLine on ruleLine " + (x+1) + "\n");
+							//console.log("Rule File Parsing: Found DataLine on ruleLine " + (x+1) + "\n");
 							switcher = false;
 						}
 					} else {
@@ -1619,7 +1596,7 @@ class Mask {
 						}
 					}
 					if(switcher){
-						console.log("Rule File Parsing: Found NumDataLineTypes on ruleLine " + (x+1) + "\n");
+						//console.log("Rule File Parsing: Found NumDataLineTypes on ruleLine " + (x+1) + "\n");
 						switcher = false;
 					}
 				} else {
@@ -1646,7 +1623,7 @@ class Mask {
 					}
 				}
 				if(switcher){
-					console.log("Rule File Parsing: Found </FilePrefix> on ruleLine " + (x+1) + "\n");
+					//console.log("Rule File Parsing: Found </FilePrefix> on ruleLine " + (x+1) + "\n");
 					switcher = false;
 				}
 			} else {
@@ -1688,7 +1665,7 @@ class Mask {
 				}
 			}
 			if(switcher){
-				console.log("Rule File Parsing: Found <FilePrefix> on ruleLine " + (x+1) + "\n");
+				//console.log("Rule File Parsing: Found <FilePrefix> on ruleLine " + (x+1) + "\n");
 				switcher = false;
 			}
 		}
@@ -1735,7 +1712,7 @@ class Mask {
 			this.logString += "Never Found </FilePostfix>!\n";
 		}
 		return this.logString;
-	}
+	},
 
 	get hide() {
 		if(this.inString){
@@ -1756,7 +1733,7 @@ class Mask {
 		} else {
 			return "Hide Failed!  There is nothing to hide!";
 		}
-	}
+	},
 
 	get unhide() {
 		if(this.inString){
@@ -1777,9 +1754,9 @@ class Mask {
 		} else {
 			return "Unhide Failed!  There is nothing to unhide!";
 		}
-	}
+	},
 
-	hider(inputText) {
+	hider:function(inputText) {
 		if(this.rulesValid){
 			var output = "";
 			output+=this.rPrefix;
@@ -2251,12 +2228,12 @@ class Mask {
 										output+=this.rLineDelimiters[typeNum-1];
 									}
 								} else {
-									console.log("(hider) Warning: Data type " + this.rDataCharTypes[typeNum-1] + " unrecognized for Data Line " + typeNum);
+									//console.log("(hider) Warning: Data type " + this.rDataCharTypes[typeNum-1] + " unrecognized for Data Line " + typeNum);
 								}
 							}
 							lastLineOrderCursor = lineOrderCursor + 1;
 						} else {
-							console.log("(hider) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!");
+							//console.log("(hider) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!");
 						}
 						lineOrderCursor++;
 					} else {
@@ -2269,13 +2246,27 @@ class Mask {
 			return output;
 		} else {
 			var out = "Hide Failed!  Valid Rule Set Not Found!";
-			console.log(out)
+			//console.log(out)
 			alert(out)
 			return out;
 		}
-	}
+	},
 
-	unhider(inputText) {
+	unhider:function(inputText) {
+		if (!String.prototype.includes) {
+			  String.prototype.includes = function(search, start) {
+			    'use strict';
+			    if (typeof start !== 'number') {
+			      start = 0;
+			    }
+
+			    if (start + search.length > this.length) {
+			      return false;
+			    } else {
+			      return this.indexOf(search, start) !== -1;
+			    }
+			  };
+			}
 		if(this.rulesValid){
 			var output = "";
 			var inputLength = inputText.length;
@@ -2284,7 +2275,7 @@ class Mask {
 			if (inputText.substring(0,this.rPrefix.length)==this.rPrefix){
 				inputCursor = this.rPrefix.length;
 			} else {
-				console.log("Unhide Warning! File Prefix Not Found!");
+				//console.log("Unhide Warning! File Prefix Not Found!");
 			}
 			var lineOrderLength = this.rLineOrder.length;
 			var lineOrderCursor = 0;
@@ -2402,7 +2393,7 @@ class Mask {
 														}
 													}
 												} else {
-													console.log("(Unhide) Warning! No valid number match was found for the input at input Cursor " + inputCursor + "\n");
+													//console.log("(Unhide) Warning! No valid number match was found for the input at input Cursor " + inputCursor + "\n");
 												}
 											} else {
 												break;
@@ -2719,7 +2710,7 @@ class Mask {
 											}
 										}
 									} else {
-										console.log("(Unhide) Warning: Data type " + this.rDataCharTypes[typeNum-1] + " unrecognized for Data Line " + typeNum);
+										//console.log("(Unhide) Warning: Data type " + this.rDataCharTypes[typeNum-1] + " unrecognized for Data Line " + typeNum);
 									}
 								}
 							} else {
@@ -2727,7 +2718,7 @@ class Mask {
 								break;
 							}
 						} else {
-							console.log("(Unhide) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!");
+							//console.log("(Unhide) Warning! The Line Order contains a line identifier number that is greater than the number of data lines or less than one!");
 						}
 						lineOrderCursor++;
 					} else {
@@ -2742,13 +2733,13 @@ class Mask {
 			return output;
 		} else {
 			var out = "Unhide Failed!  Valid Rule Set Not Found!";
-			console.log(out)
+			//console.log(out)
 			alert(out)
 			return out;
 		}
-	}
+	},
 
-	testNumeric(index,test){
+	testNumeric:function(index,test){
 		var answer = false;
 		if(index<test.length){
 			if(index>=0){
@@ -2776,9 +2767,9 @@ class Mask {
 			}
 		}
 		return answer;
-	}
+	},
 
-	testHex(index,test){
+	testHex:function(index,test){
 			var answer = false;
 			if(index<test.length){
 				if(index>=0){
@@ -2818,9 +2809,9 @@ class Mask {
 				}
 			}
 			return answer;
-		}
+		},
 
-	getIntFromHexString(hex){
+	getIntFromHexString:function(hex){
 		var length = hex.length;
 		var number = 0;
 		var product = 1;
@@ -2849,9 +2840,9 @@ class Mask {
 			product = product*16;
 		}
 		return number;
-	}
+	},
 
-	parseRules(ruleText){
+	parseRules:function(ruleText){
 		this.rulesValid=false;
 		this.rPrefix = "";
 		this.rPostfix = "";
@@ -2890,7 +2881,7 @@ class Mask {
 		var splits = "";
 		for(var x = 0; x < lines.length; x++){
 			ruleLine = lines[x];
-			console.log("ruleLine: " + ruleLine);
+			//console.log("ruleLine: " + ruleLine);
 			splits = ruleLine.split(" ");
 			if (ruleLine.length>=1){
 				if (ruleLine.substring(0,1)=="#"){
@@ -3506,9 +3497,6 @@ class Mask {
 		}
 		return false;
 	}
-
-
-
-
-
+	}
+	return mask;
 }
