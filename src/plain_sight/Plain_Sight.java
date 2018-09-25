@@ -21,7 +21,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 package plain_sight;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -138,26 +137,14 @@ public class Plain_Sight extends JFrame{
 	private OutputScribe pvScrivener = new OutputScribe();
 	private String[] pvCommandLog;
 	private int pvCommandIndex = prsfIntZero;
-	private String pvPrefix = "";
-	private String pvPostfix = "";
-	private int pvNumLineTypes = prsfIntZero;
-	private int pvLineNum = prsfIntZero;
-	private String[] pvLinePrefixes = new String[prsfIntOne];
-	private int[] pvNumCharsPerLine = new int[prsfIntOne];
-	private String[] pvDataCharTypes = new String[prsfIntOne];
-	private String[] pvLineDelimiters = new String[prsfIntOne];
-	private String pvLineOrder = "";
 	private StringBuilder pvLog = new StringBuilder();
-	private int[] pvNumDigits = new int[prsfIntOne];
-	private int[] pvStartTime = new int[prsfIntOne];
-	private int[] pvStartYear = new int[prsfIntOne];
-	private int[] pvStartMonth = new int[prsfIntOne];
-	private int[] pvStartDay = new int[prsfIntOne];
-	private int[] pvStartHour = new int[prsfIntOne];
 	private ScriptEngine pvEngine;
 	private Invocable pvInvocable;
+	private static String[] pvsStartString;
+	private String pvStartString;
 
 	public static void main(String[] args) {
+		pvsStartString = args;
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				prsShowGUI();
@@ -207,6 +194,27 @@ public class Plain_Sight extends JFrame{
 
 			}
 		}
+		pvStartString = "";
+		if(pvsStartString.length>prsfIntOne){
+			for(int x = prsfIntZero;x<pvsStartString.length;x++){
+				pvStartString.concat(pvsStartString[x]+" ");
+			}
+			pvBatchCommand(pvStartString);
+			System.out.println(pvLog.toString());
+			System.exit(0);
+		}
+
+
+	}
+
+	private String pvDebug(String rules){
+		String output = "";
+		try{
+			output = pvInvocable.invokeFunction("plainSightDebug",new Object[] {rules}).toString();
+		} catch (Exception e){
+			output =  e.toString();
+		}
+		return output;
 	}
 
 	private String pvEncrypt(String input,String pass, String outputFile){
@@ -321,8 +329,8 @@ public class Plain_Sight extends JFrame{
 		//accept a String from another function and process the command therein
 		//help, example, quit, exit, and read are disabled
 		boolean writeToFile = false;
+		boolean noCommand = true;
 		int batchFileNum = 0;
-		pvLog = new StringBuilder();
 		StringBuilder pastText = new StringBuilder();
 		pastText.append(pvTextPane.getText() + System.getProperty("line.separator") + ">: " + commandString + System.getProperty("line.separator"));
 		pvTextPane.setText(pastText.toString());
@@ -344,183 +352,359 @@ public class Plain_Sight extends JFrame{
 		} else {
 			splits = commandString.split(" ");
 		}
-		if(splits[prsfIntZero].length()==prsfIntFour){
-			if(splits[prsfIntZero].compareTo("quit")==prsfIntZero){
-				this.dispose();
+		if(splits[prsfIntZero].compareTo("quit")==prsfIntZero){
+			this.dispose();
+			noCommand = false;
+		} else if(splits[prsfIntZero].compareTo("exit")==prsfIntZero){
+			this.dispose();
+			noCommand = false;
+		} else  if(splits[prsfIntZero].compareTo("test")==prsfIntZero){
+			//test A
+			String inputFile = "/home/user/git/plain_sight/input/test_text";
+			String outputFile = "/home/user/git/plain_sight/output/testA_out";
+			String ruleFile = "/home/user/git/plain_sight/rules/testA";
+			String inputText = "";
+			String ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 			}
-			if(splits[prsfIntZero].compareTo("exit")==prsfIntZero){
-				this.dispose();
+			try {
+				pvLog.append(pvHide(inputText, ruleText, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to hide file!");
 			}
-			if(splits[prsfIntZero].compareTo("test")==prsfIntZero){
-				//test A
-				String inputFile = "/home/user/git/plain_sight/input/test_text";
-				String outputFile = "/home/user/git/plain_sight/output/testA_out";
-				String ruleFile = "/home/user/git/plain_sight/rules/testA";
-				String inputText = "";
-				String ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvHide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
-				}
-				inputFile = "/home/user/git/plain_sight/output/testA_out";
-				outputFile = "/home/user/git/plain_sight/recovered/testA_recovered";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvUnhide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
-				}
+			inputFile = "/home/user/git/plain_sight/output/testA_out";
+			outputFile = "/home/user/git/plain_sight/recovered/testA_recovered";
+			inputText = "";
+			ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			}
+			try {
+				pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to unhide file!");
+			}
 
-				//test B
-				inputFile = "/home/user/git/plain_sight/input/test_text";
-				outputFile = "/home/user/git/plain_sight/output/testB_out";
-				ruleFile = "/home/user/git/plain_sight/rules/testB";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvHide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
-				}
-				inputFile = "/home/user/git/plain_sight/output/testB_out";
-				outputFile = "/home/user/git/plain_sight/recovered/testB_recovered";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvUnhide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
-				}
+			//test B
+			inputFile = "/home/user/git/plain_sight/input/test_text";
+			outputFile = "/home/user/git/plain_sight/output/testB_out";
+			ruleFile = "/home/user/git/plain_sight/rules/testB";
+			inputText = "";
+			ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			}
+			try {
+				pvLog.append(pvHide(inputText, ruleText, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to hide file!");
+			}
+			inputFile = "/home/user/git/plain_sight/output/testB_out";
+			outputFile = "/home/user/git/plain_sight/recovered/testB_recovered";
+			inputText = "";
+			ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			}
+			try {
+				pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to unhide file!");
+			}
 
-				//testC
-				inputFile = "/home/user/git/plain_sight/input/test_text";
-				outputFile = "/home/user/git/plain_sight/output/testC_out";
-				ruleFile = "/home/user/git/plain_sight/rules/testC";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvHide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
-				}
-				inputFile = "/home/user/git/plain_sight/output/testC_out";
-				outputFile = "/home/user/git/plain_sight/recovered/testC_recovered";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvUnhide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
-				}
+			//testC
+			inputFile = "/home/user/git/plain_sight/input/test_text";
+			outputFile = "/home/user/git/plain_sight/output/testC_out";
+			ruleFile = "/home/user/git/plain_sight/rules/testC";
+			inputText = "";
+			ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
 			}
-			if(splits[prsfIntZero].compareTo("hide")==prsfIntZero){
-				String inputFile = splits[prsfIntOne];
-				String outputFile = splits[prsfIntTwo];
-				String ruleFile = splits[prsfIntThree];
+			try {
+				pvLog.append(pvHide(inputText, ruleText, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to hide file!");
+			}
+			inputFile = "/home/user/git/plain_sight/output/testC_out";
+			outputFile = "/home/user/git/plain_sight/recovered/testC_recovered";
+			inputText = "";
+			ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			}
+			try {
+				pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to unhide file!");
+			}
+
+			//testD
+			inputFile = "/home/user/git/plain_sight/input/test_text";
+			outputFile = "/home/user/git/plain_sight/output/testD_out";
+			ruleFile = "/home/user/git/plain_sight/rules/testD";
+			inputText = "";
+			ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			}
+			try {
+				pvLog.append(pvHide(inputText, ruleText, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to hide file!");
+			}
+			inputFile = "/home/user/git/plain_sight/output/testD_out";
+			outputFile = "/home/user/git/plain_sight/recovered/testD_recovered";
+			inputText = "";
+			ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			}
+			try {
+				pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to unhide file!");
+			}
+
+			//testE
+			inputFile = "/home/user/git/plain_sight/input/test_text";
+			outputFile = "/home/user/git/plain_sight/output/testE_out";
+			ruleFile = "/home/user/git/plain_sight/rules/testE";
+			String pass = "monkeybananaraffle";
+			inputText = "";
+			ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			}
+			try {
+				pvLog.append(pvEncryptHide(inputText, ruleText, pass, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to hide file!");
+			}
+			inputFile = "/home/user/git/plain_sight/output/testE_out";
+			outputFile = "/home/user/git/plain_sight/recovered/testE_recovered";
+			inputText = "";
+			ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
+			}
+			try {
+				pvLog.append(pvDecryptUnhide(inputText, ruleText, pass, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to unhide file!");
+			}
+			noCommand = false;
+		} else if(splits[prsfIntZero].compareTo("hide")==prsfIntZero){
+			String inputFile = splits[prsfIntOne];
+			String outputFile = splits[prsfIntTwo];
+			String ruleFile = splits[prsfIntThree];
+			String inputText = "";
+			String ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
+			}
+			try {
+				pvLog.append(pvHide(inputText, ruleText, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to hide file!");
+			}
+			noCommand = false;
+		} else if(splits[prsfIntZero].compareTo("encrypt")==prsfIntZero){
+			if(splits[prsfIntOne].compareTo("hide")==prsfIntZero){
+				String inputFile = splits[prsfIntTwo];
+				String outputFile = splits[prsfIntThree];
+				String ruleFile = splits[prsfIntFour];
+				String pass = splits[prsfIntFive];
 				String inputText = "";
 				String ruleText = "";
 				try {
 					FileRead scholar = new FileRead(inputFile);
 					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
+					scholar = new FileRead(ruleFile);
+					ruleText = scholar.puReadText();
 				} catch (Exception e) {
 					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
+					pvLog.append("Failed to open file = " + splits[prsfIntTwo] +  " or " + splits[prsfIntFour] + " cannot read that file!" + System.getProperty("line.separator"));
 				}
 				try {
-					pvLog.append(pvHide(inputText, ruleText, outputFile));
+					pvLog.append(pvEncryptHide(inputText, ruleText, pass, outputFile));
 				} catch (Exception e) {
 					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
+					pvLog.append("Failed to encrypt file!");
 				}
+			} else {
+			String inputFile = splits[prsfIntOne];
+			String outputFile = splits[prsfIntTwo];
+			String pass = splits[prsfIntThree];
+			String inputText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + splits[prsfIntOne] + " cannot read that file!" + System.getProperty("line.separator"));
 			}
-		}
-		if(splits[prsfIntZero].length()==prsfIntFive){
-			if(splits[prsfIntZero].compareTo("clear")==prsfIntZero){
-				pvLog = new StringBuilder();
-				pastText = new StringBuilder();
-				pvTextPane.setText("");
-				pvLog.append(">:" + System.getProperty("line.separator"));
+			try {
+				pvLog.append(pvEncrypt(inputText, pass, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to encrypt file!");
 			}
-		}
-		if(splits[prsfIntZero].length()==prsfIntSix){
-			if(splits[prsfIntZero].compareTo("unhide")==prsfIntZero){
-				String inputFile = splits[prsfIntOne];
-				String outputFile = splits[prsfIntTwo];
-				String ruleFile = splits[prsfIntThree];
+			}
+			noCommand = false;
+
+		} else if(splits[prsfIntZero].compareTo("debug")==prsfIntZero){
+			String ruleFile = splits[prsfIntOne];
+			String ruleText = "";
+			try {
+				FileRead scholar = new FileRead(ruleFile);
+				ruleText = scholar.puReadText();
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + splits[prsfIntOne] + " cannot read that file!" + System.getProperty("line.separator"));
+			}
+			try {
+				pvLog.append(pvDebug(ruleText));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to debug file!");
+			}
+			noCommand = false;
+		}else if(splits[prsfIntZero].compareTo("decrypt")==prsfIntZero){
+			if(splits[prsfIntOne].compareTo("unhide")==prsfIntZero){
+				String inputFile = splits[prsfIntTwo];
+				String outputFile = splits[prsfIntThree];
+				String ruleFile = splits[prsfIntFour];
+				String pass = splits[prsfIntFive];
 				String inputText = "";
 				String ruleText = "";
 				try {
 					FileRead scholar = new FileRead(inputFile);
 					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
+					scholar = new FileRead(ruleFile);
+					ruleText = scholar.puReadText();
 				} catch (Exception e) {
 					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
+					pvLog.append("Failed to open file = " + splits[prsfIntTwo] +  " or " + splits[prsfIntFour] + " cannot read that file!" + System.getProperty("line.separator"));
 				}
 				try {
-					pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+					pvLog.append(pvDecryptUnhide(inputText, ruleText, pass, outputFile));
 				} catch (Exception e) {
 					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to unhide file!");
+					pvLog.append("Failed to encrypt file!");
 				}
+			} else {
+			String inputFile = splits[prsfIntOne];
+			String outputFile = splits[prsfIntTwo];
+			String pass = splits[prsfIntThree];
+			String inputText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + splits[prsfIntOne] + " cannot read that file!" + System.getProperty("line.separator"));
 			}
+			try {
+				pvLog.append(pvEncrypt(inputText, pass, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to encrypt file!");
+			}
+			}
+			noCommand = false;
+
+		} else if(splits[prsfIntZero].compareTo("unhide")==prsfIntZero){
+			String inputFile = splits[prsfIntOne];
+			String outputFile = splits[prsfIntTwo];
+			String ruleFile = splits[prsfIntThree];
+			String inputText = "";
+			String ruleText = "";
+			try {
+				FileRead scholar = new FileRead(inputFile);
+				inputText = scholar.puReadText();
+				ruleText = scholar.puReadText(ruleFile);
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
+			}
+			try {
+				pvLog.append(pvUnhide(inputText, ruleText, outputFile));
+			} catch (Exception e) {
+				pvLog.append(e + System.getProperty("line.separator"));
+				pvLog.append("Failed to unhide file!");
+			}
+			noCommand = false;
+		}
+		if(noCommand){
+			pvLog.append("No function found!  Nothing to do!  Type help for guidance.");
 		}
 		//write the final output to the terminal
 		pastText.append(pvLog);
@@ -541,7 +725,6 @@ public class Plain_Sight extends JFrame{
 				pvTextPane.setText(pastText.toString());
 			}
 		}
-		pvLog = new StringBuilder();
 	}
 
 	private void pvEnterCommand(){
@@ -557,6 +740,22 @@ public class Plain_Sight extends JFrame{
 		pvTextPane.setText(pastText.toString());
 		pvLog.append("Executing...: " + commandString + System.getProperty("line.separator"));
 		//interpret command and print response or error
+		String splits[];
+		if(commandString.contains(" > ")){
+			String[] parse = commandString.split(" > ");
+			try {
+				pvScrivener.puOpenNewFile(parse[prsfIntOne]);
+				fileNum = pvScrivener.puGetNumFiles();
+				writeToFile = true;
+			} catch (Exception e) {
+				pvLog.append("Failed to open file = " + parse[prsfIntOne] + " cannot write to that file!" + System.getProperty("line.separator"));
+				writeToFile = false;
+			} finally {
+				splits = parse[prsfIntZero].split(" ");
+			}
+		} else {
+			splits = commandString.split(" ");
+		}
 		if(commandString.contains("help")){
 			pvLog.append(System.getProperty("line.separator"));
 			pvLog.append("The program commands are: " + System.getProperty("line.separator"));
@@ -575,10 +774,27 @@ public class Plain_Sight extends JFrame{
 			pvLog.append(">: unhide <input text file path> <output text file path> <rule file path>" + System.getProperty("line.separator"));
 			pvLog.append("This command attempts to extract the output file from the input file based upon the rules in the specified rule file." + System.getProperty("line.separator"));
 			pvLog.append(System.getProperty("line.separator"));
+			pvLog.append(">: debug <rule file path>" + System.getProperty("line.separator"));
+			pvLog.append("This command reads the rule file and displays debug information." + System.getProperty("line.separator"));
+			pvLog.append(System.getProperty("line.separator"));
+			pvLog.append(">: encrypt <input text file path> <output text file path> <password>" + System.getProperty("line.separator"));
+			pvLog.append("This command reads the input file and outputs an encrypted file." + System.getProperty("line.separator"));
+			pvLog.append(">: decrypt <input text file path> <output text file path> <password>" + System.getProperty("line.separator"));
+			pvLog.append("This command attempts to extract the outputs a decrypted file." + System.getProperty("line.separator"));
+			pvLog.append(System.getProperty("line.separator"));
+			pvLog.append(">: encrypt hide <input text file path> <output text file path> <rule file path> <password>" + System.getProperty("line.separator"));
+			pvLog.append("This command reads the input file and outputs an encrypted file." + System.getProperty("line.separator"));
+			pvLog.append(">: decrypt unhide <input text file path> <output text file path> <rule file path> <password>" + System.getProperty("line.separator"));
+			pvLog.append("This command attempts to extract the outputs a decrypted file." + System.getProperty("line.separator"));
+			pvLog.append(System.getProperty("line.separator"));
 			pvLog.append(">: <AnyOtherCommand> > <File> "+ System.getProperty("line.separator"));
 			pvLog.append("This command appends the output of whatever <command> precedes it into the specified <file>. "+ System.getProperty("line.separator"));
-		}
-		if(commandString.contains("example")){
+		} else if(commandString.contains("clear")){
+			pvLog = new StringBuilder();
+			pastText = new StringBuilder();
+			pvTextPane.setText(pastText.toString());
+			pvLog.append(">:" + System.getProperty("line.separator"));
+		}else if(commandString.contains("example")){
 			pvLog.append(System.getProperty("line.separator"));
 			pvLog.append("To get started, type: " + System.getProperty("line.separator"));
 			pvLog.append(">: example > <test text file path>" + System.getProperty("line.separator"));
@@ -588,254 +804,23 @@ public class Plain_Sight extends JFrame{
 			pvLog.append("Next, the conversion process can be reversed using:" + System.getProperty("line.separator"));
 			pvLog.append(">: unhide <past output file path> <path for revealed file> <rule file path>" + System.getProperty("line.separator"));
 			pvLog.append("This command will faithfully recreate the original data as long as the correct rule file is used." + System.getProperty("line.separator"));
-		}
-		String splits[];
-		if(commandString.contains(" > ")){
-			String[] parse = commandString.split(" > ");
-			try {
-				pvScrivener.puOpenNewFile(parse[prsfIntOne]);
-				fileNum = pvScrivener.puGetNumFiles();
-				writeToFile = true;
-			} catch (Exception e) {
-				pvLog.append("Failed to open file = " + parse[prsfIntOne] + " cannot write to that file!" + System.getProperty("line.separator"));
-				writeToFile = false;
-			} finally {
-				splits = parse[prsfIntZero].split(" ");
+		} else if(splits[prsfIntZero].compareTo("read")==prsfIntZero){
+			if(splits[prsfIntOne].compareTo("batch")==prsfIntZero){
+				try {
+					FileRead bookish = new FileRead(splits[prsfIntTwo]);
+					String input = bookish.puReadText();
+					String[] commandParse = input.split(System.getProperty("line.separator"));
+					for(int x = prsfIntZero; x < commandParse.length; x++) {
+						pvBatchCommand(commandParse[x]);
+					}
+				} catch (Exception e) {
+					pvLog.append("Failed to open file = " + splits[prsfIntTwo] + " cannot read that file!" + System.getProperty("line.separator"));
+				}
 			}
 		} else {
-			splits = commandString.split(" ");
+			pvBatchCommand(commandString);
 		}
-		if(splits[prsfIntZero].length()==prsfIntFour){
-			if(splits[prsfIntZero].compareTo("quit")==prsfIntZero){
-				this.dispose();
-			}
-			if(splits[prsfIntZero].compareTo("exit")==prsfIntZero){
-				this.dispose();
-			}
-			if(splits[prsfIntZero].compareTo("read")==prsfIntZero){
-				if(splits[prsfIntOne].compareTo("batch")==prsfIntZero){
-					try {
-						FileRead bookish = new FileRead(splits[prsfIntTwo]);
-						String input = bookish.puReadText();
-						String[] commandParse = input.split(System.getProperty("line.separator"));
-						for(int x = prsfIntZero; x < commandParse.length; x++) {
-							pvBatchCommand(commandParse[x]);
-						}
-					} catch (Exception e) {
-						pvLog.append("Failed to open file = " + splits[prsfIntTwo] + " cannot read that file!" + System.getProperty("line.separator"));
-					}
-				}
-			}
-			if(splits[prsfIntZero].compareTo("test")==prsfIntZero){
-				//test A
-				String inputFile = "/home/user/git/plain_sight/input/test_text";
-				String outputFile = "/home/user/git/plain_sight/output/testA_out";
-				String ruleFile = "/home/user/git/plain_sight/rules/testA";
-				String inputText = "";
-				String ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvHide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
-				}
-				inputFile = "/home/user/git/plain_sight/output/testA_out";
-				outputFile = "/home/user/git/plain_sight/recovered/testA_recovered";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvUnhide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to unhide file!");
-				}
 
-				//test B
-				inputFile = "/home/user/git/plain_sight/input/test_text";
-				outputFile = "/home/user/git/plain_sight/output/testB_out";
-				ruleFile = "/home/user/git/plain_sight/rules/testB";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvHide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
-				}
-				inputFile = "/home/user/git/plain_sight/output/testB_out";
-				outputFile = "/home/user/git/plain_sight/recovered/testB_recovered";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvUnhide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to unhide file!");
-				}
-
-				//testC
-				inputFile = "/home/user/git/plain_sight/input/test_text";
-				outputFile = "/home/user/git/plain_sight/output/testC_out";
-				ruleFile = "/home/user/git/plain_sight/rules/testC";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvHide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
-				}
-				inputFile = "/home/user/git/plain_sight/output/testC_out";
-				outputFile = "/home/user/git/plain_sight/recovered/testC_recovered";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvUnhide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to unhide file!");
-				}
-
-				//testD
-				inputFile = "/home/user/git/plain_sight/input/test_text";
-				outputFile = "/home/user/git/plain_sight/output/testD_out";
-				ruleFile = "/home/user/git/plain_sight/rules/testD";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvHide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
-				}
-				inputFile = "/home/user/git/plain_sight/output/testD_out";
-				outputFile = "/home/user/git/plain_sight/recovered/testD_recovered";
-				inputText = "";
-				ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + inputFile + ", or " + ruleFile + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvUnhide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to unhide file!");
-				}
-			}
-			if(splits[prsfIntZero].compareTo("hide")==prsfIntZero){
-				String inputFile = splits[prsfIntOne];
-				String outputFile = splits[prsfIntTwo];
-				String ruleFile = splits[prsfIntThree];
-				String inputText = "";
-				String ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvHide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to hide file!");
-				}
-			}
-		}
-		if(splits[prsfIntZero].length()==prsfIntFive){
-			if(splits[prsfIntZero].compareTo("clear")==prsfIntZero){
-				pvLog = new StringBuilder();
-				pastText = new StringBuilder();
-				pvTextPane.setText("");
-				pvLog.append(">:" + System.getProperty("line.separator"));
-			}
-		}
-		if(splits[prsfIntZero].length()==prsfIntSix){
-			if(splits[prsfIntZero].compareTo("unhide")==prsfIntZero){
-				String inputFile = splits[prsfIntOne];
-				String outputFile = splits[prsfIntTwo];
-				String ruleFile = splits[prsfIntThree];
-				String inputText = "";
-				String ruleText = "";
-				try {
-					FileRead scholar = new FileRead(inputFile);
-					inputText = scholar.puReadText();
-					ruleText = scholar.puReadText(ruleFile);
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to open file = " + splits[prsfIntOne] + ", or " + splits[prsfIntThree] + " cannot read that file!" + System.getProperty("line.separator"));
-				}
-				try {
-					pvLog.append(pvUnhide(inputText, ruleText, outputFile));
-				} catch (Exception e) {
-					pvLog.append(e + System.getProperty("line.separator"));
-					pvLog.append("Failed to unhide file!");
-				}
-			}
-		}
 		//write the final output to the terminal
 		pastText.append(pvLog);
 		pvTextPane.setText(pastText.toString());
