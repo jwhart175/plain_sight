@@ -18,10 +18,20 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-
+//unsecure global variable
 var mask = newMask();
 
 function plainSightEncryptHide(inString,ruleString,passString){
+	/*
+	 *  This function creates a new mask object then performs the
+	 *  encrypt and hide
+	 *  functions and then disposes of that mask object. It is
+	 *  included in this library to provide access to plain_sight,js
+	 *  functions to Java via Nashorn
+	 *
+	 *  Returns a string containing the encrypted then hidden input
+	 *  or an error message
+	 */
 	var temp = newMask();
 	temp.setInString(inString);
 	temp.setRuleString(ruleString);
@@ -31,6 +41,16 @@ function plainSightEncryptHide(inString,ruleString,passString){
 }
 
 function plainSightHide(inString,ruleString){
+	/*
+	 *  This function creates a new mask object then performs the
+	 *  hide
+	 *  function and then disposes of that mask object. It is
+	 *  included in this library to provide access to plain_sight,js
+	 *  functions to Java via Nashorn
+	 *
+	 *  Returns a string containing the hidden input
+	 *  or an error message
+	 */
 	var temp = newMask();
 	temp.setInString(inString);
 	temp.setRuleString(ruleString);
@@ -38,6 +58,16 @@ function plainSightHide(inString,ruleString){
 }
 
 function plainSightEncrypt(inString,passString){
+	/*
+	 *  This function creates a new mask object then performs the
+	 *  encrypt
+	 *  functions and then disposes of that mask object. It is
+	 *  included in this library to provide access to plain_sight,js
+	 *  functions to Java via Nashorn
+	 *
+	 *  Returns a string containing the encrypted input
+	 *  or an error message
+	 */
 	var temp = newMask();
 	temp.setInString(inString);
 	temp.setPassString(passString);
@@ -45,6 +75,16 @@ function plainSightEncrypt(inString,passString){
 }
 
 function plainSightDecryptUnhide(inString,ruleString,passString){
+	/*
+	 *  This function creates a new mask object then performs the
+	 *  decrypt and unhide
+	 *  functions and then disposes of that mask object. It is
+	 *  included in this library to provide access to plain_sight,js
+	 *  functions to Java via Nashorn
+	 *
+	 *  Returns a string containing the unhidden then decrypted input
+	 *  or an error message
+	 */
 	var temp = newMask();
 	temp.setInString(inString);
 	temp.setRuleString(ruleString);
@@ -54,6 +94,16 @@ function plainSightDecryptUnhide(inString,ruleString,passString){
 }
 
 function plainSightUnhide(inString,ruleString,passString){
+	/*
+	 *  This function creates a new mask object then performs the
+	 *  unhide
+	 *  functions and then disposes of that mask object. It is
+	 *  included in this library to provide access to plain_sight,js
+	 *  functions to Java via Nashorn
+	 *
+	 *  Returns a string containing the unhidden input
+	 *  or an error message
+	 */
 	var temp = newMask();
 	temp.setInString(inString);
 	temp.setRuleString(ruleString);
@@ -61,6 +111,16 @@ function plainSightUnhide(inString,ruleString,passString){
 }
 
 function plainSightDecrypt(inString,passString){
+	/*
+	 *  This function creates a new mask object then performs the
+	 *  decrypt
+	 *  functions and then disposes of that mask object. It is
+	 *  included in this library to provide access to plain_sight,js
+	 *  functions to Java via Nashorn
+	 *
+	 *  Returns a string containing the decrypted input
+	 *  or an error message
+	 */
 	var temp = newMask();
 	temp.setInString(inString);
 	temp.setPassString(passString);
@@ -68,6 +128,16 @@ function plainSightDecrypt(inString,passString){
 }
 
 function plainSightDebug(ruleString){
+	/*
+	 *  This function creates a new mask object then performs the
+	 *  debug
+	 *  function and then disposes of that mask object. It is
+	 *  included in this library to provide access to plain_sight,js
+	 *  functions to Java via Nashorn
+	 *
+	 *  Returns a string containing parsing information about the input
+	 *  or an error message
+	 */
 	var temp = newMask();
 	temp.setRuleString(ruleString);
 	return temp.debugRules;
@@ -90,38 +160,64 @@ function newMask(){
 			                ".raw",".rsc",".sav",".sql",".jbx",".klm"],
 
 			                setInString:function(input){
+			                	/*
+			                	 *  This function validates the input and then sets the inString of this mask
+			                	 *  which is a required input to the hide, unhide, encrypt, and decrypt functions
+			                	 *
+			                	 *  Returns true if input is valid, or false if it is not.
+			                	 */
 			                	if(input&&(typeof "string"==typeof input)){
 			                		this.inString=input;
+			                		return true;
 			                	} else {
 			                		//console.log("setInString Failed!  No input detected!");
+			                		return false;
 			                	}
 			                },
 
 			                setRuleString:function(rules){
+			                	/*
+			                	 *  This function validates the input and then sets the ruleString of this mask
+			                	 *  which is a required input to the hide, unhide, and debug functions
+			                	 *
+			                	 *  Returns true if input is valid, or false if it is not.
+			                	 */
 			                	if(rules){
 			                		if(typeof rules == typeof "test"){
 			                			this.ruleString=rules;
+			                			return true;
 			                		} else {
-			                			//console.log("setRuleString Failed!  Input is not a string!");
-			                		}
+			                			return false;
+			                			}
 			                	} else {
-			                		//console.log("setRuleString Failed!  No input detected!");
+			                		return false;
 			                	}
 			                },
 
 			                setPass:function(pass){
+			                	/*
+			                	 *  This function validates the input and then sets the passString of this mask
+			                	 *  which is a required input to the encrypt and decrypt functions
+			                	 *
+			                	 *  Returns true if input is valid, or false if it is not.
+			                	 */
 			                	if(pass){
 			                		if(typeof pass == typeof "test"){
 			                			this.passString=pass;
+			                			return true;
 			                		} else {
-			                			//console.log("setPass Failed! Input is not a string!");
+			                			return false;
 			                		}
 			                	} else {
-			                		//console.log("setPass Failed! No input detected!");
+			                		return false;
 			                	}
 			                },
 
 			                get checkRules() {
+			                	/*
+			                	 *  This function attempts to parse this.ruleString and
+			                	 *  Returns true if parsing was successful, or false if it is not.
+			                	 */
 			                	if(this.ruleString){
 			                		if(this.parseRules(this.ruleString)){
 			                			this.rulesValid = true;
@@ -135,6 +231,11 @@ function newMask(){
 			                },
 
 			                get key() {
+			                	/*
+			                	 *  This function attempts to calculate an encryption key
+			                	 *  from this.passString and returns that key (an array of
+			                	 *  20 integers) or it returns false if this.passString is not valid.
+			                	 */
 			                	if(this.passString){
 			                		if(typeof this.passString == typeof "string"){
 			                			var passLength = this.passString.length;
@@ -659,6 +760,11 @@ function newMask(){
 			                },
 
 			                get encrypt(){
+			                	/*
+			                	 *  This function attempts to encrypt this.inString with a key generated from
+			                	 *  this.passString.  It returns the encrypted string or false if either
+			                	 *  this.inString or this.passString is valid.
+			                	 */
 			                	var output = "";
 			                	if(this.inString&&this.passString){
 			                		if(typeof this.inString == typeof "test" && typeof this.passString == typeof "test"){
@@ -842,6 +948,11 @@ function newMask(){
 			                },
 
 			                get decrypt(){
+			                	/*
+			                	 *  This function attempts to decrypt this.inString with a key generated from
+			                	 *  this.passString.  It returns the decrypted string or false if either
+			                	 *  this.inString or this.passString is valid.
+			                	 */
 			                	var output = "";
 			                	if(this.inString&&this.passString){
 			                		if(typeof this.inString == typeof "test" && typeof this.passString == typeof "test"){
@@ -1012,6 +1123,16 @@ function newMask(){
 			                },
 
 			                get debugRules() {
+			                	/*
+			                	 *  This function returns debugging information obtained from an attempt to parse
+			                	 *  this.ruleString.  It returns an error message if this.ruleString is invalid.
+			                	 */
+			                	if(!this.ruleString){
+			                		return "ruleString has not been set!";
+			                	}
+			                	if(typeof this.ruleString!= typeof "test"){
+		                			return "ruleString is not of the correct type!  It is a " + (typeof this.ruleString) + " instead of a string!";
+		                		}
 			                	this.logString="";
 			                	this.rulesValid=false;
 			                	this.rPrefix = "";
@@ -1721,6 +1842,11 @@ function newMask(){
 			                },
 
 			                get hide() {
+			                	/*
+			                	 *  This function validates this.inString and this.ruleString and then
+			                	 *  returns a string containing the hidden message or an error message
+			                	 *  if the inputs are invalid.
+			                	 */
 			                	if(this.inString){
 			                		if(this.ruleString){
 			                			if(this.parseRules(this.ruleString)){
@@ -1742,6 +1868,11 @@ function newMask(){
 			                },
 
 			                get unhide() {
+			                	/*
+			                	 *  This function validates this.inString and this.ruleString and then
+			                	 *  returns a string containing the unhidden message or an error message
+			                	 *  if the inputs are invalid.
+			                	 */
 			                	if(this.inString){
 			                		if(this.ruleString){
 			                			if(this.parseRules(this.ruleString)){
@@ -1763,6 +1894,19 @@ function newMask(){
 			                },
 
 			                hider:function(inputText) {
+			                	/*
+			                	 *  This function validates the inputText and then
+			                	 *  returns a string containing the hidden message or an error message
+			                	 *  if the inputs are invalid.
+			                	 */
+			                	if(!inputText){
+			                		var out = "Hide Failed!  Nothing to Hide!";
+			                		return out;
+			                	}
+			                	if(typeof inputText != "test"){
+			                		var out = "Hide Failed!  Input is not a string!";
+			                		return out;
+			                	}
 			                	if(this.rulesValid){
 			                		var output = "";
 			                		output+=this.rPrefix;
@@ -2252,13 +2396,24 @@ function newMask(){
 			                		return output;
 			                	} else {
 			                		var out = "Hide Failed!  Valid Rule Set Not Found!";
-			                		//console.log(out)
-			                		alert(out)
 			                		return out;
 			                	}
 			                },
 
 			                unhider:function(inputText) {
+			                	/*
+			                	 *  This function validates the inputText and then
+			                	 *  returns a string containing the unhidden message or an error message
+			                	 *  if the inputs are invalid.
+			                	 */
+			                	if(!inputText){
+			                		var out = "Unhide Failed!  Nothing to Hide!";
+			                		return out;
+			                	}
+			                	if(typeof inputText != "test"){
+			                		var out = "Unhide Failed!  Input is not a string!";
+			                		return out;
+			                	}
 			                	if (!String.prototype.includes) {
 			                		String.prototype.includes = function(search, start) {
 			                			'use strict';
@@ -2739,14 +2894,23 @@ function newMask(){
 			                		return output;
 			                	} else {
 			                		var out = "Unhide Failed!  Valid Rule Set Not Found!";
-			                		//console.log(out)
-			                		alert(out)
 			                		return out;
 			                	}
 			                },
 
 			                testNumeric:function(index,test){
+			                	/*
+			                	 * This function validates the input then returns true if the character of test
+			                	 * at the index is a number.  It returns false if the character is not a number
+			                	 * or if the inputs are invalid
+			                	 */
 			                	var answer = false;
+			                	if(!index||!test){
+			                		return answer;
+			                	}
+			                	if((typeof index != typeof 42)||(typeof test!= typeof "test")){
+			                		return answer;
+			                	}
 			                	if(index<test.length){
 			                		if(index>=0){
 			                			if(test.substring(index,index+1)=="0"){
@@ -2776,6 +2940,18 @@ function newMask(){
 			                },
 
 			                testHex:function(index,test){
+			                	/*
+			                	 * This function validates the input then returns true if the character of test
+			                	 * at the index is a base 16 number.  It returns false if the character is not a number
+			                	 * or if the inputs are invalid
+			                	 */
+			                	var answer = false;
+			                	if(!index||!test){
+			                		return answer;
+			                	}
+			                	if((typeof index != typeof 42)||(typeof test!= typeof "test")){
+			                		return answer;
+			                	}
 			                	var answer = false;
 			                	if(index<test.length){
 			                		if(index>=0){
@@ -2818,6 +2994,17 @@ function newMask(){
 			                },
 
 			                getIntFromHexString:function(hex){
+			                	/*
+			                	 * This function validates the input then returns the integer value of a string containing
+			                	 * a hex value.  Returns -1 if input is invalid.
+			                	 */
+			                	var answer = false;
+			                	if(!hex){
+			                		return -1;
+			                	}
+			                	if(typeof hex != typeof "test"){
+			                		return -1;
+			                	}
 			                	var length = hex.length;
 			                	var number = 0;
 			                	var product = 1;
@@ -2849,6 +3036,17 @@ function newMask(){
 			                },
 
 			                parseRules:function(ruleText){
+			                	/*
+			                	 * This function validates the input and then attempts to parse it into a set of rules
+			                	 * for hiding a message.  It ruturns true if parsing is successful or false if it is
+			                	 * unsuccessful or if the input is invalid.
+			                	 */
+			                	if(!ruleText){
+			                		return false;
+			                	}
+			                	if(typeof ruleText != "test"){
+			                		return false;
+			                	}
 			                	this.rulesValid=false;
 			                	this.rPrefix = "";
 			                	this.rPostfix = "";
