@@ -22,59 +22,59 @@
 var mask = newMask();
 
 function plainSightEncryptHide(inString,ruleString,passString){
-	mask = newMask();
-	mask.setInString(inString);
-	mask.setRuleString(ruleString);
-	mask.setPass(passString);
-	mask.setInString(mask.encrypt);
-	return mask.hide;
+	var temp = newMask();
+	temp.setInString(inString);
+	temp.setRuleString(ruleString);
+	temp.setPass(passString);
+	temp.setInString(mask.encrypt);
+	return temp.hide;
 }
 
 function plainSightHide(inString,ruleString){
-	mask = newMask();
-	mask.setInString(inString);
-	mask.setRuleString(ruleString);
-	return mask.hide;
+	var temp = newMask();
+	temp.setInString(inString);
+	temp.setRuleString(ruleString);
+	return temp.hide;
 }
 
 function plainSightEncrypt(inString,passString){
-	mask = newMask();
-	mask.setInString(inString);
-	mask.setPassString(passString);
-	return mask.encrypt;
+	var temp = newMask();
+	temp.setInString(inString);
+	temp.setPassString(passString);
+	return temp.encrypt;
 }
 
 function plainSightDecryptUnhide(inString,ruleString,passString){
-	mask = newMask();
-	mask.setInString(inString);
-	mask.setRuleString(ruleString);
-	mask.setInString(mask.unhide);
-	mask.setPass(passString);
-	return mask.decrypt;
+	var temp = newMask();
+	temp.setInString(inString);
+	temp.setRuleString(ruleString);
+	temp.setInString(mask.unhide);
+	temp.setPass(passString);
+	return temp.decrypt;
 }
 
 function plainSightUnhide(inString,ruleString,passString){
-	mask = newMask();
-	mask.setInString(inString);
-	mask.setRuleString(ruleString);
-	return mask.unhide;
+	var temp = newMask();
+	temp.setInString(inString);
+	temp.setRuleString(ruleString);
+	return temp.unhide;
 }
 
 function plainSightDecrypt(inString,passString){
-	mask = newMask();
-	mask.setInString(inString);
-	mask.setPassString(passString);
-	return mask.decrypt;
+	var temp = newMask();
+	temp.setInString(inString);
+	temp.setPassString(passString);
+	return temp.decrypt;
 }
 
 function plainSightDebug(ruleString){
-	mask = newMask();
-	mask.setRuleString(ruleString);
-	return mask.debugRules;
+	var temp = newMask();
+	temp.setRuleString(ruleString);
+	return temp.debugRules;
 }
 
 function newMask(){
-	mask = {
+	return {
 			inString:"",
 			ruleString:"",
 			logString:"",
@@ -3504,5 +3504,4 @@ function newMask(){
 			                	return false;
 			                }
 	}
-	return mask;
 }
