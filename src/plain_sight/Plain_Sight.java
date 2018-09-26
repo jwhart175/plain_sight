@@ -185,14 +185,9 @@ public class Plain_Sight extends JFrame{
 		pvEngine = factory.getScriptEngine(new String[] {});
 		pvInvocable = (Invocable) pvEngine;
 		try{
-			pvEngine.eval(new FileReader("src/plain_sight/plain_sight_functions.js"));
+			pvEngine.eval(new FileReader("src/plain_sight/plain_sight.js"));
 		} catch(Exception err) {
 			System.out.println("JavaScript Error "+err);
-			try {
-				System.out.println(new File("src/plain_sight/plain_sight.js").getCanonicalPath());
-			} catch (Exception e) {
-
-			}
 		}
 		pvStartString = "";
 		if(pvsStartString.length>prsfIntOne){
