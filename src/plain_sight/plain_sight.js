@@ -1903,7 +1903,7 @@ function newMask(){
 			                		var out = "Hide Failed!  Nothing to Hide!";
 			                		return out;
 			                	}
-			                	if(typeof inputText != "test"){
+			                	if(typeof inputText != typeof "test"){
 			                		var out = "Hide Failed!  Input is not a string!";
 			                		return out;
 			                	}
@@ -1937,7 +1937,7 @@ function newMask(){
 			                							break;
 			                						}
 			                					}
-			                					lineOrderCursor+=2;
+			                					lineOrderCursor+=1;
 			                					typeNum = 1*typeNum;
 			                					if (((typeNum)<=this.rNumLineTypes)&((typeNum)>0)){
 			                						output += this.rLinePrefixes[typeNum-1];
@@ -2410,7 +2410,7 @@ function newMask(){
 			                		var out = "Unhide Failed!  Nothing to Hide!";
 			                		return out;
 			                	}
-			                	if(typeof inputText != "test"){
+			                	if(typeof inputText != typeof "test"){
 			                		var out = "Unhide Failed!  Input is not a string!";
 			                		return out;
 			                	}
@@ -2459,7 +2459,7 @@ function newMask(){
 			                							break;
 			                						}
 			                					}
-			                					lineOrderCursor+=2;
+			                					lineOrderCursor+=1;
 			                					typeNum = 1*typeNum;
 			                					if (((typeNum)<=this.rNumLineTypes)&((typeNum)>0)){
 			                						if((inputCursor + this.rLinePrefixes[typeNum-1].length) < inputLength){
@@ -2900,17 +2900,11 @@ function newMask(){
 
 			                testNumeric:function(index,test){
 			                	/*
-			                	 * This function validates the input then returns true if the character of test
-			                	 * at the index is a number.  It returns false if the character is not a number
-			                	 * or if the inputs are invalid
+			                	 * This function returns true if the character of test
+			                	 * at the index is a number.  It returns false if the character is not a number.
+			                	 *
 			                	 */
 			                	var answer = false;
-			                	if(!index||!test){
-			                		return answer;
-			                	}
-			                	if((typeof index != typeof 42)||(typeof test!= typeof "test")){
-			                		return answer;
-			                	}
 			                	if(index<test.length){
 			                		if(index>=0){
 			                			if(test.substring(index,index+1)=="0"){
@@ -2941,17 +2935,11 @@ function newMask(){
 
 			                testHex:function(index,test){
 			                	/*
-			                	 * This function validates the input then returns true if the character of test
-			                	 * at the index is a base 16 number.  It returns false if the character is not a number
-			                	 * or if the inputs are invalid
+			                	 * This function returns true if the character of test
+			                	 * at the index is a base 16 number.  It returns false if the character is not a number.
+			                	 *
 			                	 */
 			                	var answer = false;
-			                	if(!index||!test){
-			                		return answer;
-			                	}
-			                	if((typeof index != typeof 42)||(typeof test!= typeof "test")){
-			                		return answer;
-			                	}
 			                	var answer = false;
 			                	if(index<test.length){
 			                		if(index>=0){
@@ -3044,7 +3032,7 @@ function newMask(){
 			                	if(!ruleText){
 			                		return false;
 			                	}
-			                	if(typeof ruleText != "test"){
+			                	if(typeof ruleText != typeof "test"){
 			                		return false;
 			                	}
 			                	this.rulesValid=false;
