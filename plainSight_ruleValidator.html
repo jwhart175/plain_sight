@@ -62,12 +62,13 @@ rulefile.onchange = function(event) {
 validateButton.onclick = function() {
 		var ruleText = rulefiletext.value
 		mask.setInString(testString);
+		mask.setPass("password");
 		mask.setRuleString(ruleText);
-		var processText = mask.hide;
-		mask.setInString(processText);
-		processText = mask.unhide;
+		mask.setInString(mask.encrypt);
+		mask.setInString(mask.hide);
+		mask.setInString(mask.unhide);
 		var feedbackString = "";
-		if(processText===testString){
+		if(mask.decrypt===testString){
 			feedbackString = "Rule file is Valid!  Test data was successfully hidden and then unhidden with 100% accuracy."
 		} else {
 			feedbackString = "Rule file is Invalid!  Test data was not successfully recovered!." + "\n" + "testString = " + testString + "\n" + "ProcessedTestString = " + processText + "\n";
