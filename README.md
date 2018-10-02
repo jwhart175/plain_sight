@@ -1,12 +1,14 @@
 # plain_sight
 
-plain_sight is a tool for the creation of simple ciphers and masks to conceal text data. Using customizable rule files a user can transform any text file (including html) into what appears to be some numerical data, a log file, or even a valid html file, or anything else they can come up with. It should be noted that this should not be considered to be an encryption tool (because it can in theory be decrypted by a very clever man with a pencil and a pad of paper), and is not intended to be used alone for a secure message exchange.  One should encrypt the message first using a tool like gpg to produce ASCII output, and then one may use this program one or more times to turn an obviously encrypted message into an innocuous seeming log file or some raw scientific measurements.  
+plain_sight is a tool for the creation of simple ciphers and masks to conceal text data. Using customizable rule files a user can transform any text file (including html) into what appears to be some numerical data, a log file, or even a valid html file, or anything else they can come up with. plain_sight has a built-in encryption system called cipherClock, a stream cipher set to a default key size in excess of 256-bit and secure against all except trivial attacks where an intentionally weak key is used. 
 
 Additionally, in the event that a storage device like a usbkey is being used to exchange data, the encrypted then plain_sight-ed files may be stored on the device along with some obviously encrypted files to provide a distraction in the event of interception of the device by parties other than the intended recipient.
 
-Finally, this program is intended to be flexible for the user, allowing them to create there own rule sets for transforming their data.  
+Finally, this program is intended to be flexible for the user, allowing them to create their own rule sets for transforming their data.
 
 Running the program:
+
+For non-developers, the fastest and easiest way to use the plain_sight engine is to download plainSight.html, open it in a browser and use the simple dialog there to hide or unhide messages with or without encryption. 
 
 Make sure to use the latest the version!
 
