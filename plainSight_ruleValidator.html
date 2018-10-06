@@ -60,6 +60,7 @@ rulefile.onchange = function(event) {
 
 validateButton.onclick = function() {
 		var ruleText = rulefiletext.value
+		var mask = newMask();
 		mask.setInString(testString);
 		mask.setPass("password");
 		mask.setRuleString(ruleText);
