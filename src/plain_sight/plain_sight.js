@@ -438,7 +438,6 @@ function newMask(){
 		        				setProperties:function(length,range,startValue){
 		        					if(range){
 		        						if(length){
-
 		        								if(range>0){
 		        									if(length>0){
 		        										if(startValue>=0){
@@ -463,7 +462,6 @@ function newMask(){
 		        								} else {
 		        									return false;
 		        								}
-
 		        						} else {
 		        							return false;
 		        						}
@@ -474,20 +472,17 @@ function newMask(){
 		        				get next() {
 		        					if(this.range){
 		        						if(this.length){
-
 		        								if(this.range>0){
 		        									if(this.length>0){
 		        										if(this.value>=0){
 		        											if(this.range>this.length){
-
-		        													if((this.value+this.length)>this.range){
+		        													if((this.value+this.length)>=this.range){
 		        														this.value = this.value + this.length - this.range;
 		        														return (this.value);
 		        													} else {
 		        														this.value = this.value + this.length;
 		        														return (this.value);
 		        													}
-
 		        											} else {
 		        												return false;
 		        											}
@@ -500,7 +495,6 @@ function newMask(){
 		        								} else {
 		        									return false;
 		        								}
-
 		        						} else {
 		        							return false;
 		        						}
