@@ -53,12 +53,12 @@ DataCharType number
 DataLine 2
 <LinePrefix>Velocity(vx,vy,vz): </LinePrefix>
 NumDataCharsPerLine 3
-DataCharType number (or hex or text)
+DataCharType hex
 <LineDelimiter>, </LineDelimiter>
 DataLine 3
 <LinePrefix>Acceleration(ax,ay,az): </LinePrefix>
 NumDataCharsPerLine 3
-DataCharType number (or hex or text)
+DataCharType text
 <LineDelimiter>, </LineDelimiter>
 <DataLineOrder>
 ^<1>^

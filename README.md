@@ -10,6 +10,8 @@ Running the program:
 
 For non-developers, the fastest and easiest way to use the plain_sight engine is to download plainSight.html, open it in a browser and use the simple dialog there to hide or unhide messages with or without encryption. 
 
+A tutorial for the browser version is located here: <a href="https://jonathanhartpage.wordpress.com/?p=994">Tutorial</a>
+
 Make sure to use the latest the version!
 
 On a linux machine: install java

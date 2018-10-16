@@ -2500,6 +2500,9 @@ function newMask(){
 		                																		this.rPostfix = this.rPostfix.concat(ruleLine.substring(0,y-14));
 		                																		foundEndPostFix = true;
 		                																		switcher = true;
+		                																		if(this.rPostfix==""){
+		                																			this.rPostfix+=" ";
+		                																		}
 		                																		return true;
 		                																	}
 		                																}
@@ -2508,6 +2511,9 @@ function newMask(){
 		                																		this.rPostfix = this.rPostfix.concat(ruleLine.substring(0,y-20));
 		                																		foundEndPostFix = true;
 		                																		switcher = true;
+		                																		if(this.rPostfix==""){
+		                																			this.rPostfix+=" ";
+		                																		}
 		                																		return true;
 		                																	}
 		                																}
@@ -2529,6 +2535,9 @@ function newMask(){
 //		                																				if(switcher){
 //		                																				console.log("Rule File Parsing: Found <FilePostfix> on ruleLine " + (x+1) + "\n");
 //		                																				}
+		                																				if(this.rPostfix==""){
+				                																			this.rPostfix+=" ";
+				                																		}
 		                																				return true;
 		                																			}
 		                																		}
@@ -2548,6 +2557,9 @@ function newMask(){
 //		                																					if(switcher){
 //		                																					console.log("Rule File Parsing: Found <FilePostfix> on ruleLine " + (x+1) + "\n");
 //		                																					}
+		                																					if(this.rPostfix==""){
+		    		                																			this.rPostfix+=" ";
+		    		                																		}
 		                																					return true;
 		                																				}
 		                																			}

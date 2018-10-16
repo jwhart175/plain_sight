@@ -1,0 +1,9 @@
+<FilePrefix></FilePrefix>
+NumDataLineTypes 1
+DataLine 1
+<LinePrefix></LinePrefix>
+NumDataCharsPerLine 1 
+DataCharType number
+<LineDelimiter></LineDelimiter>
+<DataLineOrder>^<1>^</DataLineOrder>
+<FilePostfix> </FilePostfix>

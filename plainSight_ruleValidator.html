@@ -67,8 +67,9 @@ validateButton.onclick = function() {
 		mask.setInString(mask.encrypt);
 		mask.setInString(mask.hide);
 		mask.setInString(mask.unhide);
+		var processText = mask.decrypt;
 		var feedbackString = "";
-		if(mask.decrypt===testString){
+		if(processText===testString){
 			feedbackString = "Rule file is Valid!  Test data was successfully hidden and then unhidden with 100% accuracy."
 		} else {
 			feedbackString = "Rule file is Invalid!  Test data was not successfully recovered!." + "\n" + "testString = " + testString + "\n" + "ProcessedTestString = " + processText + "\n";
@@ -2432,6 +2433,9 @@ function newMask(){
 		                																		this.rPostfix = this.rPostfix.concat(ruleLine.substring(0,y-14));
 		                																		foundEndPostFix = true;
 		                																		switcher = true;
+		                																		if(this.rPostfix==""){
+		                																			this.rPostfix+=" ";
+		                																		}
 		                																		return true;
 		                																	}
 		                																}
@@ -2440,6 +2444,9 @@ function newMask(){
 		                																		this.rPostfix = this.rPostfix.concat(ruleLine.substring(0,y-20));
 		                																		foundEndPostFix = true;
 		                																		switcher = true;
+		                																		if(this.rPostfix==""){
+		                																			this.rPostfix+=" ";
+		                																		}
 		                																		return true;
 		                																	}
 		                																}
@@ -2461,6 +2468,9 @@ function newMask(){
 //		                																				if(switcher){
 //		                																				console.log("Rule File Parsing: Found <FilePostfix> on ruleLine " + (x+1) + "\n");
 //		                																				}
+		                																				if(this.rPostfix==""){
+				                																			this.rPostfix+=" ";
+				                																		}
 		                																				return true;
 		                																			}
 		                																		}
@@ -2480,6 +2490,9 @@ function newMask(){
 //		                																					if(switcher){
 //		                																					console.log("Rule File Parsing: Found <FilePostfix> on ruleLine " + (x+1) + "\n");
 //		                																					}
+		                																					if(this.rPostfix==""){
+		    		                																			this.rPostfix+=" ";
+		    		                																		}
 		                																					return true;
 		                																				}
 		                																			}
