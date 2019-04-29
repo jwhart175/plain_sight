@@ -26,21 +26,27 @@ SOFTWARE.
 -->
 
 <body>
-<div><h1>Plain_Sight HTML/JS</h1></div>
-<div><p></p><p></p><span>Directions:</span></div>
-<div><span>1. In "Text to Process" select or enter a text message file to hide or an already masked file to unhide.</span></div>
-<div><span>2. In "Rule file" select or enter a valid plain_sight rule file to use for processing the input.</span></div>
-<div><span>3. To encrypt the file as well as mask it, click the Encrypt? checkbox and enter a password.  Longer passwords are better, all special characters can be used, passwords are case sensitive.</span></div>
-<div><span>4. Hit hide to generate new masked text in the output box, or unhide to attempt to generate the original text from a hidden file in the output box.</span><p></p></div>
-<div><span>Text to Process:</span></div>
-<div><input type="file" id="filein" accept="text/*" multiple=false></input></div>
-<div><textarea id="fileintext" rows="8" cols="150"></textarea></div>
-<div><span>Rule file:</span></div>
-<div><input type="file" id="rulefile" accept="text/*" multiple=false></input></div>
-<div><textarea id="rulefiletext" rows="8" cols="150"></textarea></div>
-<div><button id="hideButton">HIDE</button><button id="unhideButton">UNHIDE</button><input type="checkbox" defaultChecked="false" id="passCheck">Encrypt? Pass:</input><input type="password" id="password" disabled=true></input></div>
-<div><span>Output:</span></div>
-<div><textarea id="fileout" row="8" cols="150" readonly=true></textarea></div>
+<div  style="margin:2%;border:2px solid darkgrey;background-color:#dfdfff">
+<div><h1 style="margin-left:30%;margin-right:30%;background-color:#dfdfff;text-align:center;color:#202080">Plain_Sight HTML/JS</h1></div>
+<div><p></p><p></p><span style="margin-left:3%;margin-right:3%;background-color:#dfdfff;color:#202080">Directions:</span></div>
+<ol style="margin-left:3%;margin-right:3%;background-color:#dfdfff;color:#202080;list-style-type:number">
+<li>In "Text to Process" select or enter a text message file to hide or an already masked file to unhide.</li>
+<li>In "Rule file" select or enter a valid plain_sight rule file to use for processing the input.</li>
+<li>To encrypt the file as well as mask it, click the Encrypt? checkbox and enter a password.  Longer passwords are better, all special characters can be used, passwords are case sensitive.</li>
+<li>Hit hide to generate new masked text in the output box, or unhide to attempt to generate the original text from a hidden file in the output box.</li>
+</ol><p></p><p></p>
+<div style="margin:2%;border:2px solid darkgrey">
+<div><h3 style="margin:1%;color:#202080">Text to Process</h3></div>
+<div style="margin:1%"><input style="color:#202080" type="file" id="filein" accept="text/*" multiple=false></input></div>
+<div style="margin:1%"><textarea style="background-color:#efefff;height:120px;width:99%;color:#202080" id="fileintext" rows="8" cols="150"></textarea></div>
+<div><h3 style="margin:1%;color:#202080">Rule File</h3></div>
+<div style="margin:1%"><input style="color:#202080" type="file" id="rulefile" accept="text/*" multiple=false></input></div>
+<div style="margin:1%"><textarea style="background-color:#efefff;height:120px;width:99%;color:#202080" id="rulefiletext" rows="8" cols="150"></textarea></div>
+<div style="margin:1%;color:#202080"><button id="hideButton">HIDE</button><button id="unhideButton">UNHIDE</button><input style="background-color:#efefff;width:5%;color:#202080" type="checkbox" defaultChecked="false" id="passCheck">Encrypt? Pass:</input><input style="background-color:#efefff;width:30%;color:#202080" type="password" id="password" disabled=true></input></div>
+<div><h3 style="margin:1%;color:#202080">Output</h3></div>
+<div style="margin:1%"><textarea style="background-color:#efefff;height:120px;width:99%;color:#202080" id="fileout" row="8" cols="150" readonly=true></textarea></div>
+</div>
+</div>
 </body>
 
 <script>
