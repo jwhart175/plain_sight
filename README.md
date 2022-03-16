@@ -8,26 +8,10 @@ Finally, this program is intended to be flexible for the user, allowing them to 
 
 Running the program:
 
-For non-developers, the fastest and easiest way to use the plain_sight engine is to download plainSight.html, open it in a browser and use the simple dialog there to hide or unhide messages with or without encryption. 
+The fastest and easiest way to use the plain_sight engine is to download plainSight.html, open it in a browser and use the simple dialog there to hide or unhide messages with or without encryption.
 
 A tutorial for the browser version is located here: <a href="https://jonathanhartpage.wordpress.com/?p=994">Tutorial</a>
 
 Make sure to use the latest the version!
 
-On a linux machine: install java
-
-The actual install method varies by distro but this can typically be done (with an internet connection) with one of the following commands in a terminal:
-
-sudo apt-get install java //Debian or Ubuntu
-sudo yum install java //Fedora
-
-Then clone the git repository with:
-
-git clone https://github.com/jwhart175/plain_sight
-
-Change directories and run the program:
-
-cd plain_sight
-java -jar plain_sight.jar
-
-The terminal should then open up for you. Type "help" to get a list of commands, and the first one that I suggest is "set inputDir " because in order to get anything to work, you must first point the program towards the dirctory of the Radioactivity_Sim/input files which contain all of the rules by which the program will be calculating.
+The previously available java jar is no longer supported.
