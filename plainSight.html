@@ -427,8 +427,18 @@ function newMask(){
 			if(this.inString&&this.passString){
 				if(typeof this.inString == typeof "test" && typeof this.passString == typeof "test"){
 					var keyShift = this.keyArray;
-					var inputLength = this.inString.length;
-					var input = this.inString;
+					var input = "";
+                    var seed = 0;
+                    for (var n = 0; n < 10; n++){
+						seed = Math.floor(Math.random()*95+31);                    
+                        if(seed==31){
+                            input += String.fromCharCode(10);
+                        } else {
+                            input += String.fromCharCode(seed);
+                        }
+                    }
+                    input = input + this.inString;
+                    var inputLength = input.length;
 					var outShift = 0;
 					var keyGears = [];
 					for (var x = 0; x < Math.floor(this.keyLength/2); x++){
@@ -597,7 +607,11 @@ function newMask(){
 							output += String.fromCharCode(out);
 						}
 					}
-					return output;
+	                if(output.length>10){
+	                  	return output.substring(10,output.length);
+	                } else {
+						return false;
+					}
 				}
 			}
 			return false;
